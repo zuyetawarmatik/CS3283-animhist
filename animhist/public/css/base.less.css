@@ -1,0 +1,29 @@
+@color-back-left-panel: #252525;
+
+* {
+ 	font-size: 100%;
+ 	font-family: 'Source Sans Pro', sans-serif;
+}
+
+#left-panel {
+	height: 100%;
+	width: 320px;
+	
+	overflow: hidden;
+	
+	float: left;
+	position: fixed;
+	
+	box-shadow: 0 0 5px #494949;
+	background: @color-back-left-panel;
+}
+
+#right-panel {
+	height: 100%;
+	width: 100%;
+	
+	overflow: hidden;
+	
+	float: left;
+	position: fixed;
+}
