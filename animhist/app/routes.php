@@ -13,5 +13,5 @@
 
 Route::get('/', function()
 {
-	return View::make('layouts.base');
+	return View::make('play')->with('username', 'Richard Francesc');
 });
