@@ -1,6 +1,28 @@
 @import (less) "definition.less.css";
 
 #main-panel {
+	#left-area {
+		#visualization-area {
+			position: absolute;
+			height: 500px;
+			width: 100%;
+			
+			#map {
+				position: absolute;
+				width: 100%;
+				top: 0;
+				bottom: 60px;
+			}
+			
+			#seek {
+				position: absolute;
+				width: 100%;
+				height: 60px;
+				bottom: 0;
+			}
+		}
+	}
+	
 	#right-area {
 		#action-bar {
 			#like-btn {

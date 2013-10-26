@@ -17,6 +17,7 @@
 		{{ HTML::script('js/jquery-2.0.3.min.js'); }}
 		{{ HTML::script('js/jquery-ui-1.10.3/ui/jquery-ui.js'); }}
 		{{ HTML::script('js/project/base.js'); }}
+		@yield('js')
 		<!---------------->
 		
 	</head>

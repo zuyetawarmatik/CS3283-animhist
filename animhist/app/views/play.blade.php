@@ -1,10 +1,23 @@
 @extends('layouts.main4sections')
+
 @section('css')
 	<link rel="stylesheet/less" type="text/css" href="css/play.less.css" />
 @stop
-@section('left-area-main')
-	
+
+@section('js')
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+	{{ HTML::script('js/project/play.js'); }}
 @stop
+
+@section('left-area-main')
+	<div id="visualization-area">
+		<div id="map">
+		</div>
+		<div id="seek">
+		</div>
+	</div>
+@stop
+
 @section('right-area-main')
 	@if (true)
 		{{ Form::open(array('name'=>'comment-form', 'url'=>'')) }}
