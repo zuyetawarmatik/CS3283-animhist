@@ -1,0 +1,62 @@
+@import (less) "definition.less.css";
+
+#main-panel {
+	#right-area {
+		#action-bar {
+			#like-btn {
+				width: 80px;
+				height: 20px;
+				padding: 30px 0;
+				float: left;
+				background: @color-back-like-button;
+				text-align: center;
+				font-family: Conv_icomoon;
+				cursor: pointer;
+				
+				&:hover {
+					background: darken(@color-back-like-button, 10%);
+				}
+			}
+			
+			#like-info {
+				max-width: 320px;
+				height: 20px;
+				padding: 30px 20px;
+				float: left;
+				font-weight: 600;
+			}
+		}
+		
+		#right-area-main {
+			form[name='comment-form'] {
+				margin: 10px 10px 0 10px;
+				padding-bottom: 20px;
+				border-bottom: 1px dashed #afafaf;
+				
+				textarea {
+					width: 380px;
+					height: 90px;
+				}
+				
+				input[name='submit-btn'] {
+					position: relative;
+					float: right;
+					width: 130px;
+					top: -50px;
+					right: 10px;
+				}
+			}
+			
+			#description-area {
+				top: 240px;
+			}
+			
+			#button-area {
+				#follow-btn {
+					width: 380px;
+				}
+			}
+		}
+	}
+}			
+		

@@ -13,5 +13,5 @@
 
 Route::get('/', function()
 {
-	return View::make('play')->with('username', 'Richard Francesc');
+	return View::make('layouts.base', array('username'=>'Richard Francesc'))->nest('main_panel', 'play', array('title'=>'USA Population in 20th Century <span class="h6">by</span> <span class="h2">Richard Koe</span>', 'like_info'=>'56 Likes'));
 });
