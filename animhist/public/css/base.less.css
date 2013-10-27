@@ -32,6 +32,16 @@ span.h6 {
 	font-weight: 300;
 }
 
+a.username {
+	font-weight: 700;
+	color: @color-type-username;
+}
+
+span.time {
+	font-style: italic;
+	color: inherit;
+}
+
 button, input[type='submit'] {
 	background: @color-back-button;
 	border: 1px @color-type-link solid;
@@ -210,11 +220,11 @@ button, input[type='submit'], [id$="btn"] {
 		}
 		
 		#title {
-			height: 20px;
-			padding: 30px 0;
 			position: absolute;
 			left: 100px;
 			right: 0;
+			height: 20px;
+			padding: 30px 0;
 			
 			overflow: hidden;
    			white-space: nowrap;
@@ -273,34 +283,30 @@ button, input[type='submit'], [id$="btn"] {
 						}
 					}
 					
-					#timeline {
+					#timeline-list {
 						position: absolute;
 						height: 60px;
 						left: 60px;
 						right: 0;
+						padding-left: 10px;
+						overflow-x: auto;
+						overflow-y: hidden;
+						white-space: nowrap;
 						
-						#timeline-list {
-							height: 60px;
-							padding-left: 10px;
-							overflow-x: auto;
-							overflow-y: hidden;
-							white-space: nowrap;
+						.timeline-item {
+							display: inline-block;
+							text-align: center;
+							padding: 20px 10px;
+							height: 20px;
+							cursor: pointer;
 							
-							.timeline-item {
-								display: inline-block;
-								text-align: center;
-								padding: 20px 10px;
-								height: 20px;
-								cursor: pointer;
-								
-								&.focused {
-									font-weight: 700;
-									color: @color-type-link;	
-								}
-								
-								&:hover {
-									background: darken(@color-back-right-area, 20%);
-								}
+							&.focused {
+								font-weight: 700;
+								color: @color-type-link;	
+							}
+							
+							&:hover {
+								background: darken(@color-back-right-area, 20%);
 							}
 						}
 					}
@@ -314,7 +320,6 @@ button, input[type='submit'], [id$="btn"] {
 		height: 100%;
 		width: 440px;
 		right: 0;
-		
 		background: @color-back-right-area;
 		
 		#action-bar {

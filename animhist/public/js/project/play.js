@@ -1,16 +1,25 @@
 $(function() {
 	var commentArea = $("#comment-area");
+	
+	$("#comment-area-title").hover(function() {
+		if (commentArea.hasClass("expanded"))
+			$(this).html("&#57636;");
+		else
+			$(this).html("&#57632;");
+	}, function() {
+		$(this).html("12 comments");
+	});
+	
 	$("#comment-area-title").click(function() {
 		var visualArea = $("#visualization-area");
-		if (!commentArea.hasClass("expanded")) {
-			visualArea.stop(true).animate({bottom: "300px"}, 400, function(){google.maps.event.trigger(map, 'resize');});
-			commentArea.stop(true).animate({height: "300px"}, 400);
-			commentArea.addClass("expanded");
-		} else {
-			visualArea.stop(true).animate({bottom: "60px"}, 400, function(){google.maps.event.trigger(map, 'resize');});
+		if (commentArea.hasClass("expanded")) {
+			visualArea.stop(true).animate({bottom: "60px"}, 400, mapResizeTrigger);
 			commentArea.stop(true).animate({height: "60px"}, 400);
-			commentArea.removeClass("expanded");
+		} else {
+			visualArea.stop(true).animate({bottom: "300px"}, 400, mapResizeTrigger);
+			commentArea.stop(true).animate({height: "300px"}, 400);
 		}
+		commentArea.toggleClass("expanded");
 	});
 });
 
@@ -73,7 +82,7 @@ function initialize() {
 	$(".timeline-item").each(function() {
 		google.maps.event.addDomListener($(this)[0],
 				'click', function() {
-			var year = $(this)[0].innerHTML;
+			var year = $(this).html();
 			styleLayerBySector(layer, sector, year);
 			if (!$(this).hasClass("focused")) {
 				$(".timeline-item.focused").removeClass("focused");
@@ -88,7 +97,7 @@ function initialize() {
 		if (year == 2011) year = 2006;
 		$(".timeline-item.focused").removeClass("focused");
 		$(".timeline-item").each(function() {
-			if ($(this)[0].innerHTML == year)
+			if ($(this).html() == year)
 				$(this).addClass("focused");
 		});
 		styleLayerBySector(layer, sector, year);

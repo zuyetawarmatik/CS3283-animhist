@@ -3,6 +3,8 @@
 @color-back-top-bar: #333; /* Textbox, topbar */
 @color-back-button: #19af8f; /* Main green */
 @color-back-like-button: #1dcca7;
+@color-back-comment: #f9f9f9; /* Main light grey */
 @color-type-link: #11fdcb; /* Text green */
 @color-type-on-white: #333;
+@color-type-username: #60b0e6;
 @color-shadow-inner-area: #000101;

@@ -18,15 +18,13 @@
 		</div>
 		<div id="seek">
 			<div id="play-btn">&#57610;</div>
-			<div id="timeline">
-				<ul id="timeline-list">
-					<li class="timeline-item focused">2006</li>
-					<li class="timeline-item">2007</li>
-					<li class="timeline-item">2008</li>
-					<li class="timeline-item">2009</li>
-					<li class="timeline-item">2010</li>
-				</ul>
-			</div>
+			<ul id="timeline-list">
+				<li class="timeline-item focused">2006</li>
+				<li class="timeline-item">2007</li>
+				<li class="timeline-item">2008</li>
+				<li class="timeline-item">2009</li>
+				<li class="timeline-item">2010</li>
+			</ul>
 		</div>
 	</div>
 	@if (true)
@@ -34,6 +32,35 @@
 			<div id="comment-area-title">
 				12 comments
 			</div>
+			<ul id="comment-list">
+				<li class="comment-item">
+					<div class="avatar-wrapper">
+						<img class="avatar" src="images/cavatar1.jpg" width="80" height="80" />
+					</div>
+					<div class="comment-main">
+						<p class="comment-info"><a href="#" class="username">Richard Tan</a> - <span class="time">3:30, 12 Dec 2013</span></p>
+						<p class="comment-content">I must say this is the most awesome I’ve ever seen! I must say this is the most awesome I’ve ever seen!</p>
+					</div>
+				</li>
+				<li class="comment-item">
+					<div class="avatar-wrapper">
+						<img class="avatar" src="images/cavatar2.jpg" width="80" height="80" />
+					</div>
+					<div class="comment-main">
+						<p class="comment-info"><a href="#" class="username">Mr Dhane</a> - <span class="time">3:30, 12 Dec 2013</span></p>
+						<p class="comment-content">Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet.</p>
+					</div>
+				</li>
+				<li class="comment-item">
+					<div class="avatar-wrapper">
+						<img class="avatar" src="images/cavatar3.jpg" width="80" height="80" />
+					</div>
+					<div class="comment-main">
+						<p class="comment-info"><a href="#" class="username">Walla Jones</a> - <span class="time">3:30, 12 Dec 2013</span></p>
+						<p class="comment-content">Obviously better than textbook :)</p>
+					</div>
+				</li>
+			</ul>
 		</div>
 	@endif
 @stop
