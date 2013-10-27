@@ -192,171 +192,179 @@ button, input[type='submit'], [id$="btn"] {
 	/* CSS hack to span to full right size */
 	left: 320px;
 	right: 0;
+}
+
+/* For inside main-panel iframe */
+#main-area, #left-area, #right-area {
+	font-size: 18px;	
+}
+
+#top-bar {
+	height: 80px;
+	background: @color-back-top-bar;
+	font-size: 20px;
 	
-	font-size: 18px;
+	/* Bring to front to not be shadowed */
+	position: relative;
+	z-index: 2;
 	
-	#top-bar {
-		height: 80px;
-		background: @color-back-top-bar;
-		font-size: 20px;
-		
-		/* Bring to front to not be shadowed */
-		position: relative;
-		z-index: 2;
-		
-		#back-btn {
-			width: 80px;
-			height: 20px;
-			padding: 30px 0;
-			margin-right: 20px;
-			position: absolute;
-			
-			background: @color-back-right-area;
-			font-family: Conv_icomoon;
-			
-			&:hover {
-				background: darken(@color-back-right-area, 20%);
-			}
-		}
-		
-		#title {
-			position: absolute;
-			left: 100px;
-			right: 0;
-			height: 20px;
-			padding: 30px 0;
-			
-			overflow: hidden;
-   			white-space: nowrap;
-			text-overflow: ellipsis;
-			
-			font-weight: 600;
-		}
-	}
-	
-	#main-area {
-		height: 100%;
-	}
-	
-	#left-area {
+	#back-btn {
+		width: 80px;
+		height: 20px;
+		padding: 30px 0;
+		margin-right: 20px;
 		position: absolute;
-		height: 100%;
-		left: 0;
-		right: 440px;
 		
-		#left-area-main {
+		background: @color-back-right-area;
+		font-family: Conv_icomoon;
+		
+		&:hover {
+			background: darken(@color-back-right-area, 20%);
+		}
+	}
+	
+	#title {
+		position: absolute;
+		left: 100px;
+		right: 0;
+		height: 20px;
+		padding: 30px 0;
+		
+		overflow: hidden;
+  			white-space: nowrap;
+		text-overflow: ellipsis;
+		
+		font-weight: 600;
+	}
+}
+
+#main-area {
+	
+}
+
+#left-area {
+	position: absolute;
+	height: 100%;
+	left: 0;
+	right: 440px;
+	
+	#left-area-main {
+		position: absolute;
+		width: 100%;
+		top: 80px;
+		bottom: 0;
+		
+		#visualization-area {
 			position: absolute;
 			width: 100%;
-			top: 80px;
-			bottom: 0;
-			
-			#visualization-area {
+			top: 0;
+			bottom: 60px;
+		
+			#map {
 				position: absolute;
 				width: 100%;
 				top: 0;
 				bottom: 60px;
-			
-				#map {
+			}
+		
+			#seek {
+				position: absolute;
+				width: 100%;
+				bottom: 0;
+				height: 60px;
+				background: @color-back-top-bar;
+				
+				#play-btn {
 					position: absolute;
-					width: 100%;
-					top: 0;
-					bottom: 60px;
-				}
-			
-				#seek {
-					position: absolute;
-					width: 100%;
-					bottom: 0;
-					height: 60px;
-					background: @color-back-top-bar;
+					height: 20px;
+					width: 60px;
+					padding: 20px 0;
+					font-family: Conv_icomoon;
+					background: @color-back-button;
 					
-					#play-btn {
-						position: absolute;
+					&:hover {
+						background: @color-back-like-button;
+					}
+				}
+				
+				#timeline-list {
+					position: absolute;
+					height: 60px;
+					left: 60px;
+					right: 0;
+					padding-left: 10px;
+					overflow-x: auto;
+					overflow-y: hidden;
+					white-space: nowrap;
+					
+					.timeline-item {
+						display: inline-block;
+						text-align: center;
+						padding: 20px 10px;
 						height: 20px;
-						width: 60px;
-						padding: 20px 0;
-						font-family: Conv_icomoon;
-						background: @color-back-button;
+						cursor: pointer;
+						
+						&.focused {
+							font-weight: 700;
+							color: @color-type-link;	
+						}
 						
 						&:hover {
-							background: @color-back-like-button;
-						}
-					}
-					
-					#timeline-list {
-						position: absolute;
-						height: 60px;
-						left: 60px;
-						right: 0;
-						padding-left: 10px;
-						overflow-x: auto;
-						overflow-y: hidden;
-						white-space: nowrap;
-						
-						.timeline-item {
-							display: inline-block;
-							text-align: center;
-							padding: 20px 10px;
-							height: 20px;
-							cursor: pointer;
-							
-							&.focused {
-								font-weight: 700;
-								color: @color-type-link;	
-							}
-							
-							&:hover {
-								background: darken(@color-back-right-area, 20%);
-							}
+							background: darken(@color-back-right-area, 20%);
 						}
 					}
 				}
 			}
 		}
 	}
+}
+
+#right-area {
+	position: absolute;
+	height: 100%;
+	width: 440px;
+	right: 0;
+	background: @color-back-right-area;
 	
-	#right-area {
-		position: absolute;
-		height: 100%;
-		width: 440px;
-		right: 0;
-		background: @color-back-right-area;
+	#action-bar {
+		height: 80px;
+		background: @color-back-button;
+		font-size: 20px;
 		
-		#action-bar {
-			height: 80px;
-			background: @color-back-button;
-			font-size: 20px;
-			
-			#right-area-showhide-btn {
-				position: fixed;
-				z-index: 200;
-				top: 0;
-				right: 0;
-				padding: 30px 0;
-				height: 20px;
-				width: 80px;
-				background: @color-back-right-area;
-				font-family: Conv_icomoon;
-			
-				&:hover {
-					background: darken(@color-back-right-area, 20%);
-				}
+		#right-area-showhide-btn {
+			position: fixed;
+			z-index: 200;
+			top: 0;
+			right: 0;
+			padding: 30px 0;
+			height: 20px;
+			width: 80px;
+			background: @color-back-right-area;
+			font-family: Conv_icomoon;
+		
+			&:hover {
+				background: darken(@color-back-right-area, 20%);
 			}
 		}
+	}
+	
+	#right-area-main {
+		position: absolute;
+		width: 100%;
+		top: 80px;
+		bottom: 0;
 		
-		#right-area-main {
-			height: 100%;
-			#description-area {
-				margin: 0 30px;
-				position: absolute;
-				bottom: 100px;
-				overflow-y: auto;
-			}
-			#button-area {
-				margin: 0 30px;
-				position: absolute;
-				bottom: 30px;
-			}
+		#description-area {
+			margin: 0 30px;
+			position: absolute;
+			bottom: 100px;
+			overflow-y: auto;
+		}
+		
+		#button-area {
+			margin: 0 30px;
+			position: absolute;
+			bottom: 30px;
 		}
 	}
 }

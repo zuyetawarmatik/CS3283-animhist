@@ -1,17 +1,14 @@
 @extends('layouts.main4sections')
 
-@if (true)
-	@section('css')
-		<link rel="stylesheet/less" type="text/css" href="css/play.less.css" />
-	@stop
-	@section('js')
-		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-		{{ HTML::script('js/project/play.js'); }}
-	@stop
-@else
-	<!-- include js, css -->
-@endif
-	
+@section('css')
+	<link rel="stylesheet/less" type="text/css" href="css/play.less.css" />
+@stop
+
+@section('js')
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+	{{ HTML::script('js/project/play.js'); }}
+@stop
+
 @section('left-area-main')
 	<div id="visualization-area">
 		<div id="map">

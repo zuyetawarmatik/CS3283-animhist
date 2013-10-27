@@ -1,61 +1,59 @@
 @import (less) "definition.less.css";
-
-#main-panel {
-	#left-area {
-		#left-area-main {
-			#comment-area {
+		
+#left-area {
+	#left-area-main {
+		#comment-area {
+			position: absolute;
+			width: 100%;
+			bottom: 0;
+			height: 60px;
+			
+			#comment-area-title {
 				position: absolute;
 				width: 100%;
-				bottom: 0;
-				height: 60px;
+				height: 20px;
+				padding: 20px 0;
+				color: @color-type-on-white;
+				text-align: center;
+				cursor: pointer;
+				transition: background 0.3s, color 0.3s;
 				
-				#comment-area-title {
-					position: absolute;
-					width: 100%;
-					height: 20px;
-					padding: 20px 0;
-					color: @color-type-on-white;
-					text-align: center;
-					cursor: pointer;
+				&:hover {
+					font-family: Conv_icomoon;
 					transition: background 0.3s, color 0.3s;
-					
-					&:hover {
-						font-family: Conv_icomoon;
-						transition: background 0.3s, color 0.3s;
-						background: @color-back-top-bar;
-						color: #fff;
-					}
+					background: @color-back-top-bar;
+					color: #fff;
 				}
+			}
+			
+			#comment-list {
+				position: absolute;
+				width: 100%;
+				top: 60px;
+				bottom: 0;
+				overflow-y: auto;
 				
-				#comment-list {
-					position: absolute;
+				.comment-item {
+					display: block;
 					width: 100%;
-					top: 60px;
-					bottom: 0;
-					overflow-y: auto;
+					margin-bottom: 20px;
 					
-					.comment-item {
-						display: block;
-						width: 100%;
-						margin-bottom: 20px;
+					.avatar-wrapper {
+						float: left;
+						width: 80px;
+					}
+					
+					.comment-main {
+						margin-left: 80px;
+						min-height: 67px;
+						padding: 7px 0 6px; 
+						background: @color-back-comment;
 						
-						.avatar-wrapper {
-							float: left;
-							width: 80px;
-						}
-						
-						.comment-main {
-							margin-left: 80px;
-							min-height: 67px;
-							padding: 7px 0 6px; 
-							background: @color-back-comment;
-							
-							p {
-								margin: 0 20px;
-								color: @color-type-on-white;
-								&.comment-content {
-									margin-top: 3px;
-								}
+						p {
+							margin: 0 20px;
+							color: @color-type-on-white;
+							&.comment-content {
+								margin-top: 3px;
 							}
 						}
 					}
@@ -63,60 +61,59 @@
 			}
 		}
 	}
+}
 	
-	#right-area {
-		#action-bar {
-			#like-btn {
-				width: 80px;
-				height: 20px;
-				padding: 30px 0;
-				float: left;
-				background: @color-back-like-button;
-				font-family: Conv_icomoon;
-				
-				&:hover {
-					background: darken(@color-back-like-button, 10%);
-				}
-			}
+#right-area {
+	#action-bar {
+		#like-btn {
+			width: 80px;
+			height: 20px;
+			padding: 30px 0;
+			float: left;
+			background: @color-back-like-button;
+			font-family: Conv_icomoon;
 			
-			#like-info {
-				max-width: 240px;
-				height: 20px;
-				padding: 30px 20px;
-				float: left;
-				font-weight: 600;
+			&:hover {
+				background: darken(@color-back-like-button, 10%);
 			}
 		}
 		
-		#right-area-main {
-			form[name='comment-form'] {
-				height: 130px;
-				margin: 15px 20px 0 20px;
-				padding-bottom: 20px;
-				border-bottom: 1px dashed #afafaf;
-				
-				textarea {
-					width: 360px;
-					height: 60px;
-				}
-				
-				input[name='submit-btn'] {
-					margin-left: 270px;
-					margin-top: 10px;
-					width: 130px;
-				}
+		#like-info {
+			max-width: 240px;
+			height: 20px;
+			padding: 30px 20px;
+			float: left;
+			font-weight: 600;
+		}
+	}
+	
+	#right-area-main {
+		form[name='comment-form'] {
+			height: 130px;
+			margin: 15px 20px 0 20px;
+			padding-bottom: 20px;
+			border-bottom: 1px dashed #afafaf;
+			
+			textarea {
+				width: 360px;
+				height: 60px;
 			}
 			
-			#description-area {
-				top: 260px;
+			input[name='submit-btn'] {
+				margin-left: 270px;
+				margin-top: 10px;
+				width: 130px;
 			}
-			
-			#button-area {
-				#follow-btn {
-					width: 380px;
-				}
+		}
+		
+		#description-area {
+			top: 180px;
+		}
+		
+		#button-area {
+			#follow-btn {
+				width: 380px;
 			}
 		}
 	}
-}			
-		
+}

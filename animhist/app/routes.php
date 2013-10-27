@@ -13,5 +13,10 @@
 
 Route::get('/', function()
 {
-	return View::make('layouts.base', array('username'=>'Richard Francesc'))->nest('main_panel', 'play', array('title'=>'California Electricity Consumption <span class="h6">by</span> <a href="#">Richard Koe</a>', 'like_info'=>'56 Likes'));
+	return View::make('layouts.base', array('username'=>'Richard Francesc', 'main_panel_iframe_url'=>URL::to('play')));
+});
+
+Route::get('play', function()
+{
+	return View::make('play', array('title'=>'California Electricity Consumption <span class="h6">by</span> <a href="#">Richard Koe</a>', 'like_info'=>'56 Likes'));
 });

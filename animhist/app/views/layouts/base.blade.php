@@ -9,7 +9,6 @@
 		{{ HTML::style('fonts/icomoon/stylesheet.css'); }}
 		<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,200,200italic,300,300italic,400italic,600,600italic,700,700italic,900,900italic&subset=latin,vietnamese,latin-ext' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet/less" type="text/css" href="css/base.less.css" />
-		@yield('css')
 		<!---------------->
 		
 		<!-- Script -->
@@ -17,7 +16,6 @@
 		{{ HTML::script('js/jquery-2.0.3.min.js'); }}
 		{{ HTML::script('js/jquery-ui-1.10.3/ui/jquery-ui.js'); }}
 		{{ HTML::script('js/project/base.js'); }}
-		@yield('js')
 		<!---------------->
 		
 	</head>
@@ -54,7 +52,7 @@
 			@endif
 		</section>
 		<section id="main-panel">
-			{{ $main_panel }}
+			<iframe style="width: 100%; height: 100%" src="{{ $main_panel_iframe_url }}" scrolling="no"></iframe>
 		</section>
 	</body>
 </html>
