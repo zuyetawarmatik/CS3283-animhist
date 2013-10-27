@@ -37,7 +37,6 @@ button, input[type='submit'] {
 	border: 1px @color-type-link solid;
 	font-weight: 600; 
 	height: 40px;
-	cursor: pointer;
 	
 	&:hover {
 		background: @color-back-like-button;
@@ -47,6 +46,11 @@ button, input[type='submit'] {
 		font-family: Conv_icomoon;
 		margin-right: 20px;
 	}
+}
+
+button, input[type='submit'], [id$="btn"] {
+	cursor: pointer;
+	text-align: center;
 }
 
 #left-panel {
@@ -85,15 +89,13 @@ button, input[type='submit'] {
 			}
 		}
 		
-		#logout {
+		#logout-btn {
 			float: left;
 			width: 60px;
 			height: 20px;
 			padding: 30px 0;
-			text-align: center;
 			font-family: Conv_icomoon;
 			color: @color-type-link;
-			cursor: pointer;
 			
 			&:hover {
 				background: darken(@color-back-button, 25%); 
@@ -200,9 +202,7 @@ button, input[type='submit'] {
 			position: absolute;
 			
 			background: @color-back-right-area;
-			text-align: center;
 			font-family: Conv_icomoon;
-			cursor: pointer;
 			
 			&:hover {
 				background: darken(@color-back-right-area, 20%);
@@ -233,6 +233,80 @@ button, input[type='submit'] {
 		height: 100%;
 		left: 0;
 		right: 440px;
+		
+		#left-area-main {
+			position: absolute;
+			width: 100%;
+			top: 80px;
+			bottom: 0;
+			
+			#visualization-area {
+				position: absolute;
+				width: 100%;
+				top: 0;
+				bottom: 60px;
+			
+				#map {
+					position: absolute;
+					width: 100%;
+					top: 0;
+					bottom: 60px;
+				}
+			
+				#seek {
+					position: absolute;
+					width: 100%;
+					bottom: 0;
+					height: 60px;
+					background: @color-back-top-bar;
+					
+					#play-btn {
+						position: absolute;
+						height: 20px;
+						width: 60px;
+						padding: 20px 0;
+						font-family: Conv_icomoon;
+						background: @color-back-button;
+						
+						&:hover {
+							background: @color-back-like-button;
+						}
+					}
+					
+					#timeline {
+						position: absolute;
+						height: 60px;
+						left: 60px;
+						right: 0;
+						
+						#timeline-list {
+							height: 60px;
+							padding-left: 10px;
+							overflow-x: auto;
+							overflow-y: hidden;
+							white-space: nowrap;
+							
+							.timeline-item {
+								display: inline-block;
+								text-align: center;
+								padding: 20px 10px;
+								height: 20px;
+								cursor: pointer;
+								
+								&.focused {
+									font-weight: 700;
+									color: @color-type-link;	
+								}
+								
+								&:hover {
+									background: darken(@color-back-right-area, 20%);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	#right-area {
@@ -247,9 +321,26 @@ button, input[type='submit'] {
 			height: 80px;
 			background: @color-back-button;
 			font-size: 20px;
+			
+			#right-area-showhide-btn {
+				position: fixed;
+				z-index: 200;
+				top: 0;
+				right: 0;
+				padding: 30px 0;
+				height: 20px;
+				width: 80px;
+				background: @color-back-right-area;
+				font-family: Conv_icomoon;
+			
+				&:hover {
+					background: darken(@color-back-right-area, 20%);
+				}
+			}
 		}
 		
 		#right-area-main {
+			height: 100%;
 			#description-area {
 				margin: 0 30px;
 				position: absolute;

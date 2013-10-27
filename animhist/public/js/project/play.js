@@ -1,3 +1,19 @@
+$(function() {
+	var commentArea = $("#comment-area");
+	$("#comment-area-title").click(function() {
+		var visualArea = $("#visualization-area");
+		if (!commentArea.hasClass("expanded")) {
+			visualArea.stop(true).animate({bottom: "300px"}, 400, function(){google.maps.event.trigger(map, 'resize');});
+			commentArea.stop(true).animate({height: "300px"}, 400);
+			commentArea.addClass("expanded");
+		} else {
+			visualArea.stop(true).animate({bottom: "60px"}, 400, function(){google.maps.event.trigger(map, 'resize');});
+			commentArea.stop(true).animate({height: "60px"}, 400);
+			commentArea.removeClass("expanded");
+		}
+	});
+});
+
 var LAYER_STYLES = {
 		'Residential': {
 			'min': 0,
@@ -35,9 +51,10 @@ var LAYER_STYLES = {
 }
 
 function initialize() {
-	var sector = 'Residential';
-
-	var map = new google.maps.Map(document.getElementById('map'), {
+	var sector = 'Non-Residential';
+	var year = 2005;
+	
+	map = new google.maps.Map(document.getElementById('map'), {
 		center: new google.maps.LatLng(37.4, -119.8),
 		zoom: 5,
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -50,23 +67,32 @@ function initialize() {
 	updateLayerQuery(layer, sector);
 	layer.setMap(map);
 
-	styleLayerBySector(layer, sector);
+	timer();
 	styleMap(map);
-	drawVisualization('Alameda');
-
-	google.maps.event.addListener(layer, 'click', function(e) {
-		var county = e.row['County'].value;
-		drawVisualization(county);
-
-		var electricity = e.row['2010'].value;
-		if (electricity > 5000) {
-			e.infoWindowHtml = '<p class="high">High Usage!</p>';
-		} else if (electricity > 2500) {
-			e.infoWindowHtml = '<p class="medium">Medium Usage</p>';
-		} else {
-			e.infoWindowHtml = '<p class="low">Low Usage</p>';
-		}
+	
+	$(".timeline-item").each(function() {
+		google.maps.event.addDomListener($(this)[0],
+				'click', function() {
+			var year = $(this)[0].innerHTML;
+			styleLayerBySector(layer, sector, year);
+			if (!$(this).hasClass("focused")) {
+				$(".timeline-item.focused").removeClass("focused");
+				$(this).addClass("focused");
+			}
+		});
 	});
+	
+	//window.setInterval(timer, 1000);
+	function timer() {
+		year += 1;
+		if (year == 2011) year = 2006;
+		$(".timeline-item.focused").removeClass("focused");
+		$(".timeline-item").each(function() {
+			if ($(this)[0].innerHTML == year)
+				$(this).addClass("focused");
+		});
+		styleLayerBySector(layer, sector, year);
+	}
 }
 
 function updateLayerQuery(layer, sector, county) {
@@ -83,7 +109,7 @@ function updateLayerQuery(layer, sector, county) {
 	});
 }
 
-function styleLayerBySector(layer, sector) {
+function styleLayerBySector(layer, sector, year) {
 	var layerStyle = LAYER_STYLES[sector];
 	var colors = layerStyle.colors;
 	var minNum = layerStyle.min;
@@ -94,7 +120,7 @@ function styleLayerBySector(layer, sector) {
 	for (var i = 0; i < colors.length; i++) {
 		var newMin = minNum + step * i;
 		styles.push({
-			where: generateWhere(newMin, sector),
+			where: generateWhere(newMin, sector, year),
 			polygonOptions: {
 				fillColor: colors[i],
 				fillOpacity: 1
@@ -104,11 +130,13 @@ function styleLayerBySector(layer, sector) {
 	layer.set('styles', styles);
 }
 
-function generateWhere(minNum, sector) {
+function generateWhere(minNum, sector, year) {
 	var whereClause = new Array();
 	whereClause.push("Sector = '");
 	whereClause.push(sector);
-	whereClause.push("' AND '2010' >= ");
+	whereClause.push("' AND '");
+	whereClause.push(year);
+	whereClause.push("' >= ");
 	whereClause.push(minNum);
 	return whereClause.join('');
 }
@@ -137,21 +165,6 @@ function styleMap(map) {
 	});
 	map.mapTypes.set('map-style', styledMapType);
 	map.setMapTypeId('map-style');
-}
-
-function drawVisualization(county) {
-	google.visualization.drawChart({
-		containerId: "visualization",
-		dataSourceUrl: "http://www.google.com/fusiontables/gvizdata?tq=",
-		query: "SELECT Sector,'2006','2007','2008','2009','2010' " +
-		"FROM 18fyPg1LvW3KB3N5DE_ub-MKicB0Nx7vkGn9kw4s WHERE County = '" + county + "'",
-		chartType: "ColumnChart",
-		options: {
-			title: county,
-			height: 400,
-			width: 400
-		}
-	});
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);

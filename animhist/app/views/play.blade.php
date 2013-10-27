@@ -1,21 +1,41 @@
 @extends('layouts.main4sections')
 
-@section('css')
-	<link rel="stylesheet/less" type="text/css" href="css/play.less.css" />
-@stop
-
-@section('js')
-	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-	{{ HTML::script('js/project/play.js'); }}
-@stop
-
+@if (true)
+	@section('css')
+		<link rel="stylesheet/less" type="text/css" href="css/play.less.css" />
+	@stop
+	@section('js')
+		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+		{{ HTML::script('js/project/play.js'); }}
+	@stop
+@else
+	<!-- include js, css -->
+@endif
+	
 @section('left-area-main')
 	<div id="visualization-area">
 		<div id="map">
 		</div>
 		<div id="seek">
+			<div id="play-btn">&#57610;</div>
+			<div id="timeline">
+				<ul id="timeline-list">
+					<li class="timeline-item focused">2006</li>
+					<li class="timeline-item">2007</li>
+					<li class="timeline-item">2008</li>
+					<li class="timeline-item">2009</li>
+					<li class="timeline-item">2010</li>
+				</ul>
+			</div>
 		</div>
 	</div>
+	@if (true)
+		<div id="comment-area">
+			<div id="comment-area-title">
+				12 comments
+			</div>
+		</div>
+	@endif
 @stop
 
 @section('right-area-main')
@@ -26,7 +46,7 @@
 		{{ Form::close() }}
 	@endif
 	<article id="description-area">
-		<h1>USA Population in 20th Century</h1>
+		<h1>California Electricity Consumption</h1>
 		<p><br><span class="h2">Author: </span>Richard Koe</p>
 		<p><span class="h2">Created at: </span>1:56, 1 Dec 2013</p>
 		<p><span class="h2">Last Updated at: </span>2:38, 1 Dec 2013</p>

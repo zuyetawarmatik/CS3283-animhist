@@ -27,7 +27,7 @@
 				<div id="user-bar">	
 					<img id="avatar" src="images/avatar.jpg" width="60" height="60" />
 					<div id="username"><a href="#">{{ $username }}</a></div>
-					<div id="logout">&#57603;</div>
+					<div id="logout-btn">&#57603;</div>
 				</div> 
 				<ul class="nav-list">
 					<li class="nav-item before-selected">
