@@ -3,12 +3,12 @@
 @section('body')
 	<div id="left-area" class="main4sections">
 		<div id="top-bar">
-			@if (true)
+			@if ($has_back)
 				<div id="back-btn">&#57446;</div>
+				<div id="title">{{ $title }}</div>
+			@else
+				<div id="title" class="no-back">{{ $title }}</div>
 			@endif
-			<div id="title">
-				{{ $title }}
-			</div>
 		</div>
 		<div id="left-area-main">
 			@yield('left-area-main')

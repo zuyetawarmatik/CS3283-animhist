@@ -1,8 +1,31 @@
-#right-area-main {
-	#category-area {
-		position: absolute;
-		top: 20px;
-		bottom: 100px;
-		margin: 0 30px;
+#category-area {
+	position: absolute;
+	top: 20px;
+	bottom: 100px;
+	width: 100%;
+	
+	h1 {
+		margin-left: 30px;
 	}
+	
+	#category-list {
+		margin-top: 20px;
+		
+		.category-item {
+			padding: 20px 30px;
+			cursor: pointer;
+			color: @color-type-link;
+			border-top: 1px @color-back-top-bar solid;
+			font-weight: 700;
+			
+			&.selected {
+				background: @color-back-top-bar;
+			}
+			
+			&:last-child {
+				border-bottom: 1px @color-back-top-bar solid;
+			}
+		}
+	}
+	
 }

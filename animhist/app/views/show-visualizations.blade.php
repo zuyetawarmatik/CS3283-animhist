@@ -12,7 +12,11 @@
 	<div id="category-area">
 		<h1>Categories</h1>
 		<ul id="category-list">
-			
+			<li class="category-item">All</li>
+			<li class="category-item">Arts</li>
+			<li class="category-item selected">Science</li>
+			<li class="category-item">Social Science</li>
+			<li class="category-item">Technology</li>
 		</ul>
 	</div>
 @stop

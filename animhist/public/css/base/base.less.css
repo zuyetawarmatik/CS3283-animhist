@@ -1,5 +1,9 @@
 @import (less) "definition.less.css";
 
+body {
+	overflow: hidden;
+}
+
 a {
 	color: @color-type-link;
 	text-decoration: none;
