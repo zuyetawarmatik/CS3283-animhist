@@ -1,0 +1,17 @@
+#action-bar {
+	#right-area-showhide-btn {
+		position: fixed;
+		z-index: 200;
+		top: 0;
+		right: 0;
+		padding: 30px 0;
+		height: 20px;
+		width: 80px;
+		background: @color-back-right-area;
+		font-family: Conv_icomoon;
+	
+		&:hover {
+			background: darken(@color-back-right-area, 20%);
+		}
+	}
+}

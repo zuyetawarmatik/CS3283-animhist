@@ -127,7 +127,6 @@
 #main-panel {
 	position: fixed;
 	height: 100%;
-	/* CSS hack to span to full right size */
 	left: 320px;
 	right: 0;
 }

@@ -1,5 +1,3 @@
-@import (less) "baseright.less.css";
-		
 #left-area {
 	#left-area-main {
 		#comment-area {
@@ -58,61 +56,6 @@
 						}
 					}
 				}
-			}
-		}
-	}
-}
-	
-#right-area {
-	#action-bar {
-		#like-btn {
-			width: 80px;
-			height: 20px;
-			padding: 30px 0;
-			float: left;
-			background: @color-back-like-button;
-			font-family: Conv_icomoon;
-			
-			&:hover {
-				background: darken(@color-back-like-button, 10%);
-			}
-		}
-		
-		#like-info {
-			max-width: 240px;
-			height: 20px;
-			padding: 30px 20px;
-			float: left;
-			font-weight: 600;
-		}
-	}
-	
-	#right-area-main {
-		form[name='comment-form'] {
-			height: 130px;
-			margin: 15px 20px 0 20px;
-			padding-bottom: 20px;
-			border-bottom: 1px dashed #afafaf;
-			
-			textarea {
-				width: 360px;
-				height: 60px;
-			}
-			
-			input[name='submit-btn'] {
-				margin-left: 270px;
-				margin-top: 10px;
-				width: 130px;
-			}
-		}
-		
-		#description-area {
-			top: 180px;
-		}
-		
-		#button-area {
-			#follow-btn {
-				width: 380px;
 			}
 		}
 	}

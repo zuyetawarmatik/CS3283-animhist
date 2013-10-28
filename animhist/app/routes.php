@@ -18,5 +18,5 @@ Route::get('/', function()
 
 Route::get('play', function()
 {
-	return View::make('play', array('title'=>'California Electricity Consumption <span class="h6">by</span> <a href="#">Richard Koe</a>', 'like_info'=>'56 Likes'));
+	return View::make('view-visualization', array('title'=>'California Electricity Consumption <span class="h6">by</span> <a href="#">Richard Koe</a>', 'like_info'=>'56 Likes'));
 });

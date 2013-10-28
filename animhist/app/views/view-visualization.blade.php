@@ -1,12 +1,12 @@
 @extends('layouts.main4sections')
 
 @section('css')
-	<link rel="stylesheet/less" type="text/css" href="css/play.less.css" />
+	<link rel="stylesheet/less" type="text/css" href="css/view-visualization.less.css" />
 @stop
 
 @section('js')
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-	{{ HTML::script('js/project/play.js'); }}
+	{{ HTML::script('js/project/view-visualization.js'); }}
 @stop
 
 @section('left-area-main')
@@ -60,6 +60,15 @@
 			</ul>
 		</div>
 	@endif
+@stop
+
+@section('action-bar')
+	@if (true)
+		<div id="like-btn">&#57556;</div>
+	@endif
+	<div id="like-info">
+		{{ $like_info }}
+	</div>
 @stop
 
 @section('right-area-main')

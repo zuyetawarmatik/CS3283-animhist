@@ -1,0 +1,22 @@
+@import (less) "base/baseright.less.css";
+@import (less) "element/mid/visualization-area.less.css";
+@import (less) "element/mid/comment-area.less.css";
+@import (less) "element/right/comment-form.less.css";
+@import (less) "element/right/action-bar-like.less.css";
+@import (less) "element/right/description-area.less.css";
+@import (less) "element/right/button-area.less.css";
+@import (less) "element/right/showhide-btn.less.css";
+
+#right-area {
+	#right-area-main {
+		#description-area {
+			top: 180px;
+		}
+		
+		#button-area {
+			#follow-btn {
+				width: 380px;
+			}
+		}
+	}
+}

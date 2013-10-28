@@ -1,0 +1,8 @@
+#right-area-main {
+	#description-area {
+		margin: 0 30px;
+		position: absolute;
+		bottom: 100px;
+		overflow-y: auto;
+	}
+}

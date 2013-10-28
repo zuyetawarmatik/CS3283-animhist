@@ -33,12 +33,7 @@
 		</div>
 		<div id="right-area" class="main4sections">
 			<div id="action-bar">
-				@if (true)
-					<div id="like-btn">&#57556;</div>
-				@endif
-				<div id="like-info">
-					{{ $like_info }}
-				</div>
+				@yield('action-bar')
 				<div id="right-area-showhide-btn">&#57477;</div>
 			</div>
 			<div id="right-area-main">
