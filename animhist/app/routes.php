@@ -14,7 +14,7 @@
 Route::get('/', function()
 {
 	return View::make('layouts.base', array('username'=>'Richard Francesc', 'main_panel_iframe_url'=>URL::to('play')));
-	return View::make('layouts.base', array('username'=>'Richard Francesc', 'main_panel_iframe_url'=>URL::to('featured')));
+	//return View::make('layouts.base', array('username'=>'Richard Francesc', 'main_panel_iframe_url'=>URL::to('featured')));
 });
 
 Route::get('play', function()

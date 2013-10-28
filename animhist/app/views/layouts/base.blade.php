@@ -9,7 +9,7 @@
 		{{ HTML::style('css/reset.css'); }}
 		{{ HTML::style('fonts/icomoon/stylesheet.css'); }}
 		<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,200,200italic,300,300italic,400italic,600,600italic,700,700italic,900,900italic&subset=latin,vietnamese,latin-ext' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet/less" type="text/css" href="css/base/baseleft.less.css" />
+		<link rel="stylesheet/less" type="text/css" href="css/base/base-left.less.css" />
 		<!---------------->
 		
 		<!-- Script -->
@@ -28,7 +28,7 @@
 					<div id="username"><a href="#">{{ $username }}</a></div>
 					<div id="logout-btn">&#57603;</div>
 				</div> 
-				<ul class="nav-list">
+				<ul id="nav-list">
 					<li class="nav-item before-selected">
 						<span class="nav-icon">&#57513;</span>
 						<span class="nav-caption">My Visualizations</span>

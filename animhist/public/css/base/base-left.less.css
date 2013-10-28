@@ -19,6 +19,7 @@
 		img#avatar {
 			float: left;
 			margin: 10px;
+			cursor: pointer;
 		}
 		
 		#username {
@@ -51,7 +52,7 @@
 		}
 	}
 	
-	.nav-list {
+	#nav-list {
 		.nav-item {
 			border-bottom: #4f4f4f 1px solid;
 			height: 60px;

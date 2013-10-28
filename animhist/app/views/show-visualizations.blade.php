@@ -12,11 +12,11 @@
 	<div id="category-area">
 		<h1>Categories</h1>
 		<ul id="category-list">
-			<li class="category-item">All</li>
-			<li class="category-item">Arts</li>
-			<li class="category-item selected">Science</li>
-			<li class="category-item">Social Science</li>
-			<li class="category-item">Technology</li>
+			<li class="category-item"><span class="category-caption">All</span></li>
+			<li class="category-item"><span class="category-caption">Arts</span></li>
+			<li class="category-item selected"><span class="category-caption">Science</span></li>
+			<li class="category-item"><span class="category-caption">Social Science</span></li>
+			<li class="category-item"><span class="category-caption">Technology</span></li>
 		</ul>
 	</div>
 @stop

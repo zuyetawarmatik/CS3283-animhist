@@ -20,4 +20,15 @@ $(function() {
 		}
 		rightSidebar.toggleClass("hidden");
 	});
+	
+	/* Right category sidebar animation */
+	$("#category-list > li").prepend('<span class="category-bck"></span>');
+	$("#category-list > li:not(.selected)").hover(
+		function() {
+			$(".category-bck", this).stop(true).animate({left: "0", opacity: "1"}, 400, "easeOutQuad");
+		},
+		function() {
+			$(".category-bck", this).stop(true).animate({left: "100%", opacity: "0"}, 400, "easeOutQuad");
+		}
+	);
 });
