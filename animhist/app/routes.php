@@ -13,10 +13,16 @@
 
 Route::get('/', function()
 {
-	return View::make('layouts.base', array('username'=>'Richard Francesc', 'main_panel_iframe_url'=>URL::to('play')));
+	//return View::make('layouts.base', array('username'=>'Richard Francesc', 'main_panel_iframe_url'=>URL::to('play')));
+	return View::make('layouts.base', array('username'=>'Richard Francesc', 'main_panel_iframe_url'=>URL::to('featured')));
 });
 
 Route::get('play', function()
 {
 	return View::make('view-visualization', array('title'=>'California Electricity Consumption <span class="h6">by</span> <a href="#">Richard Koe</a>', 'like_info'=>'56 Likes'));
+});
+
+Route::get('featured', function()
+{
+	return View::make('show-visualizations-featured', array('title'=>'Featured'));
 });

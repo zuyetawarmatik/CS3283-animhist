@@ -2,6 +2,7 @@
 <html lang="en-US">
 	<head>
 		<meta charset="utf-8">
+		
 		<title>Animated History</title>
 		
 		<!-- Stylesheet -->
