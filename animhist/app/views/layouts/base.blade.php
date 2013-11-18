@@ -33,7 +33,7 @@
 						<span class="nav-icon">&#57513;</span>
 						<span class="nav-caption">My Visualizations</span>
 					</li>
-					<li class="nav-item selected">
+					<li class="nav-item selected" data-url="{{ URL::to('featured') }}">
 						<span class="nav-icon">&#57552;</span>
 						<span class="nav-caption">Featured</span>
 					</li>
@@ -45,7 +45,7 @@
 						<span class="nav-icon">&#57488;</span>
 						<span class="nav-caption">Settings</span>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item" data-url="{{ URL::to('search') }}">
 						<span class="nav-icon">&#57471;</span>
 						<span class="nav-caption">Search</span>
 					</li>

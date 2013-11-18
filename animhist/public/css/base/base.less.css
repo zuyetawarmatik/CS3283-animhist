@@ -9,7 +9,7 @@ a {
 	text-decoration: none;
 }
 
-textarea {
+textarea, input[type='text'] {
 	background: @color-back-top-bar;
 	resize: none;
 	font-style: italic;

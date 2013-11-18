@@ -13,8 +13,7 @@
 
 Route::get('/', function()
 {
-	return View::make('layouts.base', array('username'=>'Richard Francesc', 'main_panel_iframe_url'=>URL::to('play')));
-	//return View::make('layouts.base', array('username'=>'Richard Francesc', 'main_panel_iframe_url'=>URL::to('featured')));
+	return View::make('layouts.base', array('username'=>'Richard Francesc', 'main_panel_iframe_url'=>URL::to('featured')));
 });
 
 Route::get('play', function()
@@ -24,5 +23,10 @@ Route::get('play', function()
 
 Route::get('featured', function()
 {
-	return View::make('show-visualizations-featured', array('title'=>'Featured', 'has_back'=>false));
+	return View::make('show-visualizations-featured', array('title'=>'Featured Visualizations', 'has_back'=>false));
+});
+
+Route::get('search', function()
+{
+	return View::make('show-visualizations-search', array('title'=>'Search', 'has_back'=>false));
 });

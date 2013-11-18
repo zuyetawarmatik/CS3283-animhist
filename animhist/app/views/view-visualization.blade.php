@@ -32,7 +32,7 @@
 			<ul id="comment-list">
 				<li class="comment-item">
 					<div class="avatar-wrapper">
-						<img class="avatar" src="images/cavatar1.jpg" width="80" height="80" />
+						<a href="#"><img class="avatar" src="images/cavatar1.jpg" width="80" height="80" /></a>
 					</div>
 					<div class="comment-main">
 						<p class="comment-info"><a href="#" class="username">Richard Tan</a> - <span class="time">3:30, 12 Dec 2013</span></p>
@@ -41,7 +41,7 @@
 				</li>
 				<li class="comment-item">
 					<div class="avatar-wrapper">
-						<img class="avatar" src="images/cavatar2.jpg" width="80" height="80" />
+						<a href="#"><img class="avatar" src="images/cavatar2.jpg" width="80" height="80" /></a>
 					</div>
 					<div class="comment-main">
 						<p class="comment-info"><a href="#" class="username">Mr Dhane</a> - <span class="time">3:30, 12 Dec 2013</span></p>
@@ -50,7 +50,7 @@
 				</li>
 				<li class="comment-item">
 					<div class="avatar-wrapper">
-						<img class="avatar" src="images/cavatar3.jpg" width="80" height="80" />
+						<a href="#"><img class="avatar" src="images/cavatar3.jpg" width="80" height="80" /></a>
 					</div>
 					<div class="comment-main">
 						<p class="comment-info"><a href="#" class="username">Walla Jones</a> - <span class="time">3:30, 12 Dec 2013</span></p>

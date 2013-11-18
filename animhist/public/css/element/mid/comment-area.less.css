@@ -1,61 +1,54 @@
 #left-area {
-	#left-area-main {
-		#comment-area {
+	#comment-area {
+		position: absolute;
+		width: 100%;
+		bottom: 0;
+		height: 60px;
+		
+		#comment-area-title {
+			width: 100%;
+			height: 20px;
+			padding: 20px 0;
+			color: @color-type-on-white;
+			text-align: center;
+			cursor: pointer;
+			transition: background 0.3s, color 0.3s;
+			
+			&:hover {
+				font-family: Conv_icomoon;
+				transition: background 0.3s, color 0.3s;
+				background: @color-back-top-bar;
+				color: #fff;
+			}
+		}
+		
+		#comment-list {
 			position: absolute;
 			width: 100%;
+			top: 60px;
 			bottom: 0;
-			height: 60px;
+			overflow-y: auto;
 			
-			#comment-area-title {
+			.comment-item {
 				width: 100%;
-				height: 20px;
-				padding: 20px 0;
-				color: @color-type-on-white;
-				text-align: center;
-				cursor: pointer;
-				transition: background 0.3s, color 0.3s;
+				margin-bottom: 20px;
 				
-				&:hover {
-					font-family: Conv_icomoon;
-					transition: background 0.3s, color 0.3s;
-					background: @color-back-top-bar;
-					color: #fff;
+				.avatar-wrapper {
+					float: left;
+					width: 80px;
 				}
-			}
-			
-			#comment-list {
-				position: absolute;
-				width: 100%;
-				top: 60px;
-				bottom: 0;
-				overflow-y: auto;
 				
-				.comment-item {
-					display: block;
-					width: 100%;
-					margin-bottom: 20px;
+				.comment-main {
+					margin-left: 80px;
+					min-height: 67px;
+					padding: 7px 0 6px; 
+					background: @color-back-comment;
 					
-					.avatar-wrapper {
-						float: left;
-						width: 80px;
-						
-						.avatar {
-							cursor: pointer;
-						}
-					}
-					
-					.comment-main {
-						margin-left: 80px;
-						min-height: 67px;
-						padding: 7px 0 6px; 
-						background: @color-back-comment;
-						
-						p {
-							margin: 0 20px;
-							color: @color-type-on-white;
-							&.comment-content {
-								margin-top: 3px;
-							}
+					p {
+						margin: 0 20px;
+						color: @color-type-on-white;
+						&.comment-content {
+							margin-top: 3px;
 						}
 					}
 				}

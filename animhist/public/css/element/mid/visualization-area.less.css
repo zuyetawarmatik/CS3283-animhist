@@ -1,61 +1,59 @@
 #left-area {
-	#left-area-main {
-		#visualization-area {
+	#visualization-area {
+		position: absolute;
+		width: 100%;
+		top: 0;
+		bottom: 60px;
+	
+		#map {
 			position: absolute;
 			width: 100%;
 			top: 0;
 			bottom: 60px;
-		
-			#map {
-				position: absolute;
-				width: 100%;
-				top: 0;
-				bottom: 60px;
-			}
-		
-			#seek {
-				position: absolute;
-				width: 100%;
-				bottom: 0;
-				height: 60px;
-				background: @color-back-top-bar;
+		}
+	
+		#seek {
+			position: absolute;
+			width: 100%;
+			bottom: 0;
+			height: 60px;
+			background: @color-back-top-bar;
+			
+			#play-btn {
+				float: left;
+				height: 20px;
+				width: 60px;
+				padding: 20px 0;
+				font-family: Conv_icomoon;
+				background: @color-back-button;
 				
-				#play-btn {
-					float: left;
+				&:hover {
+					background: @color-back-like-button;
+				}
+			}
+			
+			#timeline-list {
+				height: 60px;
+				margin-left: 60px;
+				padding-left: 10px;
+				overflow-x: auto;
+				overflow-y: hidden;
+				white-space: nowrap;
+				
+				.timeline-item {
+					display: inline-block;
+					text-align: center;
+					padding: 20px 10px;
 					height: 20px;
-					width: 60px;
-					padding: 20px 0;
-					font-family: Conv_icomoon;
-					background: @color-back-button;
+					cursor: pointer;
+					
+					&.focused {
+						font-weight: 700;
+						color: @color-type-link;	
+					}
 					
 					&:hover {
-						background: @color-back-like-button;
-					}
-				}
-				
-				#timeline-list {
-					height: 60px;
-					margin-left: 60px;
-					padding-left: 10px;
-					overflow-x: auto;
-					overflow-y: hidden;
-					white-space: nowrap;
-					
-					.timeline-item {
-						display: inline-block;
-						text-align: center;
-						padding: 20px 10px;
-						height: 20px;
-						cursor: pointer;
-						
-						&.focused {
-							font-weight: 700;
-							color: @color-type-link;	
-						}
-						
-						&:hover {
-							background: darken(@color-back-right-area, 20%);
-						}
+						background: darken(@color-back-right-area, 20%);
 					}
 				}
 			}

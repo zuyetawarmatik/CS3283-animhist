@@ -1,4 +1,5 @@
 @import (less) "base/base-main3.less.css";
 @import (less) "element/top-bar.less.css";
+@import (less) "element/mid/visualization-list.less.css";
 @import (less) "element/right/category-area.less.css";
 @import (less) "element/right/showhide-btn.less.css";
