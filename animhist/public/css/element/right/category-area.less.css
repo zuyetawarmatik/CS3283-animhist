@@ -1,7 +1,7 @@
 #category-area {
 	position: absolute;
 	top: 20px;
-	bottom: 100px;
+	bottom: 0;
 	width: 100%;
 	
 	h1 {
@@ -9,7 +9,12 @@
 	}
 	
 	#category-list {
-		margin-top: 20px;
+		position: absolute;
+		width: 100%;
+		top: 40px;
+		bottom: 0;
+		overflow-y: auto;
+		overflow-x: hidden;
 		
 		.category-item {
 			cursor: pointer;
