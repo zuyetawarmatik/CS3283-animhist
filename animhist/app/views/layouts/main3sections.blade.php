@@ -16,7 +16,9 @@
 			@yield('left-area')
 		</div>
 		<div id="right-area" class="main3sections">
-			<div id="right-area-showhide-btn">&#57477;</div>
+			@if ($has_minimize_right)
+				<div id="right-area-showhide-btn">&#57477;</div>
+			@endif
 			@yield('right-area')
 		</div>
 	</div>

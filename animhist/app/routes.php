@@ -23,10 +23,15 @@ Route::get('play', function()
 
 Route::get('featured', function()
 {
-	return View::make('show-visualizations-featured', array('title'=>'Featured Visualizations', 'has_back'=>false));
+	return View::make('show-visualizations-featured', array('title'=>'Featured Visualizations', 'has_back'=>false, 'has_minimize_right'=>true));
 });
 
 Route::get('search', function()
 {
-	return View::make('show-visualizations-search', array('title'=>'Search', 'has_back'=>false));
+	return View::make('show-visualizations-search', array('title'=>'Search', 'has_back'=>false, 'has_minimize_right'=>true));
+});
+
+Route::get('settings', function()
+{
+	return View::make('settings', array('title'=>'Settings', 'has_back'=>false, 'has_minimize_right'=>false));
 });

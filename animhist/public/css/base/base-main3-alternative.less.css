@@ -1,0 +1,11 @@
+@import (less) "base-main3.less.css";
+
+#main-area {
+	#left-area, #right-area {
+		background: @color-back-right-area;
+	}
+	
+	#right-area {
+		border-left: 1px @color-back-top-bar solid;
+	}
+}

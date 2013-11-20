@@ -11,3 +11,10 @@
 		{{ Form::text('search-box', 'Type your search here') }}
 	{{ Form::close() }}
 @stop
+
+@section('left-area')
+	<div id="search-info">
+		Last search for "<span style="font-style: italic">Singapore</span>":
+	</div>
+	@parent
+@stop

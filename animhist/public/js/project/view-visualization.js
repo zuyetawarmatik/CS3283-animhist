@@ -91,7 +91,10 @@ function initialize() {
 		});
 	});
 	
-	//window.setInterval(timer, 1000);
+	$("#play-btn").click(function() {
+		window.setInterval(timer, 1000);
+	});
+	
 	function timer() {
 		year += 1;
 		if (year == 2011) year = 2006;

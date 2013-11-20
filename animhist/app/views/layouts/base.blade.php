@@ -41,7 +41,7 @@
 						<span class="nav-icon">&#57553;</span>
 						<span class="nav-caption">Following</span>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item" data-url="{{ URL::to('settings') }}">
 						<span class="nav-icon">&#57488;</span>
 						<span class="nav-caption">Settings</span>
 					</li>

@@ -9,15 +9,13 @@
 @import (less) "element/right/showhide-btn.less.css";
 
 #right-area {
-	#right-area-main {
-		#description-area {
-			top: 180px;
-		}
-		
-		#button-area {
-			#follow-btn {
-				width: 380px;
-			}
+	#description-area {
+		top: 180px;
+	}
+	
+	#button-area {
+		#follow-btn {
+			width: 380px;
 		}
 	}
 }
