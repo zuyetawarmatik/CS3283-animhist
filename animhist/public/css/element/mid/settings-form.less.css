@@ -1,0 +1,37 @@
+#left-area {
+	form[name='settings-form'] {
+		position: absolute;
+		overflow-x: hidden;
+		overflow-y: auto;
+		left: 0;
+		right: 0;
+		top: 10px;
+		bottom: 0;
+		
+		table {
+			position: absolute;
+			display: block;
+			left: 40px;
+			right: 60px;
+			
+			tbody {
+				display: block;
+				width: 100%;
+			
+				tr {
+					td {
+						padding: 10px 0;
+						
+						&:first-child {
+							min-width: 200px;
+						}
+						
+						input[type="text"], textarea {
+							width: 100%;
+						}
+					}
+				}
+			}
+		}
+	}
+}
