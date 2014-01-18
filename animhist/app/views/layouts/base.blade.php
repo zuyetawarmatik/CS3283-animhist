@@ -22,7 +22,7 @@
 	</head>
 	<body>
 		<section id="left-panel">
-			@if (true)
+			@if ($loggedin)
 				<div id="user-bar">	
 					<img id="avatar" src="images/avatar.jpg" width="60" height="60" />
 					<div id="username"><a href="#">{{ $username }}</a></div>
@@ -44,6 +44,21 @@
 					<li class="nav-item" data-url="{{ URL::to('settings') }}">
 						<span class="nav-icon">&#57488;</span>
 						<span class="nav-caption">Settings</span>
+					</li>
+					<li class="nav-item" data-url="{{ URL::to('search') }}">
+						<span class="nav-icon">&#57471;</span>
+						<span class="nav-caption">Search</span>
+					</li>
+				</ul>
+			@else
+				<ul id="nav-list">
+					<li class="nav-item selected" data-url="{{ URL::to('login') }}">
+						<span class="nav-icon">&#57604;</span>
+						<span class="nav-caption">Login</span>
+					</li>
+					<li class="nav-item after-selected" data-url="{{ URL::to('featured') }}">
+						<span class="nav-icon">&#57552;</span>
+						<span class="nav-caption">Featured</span>
 					</li>
 					<li class="nav-item" data-url="{{ URL::to('search') }}">
 						<span class="nav-icon">&#57471;</span>

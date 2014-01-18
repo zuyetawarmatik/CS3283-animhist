@@ -13,7 +13,7 @@
 
 Route::get('/', function()
 {
-	return View::make('layouts.base', array('username'=>'Richard Francesc', 'main_panel_iframe_url'=>URL::to('featured')));
+	return View::make('layouts.base', array('username'=>'Richard Francesc', 'loggedin'=>false, 'main_panel_iframe_url'=>URL::to('login')));
 });
 
 Route::get('play', function()
@@ -34,4 +34,9 @@ Route::get('search', function()
 Route::get('settings', function()
 {
 	return View::make('settings', array('title'=>'Settings', 'has_back'=>false, 'has_minimize_right'=>false));
+});
+
+Route::get('login', function()
+{
+	return View::make('login', array('title'=>'Login', 'has_back'=>false, 'has_minimize_right'=>false));
 });

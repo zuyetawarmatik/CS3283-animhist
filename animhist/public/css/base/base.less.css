@@ -9,7 +9,7 @@ a {
 	text-decoration: none;
 }
 
-textarea, input[type='text'] {
+textarea, input[type='text'], input[type='password']  {
 	background: @color-back-top-bar;
 	resize: none;
 	font-style: italic;
@@ -59,6 +59,14 @@ button, input[type='submit'] {
 	i {
 		font-family: Conv_icomoon;
 		margin-right: 20px;
+	}
+	
+	&.grey-btn {
+		background: @color-back-grey-button;
+		border-color: @color-border-grey-button;
+		&:hover {
+			background: @color-back-hover-grey-button;
+		}
 	}
 }
 

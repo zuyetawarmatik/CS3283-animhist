@@ -53,6 +53,10 @@
 	}
 	
 	#nav-list {
+		position: absolute;
+		top: 80px;
+		width: 320px;
+		
 		.nav-item {
 			border-bottom: #4f4f4f 1px solid;
 			height: 60px;

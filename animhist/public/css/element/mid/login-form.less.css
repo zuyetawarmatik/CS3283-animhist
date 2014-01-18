@@ -1,5 +1,5 @@
 #left-area {
-	form[name='settings-form'] {
+	form[name='login-form'] {
 		position: absolute;
 		overflow-x: hidden;
 		overflow-y: auto;
@@ -35,11 +35,23 @@
 							width: 99%;
 						}
 						
-						input[type="text"], textarea {
+						input[type="text"], input[type='password'], textarea {
 							box-sizing: border-box;
 						     -webkit-box-sizing:border-box;
 						     -moz-box-sizing: border-box;
 							width: 100%;
+						}
+					}
+					
+					&:last-child {
+						td {
+							width: 100%;
+							
+							button, input[type='submit'] {
+								float: right;
+								margin-left: 10px;
+								margin-bottom: 10px;
+							}
 						}
 					}
 				}
