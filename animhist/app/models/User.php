@@ -4,6 +4,18 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
 class User extends Eloquent implements UserInterface, RemindableInterface {
+	use Codesleeve\Stapler\Stapler;
+	
+	public function __construct(array $attributes = array()) {
+		$this->hasAttachedFile('avatar', [
+					'styles' => [
+						'medium' => '400x400',
+						'thumb' => '60x60#'
+					]
+				]);
+	
+		parent::__construct($attributes);
+	}
 
 	/**
 	 * The database table used by the model.
