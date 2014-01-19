@@ -9,7 +9,7 @@
 		{{ HTML::style('css/reset.css'); }}
 		{{ HTML::style('fonts/icomoon/stylesheet.css'); }}
 		<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,200,200italic,300,300italic,400italic,600,600italic,700,700italic,900,900italic&subset=latin,vietnamese,latin-ext' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet/less" type="text/css" href="css/base/base-left.less.css" />
+		<link rel="stylesheet/less" type="text/css" href="/css/base/base-left.less.css" />
 		<!---------------->
 		
 		<!-- Script -->
@@ -22,7 +22,7 @@
 	</head>
 	<body>
 		<section id="left-panel">
-			@if ($loggedin)
+			@if (Auth::check())
 				<div id="user-bar">	
 					<img id="avatar" src="images/avatar.jpg" width="60" height="60" />
 					<div id="username"><a href="#">{{ $username }}</a></div>

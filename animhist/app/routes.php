@@ -11,9 +11,11 @@
 |
 */
 
+// Testing Routes
+
 Route::get('/', function()
 {
-	return View::make('layouts.base', array('username'=>'Richard Francesc', 'loggedin'=>false, 'main_panel_iframe_url'=>URL::to('login')));
+	return View::make('layouts.base', array('username'=>'Richard Francesc', 'main_panel_iframe_url'=>URL::to('register')));
 });
 
 Route::get('play', function()
@@ -36,7 +38,26 @@ Route::get('settings', function()
 	return View::make('settings', array('title'=>'Settings', 'has_back'=>false, 'has_minimize_right'=>false));
 });
 
-Route::get('login', function()
-{
-	return View::make('login', array('title'=>'Login', 'has_back'=>false, 'has_minimize_right'=>false));
+// ==========================================================
+
+Route::group(['before' => 'guest', 'prefix' => '/'], function(){	
+	// /login
+	Route::get('login', function(){return Redirect::route('user.showLogin');});
+	
+	// /user
+	Route::get('user', function(){return Redirect::route('user.showCreate');});
+	Route::post('user', ['as' => 'user.store', 'uses' => 'UserController@store']);
+});
+
+Route::group(['before' => 'guest', 'prefix' => 'user'], function(){	
+	// /user/create
+	Route::get('create', ['as' => 'user.showCreate', 'uses' => 'UserController@showCreate']);
+	
+	// /user/login
+	Route::get('login', ['as' => 'user.showLogin', 'uses'  => 'UserController@showLogin']);
+});
+
+// /{username}
+Route::group(['prefix' => '{username}'], function(){
+	Route::get('/', ['as' => 'user.show', 'uses' => 'UserController@show']);
 });

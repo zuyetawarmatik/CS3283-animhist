@@ -1,7 +1,7 @@
 @extends('layouts.main3sections')
 
 @section('css')
-	<link rel="stylesheet/less" type="text/css" href="css/show-visualizations.less.css" />
+	<link rel="stylesheet/less" type="text/css" href="/css/show-visualizations.less.css" />
 @stop
 
 @section('left-area')

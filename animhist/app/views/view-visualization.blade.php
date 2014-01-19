@@ -1,7 +1,7 @@
 @extends('layouts.main4sections')
 
 @section('css')
-	<link rel="stylesheet/less" type="text/css" href="css/view-visualization.less.css" />
+	<link rel="stylesheet/less" type="text/css" href="/css/view-visualization.less.css" />
 @stop
 
 @section('js')

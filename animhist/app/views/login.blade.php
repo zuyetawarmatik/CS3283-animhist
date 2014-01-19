@@ -1,7 +1,7 @@
 @extends('layouts.main3sections')
 
 @section('css')
-	<link rel="stylesheet/less" type="text/css" href="css/login.less.css" />
+	<link rel="stylesheet/less" type="text/css" href="/css/login.less.css" />
 @stop
 
 @section('left-area')
@@ -29,6 +29,6 @@
 	<article id="description-area">
 		<h1>Haven't had an account yet?</h1>
 		<p><br>Sign up now to completely benefit from Animhist! Create and play historical visualization seamlessly in the fastest way. Share it around the world. Be a geek historian.</p>
-		<button id="create-acc-btn">Create New Account</button>
+		<button id="register-btn">Create New Account</button>
 	</article>
 @stop

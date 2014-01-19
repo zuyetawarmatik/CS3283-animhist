@@ -1,7 +1,7 @@
 @extends('show-visualizations')
 
 @section('css')
-	<link rel="stylesheet/less" type="text/css" href="css/show-visualizations-search.less.css" />
+	<link rel="stylesheet/less" type="text/css" href="/css/show-visualizations-search.less.css" />
 @stop
 
 @section('top-bar')
