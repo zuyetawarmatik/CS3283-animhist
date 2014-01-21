@@ -1,3 +1,11 @@
+function changeIFrameSrc(src, backable) {
+	if (backable)
+		$('#main-panel iframe').attr("src", src + "?ajax=1&back=1");
+	else
+		$('#main-panel iframe').attr("src", src + "?ajax=1");
+	history.pushState(null, null, src);
+}
+
 $(function() {
 	/* Left sidebar animation */
 	$("#nav-list > li").prepend('<span class="nav-bck"></span>');
@@ -13,7 +21,7 @@ $(function() {
 	);
 	
 	$("#nav-list > li").click(function() {
-		$("#main-panel iframe").attr("src", $(this).data("url"));
+		changeIFrameSrc($(this).data("url"), false);
 		
 		$("#nav-list > li.selected").prev().removeClass("before-selected");
 		$("#nav-list > li.selected").next().removeClass("after-selected");

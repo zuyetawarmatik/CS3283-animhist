@@ -4,6 +4,10 @@
 	<link rel="stylesheet/less" type="text/css" href="/css/login.less.css" />
 @stop
 
+@section('js')
+	{{ HTML::script('js/project/page-login.js'); }}
+@stop
+
 @section('left-area')
 	{{ Form::open(array('name'=>'login-form', 'url'=>'')) }}
 		<table>
@@ -29,6 +33,6 @@
 	<article id="description-area">
 		<h1>Haven't had an account yet?</h1>
 		<p><br>Sign up now to completely benefit from Animhist! Create and play historical visualization seamlessly in the fastest way. Share it around the world. Be a geek historian.</p>
-		<button id="register-btn">Create New Account</button>
+		<button id="register-btn" data-url="{{URL::route('user.showCreate')}}">Create New Account</button>
 	</article>
 @stop

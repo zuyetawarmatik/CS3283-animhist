@@ -138,4 +138,5 @@
 	height: 100%;
 	left: 320px;
 	right: 0;
+	background: @color-back-right-area;
 }

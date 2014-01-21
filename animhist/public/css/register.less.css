@@ -6,5 +6,6 @@
 #right-area {
 	#description-area {
 		top: 20px;
+		bottom: 0;
 	}
 }

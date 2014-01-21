@@ -6,10 +6,12 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 class User extends Eloquent implements UserInterface, RemindableInterface {
 	use Codesleeve\Stapler\Stapler;
 	
+	protected $guarded = array();
+	
 	public function __construct(array $attributes = array()) {
 		$this->hasAttachedFile('avatar', [
 					'styles' => [
-						'medium' => '400x400',
+						'medium' => '400x400#',
 						'thumb' => '60x60#'
 					]
 				]);

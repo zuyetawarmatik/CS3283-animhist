@@ -52,7 +52,7 @@
 				</ul>
 			@else
 				<ul id="nav-list">
-					<li class="nav-item selected" data-url="{{ URL::to('login') }}">
+					<li class="nav-item selected" data-url="{{ URL::route('user.showLogin') }}">
 						<span class="nav-icon">&#57604;</span>
 						<span class="nav-caption">Login</span>
 					</li>
@@ -68,7 +68,7 @@
 			@endif
 		</section>
 		<section id="main-panel">
-			<iframe style="width: 100%; height: 100%" src="{{ $main_panel_iframe_url }}" scrolling="no"></iframe>
+			<iframe style="width:100%;height:100%" scrolling="no" src="{{ $main_panel_iframe_url }}"></iframe>
 		</section>
 	</body>
 </html>

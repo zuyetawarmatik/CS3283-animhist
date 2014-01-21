@@ -6,6 +6,7 @@
 #right-area {
 	#description-area {
 		top: 20px;
+		bottom: 0;
 		
 		#register-btn {
 			margin-top: 20px;

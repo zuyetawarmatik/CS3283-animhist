@@ -45,7 +45,7 @@ Route::group(['before' => 'guest', 'prefix' => '/'], function(){
 	Route::get('login', function(){return Redirect::route('user.showLogin');});
 	
 	// /user
-	Route::get('user', function(){return Redirect::route('user.showCreate');});
+	Route::get('user', function(){return Redirect::route('user.showLogin');});
 	Route::post('user', ['as' => 'user.store', 'uses' => 'UserController@store']);
 });
 
