@@ -58,13 +58,13 @@
 		width: 320px;
 		
 		.nav-item {
-			border-bottom: #4f4f4f 1px solid;
+			border-bottom: @color-border-nav 1px solid;
 			height: 60px;
 			cursor: pointer;
 			transition: border 0.4s;
 			
 			&:first-child {
-				border-top: #4f4f4f 1px solid;
+				border-top: @color-border-nav 1px solid;
 			}
 			
 			&.before-selected {
@@ -78,16 +78,16 @@
 			&:hover, &.selected {
 				transition: border 0.4s;
 				&:not(.before-selected) {
-					border-bottom: #11fdcb 1px solid;
+					border-bottom: @color-border-hover-nav 1px solid;
 				}
 			
 				&:not(.after-selected) {
-					border-top: #11fdcb 1px solid;
+					border-top: @color-border-hover-nav 1px solid;
 				}
 				
 				.nav-icon {
 					transition: border 0.4s;
-					border-color: #11fdcb;
+					border-color: @color-border-hover-nav;
 				}
 			}
 			
@@ -113,7 +113,7 @@
 				height: 20px;
 				padding: 20px 0;
 				transition: border 0.4s;
-				border-right: #4f4f4f 1px solid;
+				border-right: @color-border-nav 1px solid;
 				background: rgba(0,0,0,0);
 				font-family: Conv_icomoon;
 				text-align: center;

@@ -1,0 +1,23 @@
+#right-area-tab {
+	position: absolute;
+	z-index: 200;
+	left: -40px;
+	
+	li {
+		font-family: Conv_icomoon;
+		height: 20px;
+		width: 40px;
+		padding: 10px 0;
+		background: @color-back-top-bar;
+		cursor: pointer;
+		text-align: center;
+		
+		&.selected {
+			background: @color-back-right-area;
+		}
+		
+		&:hover {
+			background: @color-back-button;
+		}
+	}
+}

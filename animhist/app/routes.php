@@ -15,17 +15,12 @@
 
 Route::get('/', function()
 {
-	return View::make('layouts.base', array('username'=>'Richard Francesc', 'main_panel_iframe_url'=>URL::to('register')));
+	return View::make('layouts.base', array('username'=>'Richard Francesc', 'main_panel_iframe_url'=>URL::to('personal')));
 });
 
 Route::get('play', function()
 {
 	return View::make('view-visualization', array('title'=>'California Electricity Consumption <span class="h6">by</span> <a href="#">Richard Koe</a>', 'like_info'=>'56 Likes', 'has_back'=>true));
-});
-
-Route::get('featured', function()
-{
-	return View::make('show-visualizations-featured', array('title'=>'Featured Visualizations', 'has_back'=>false, 'has_minimize_right'=>true));
 });
 
 Route::get('search', function()
@@ -40,7 +35,7 @@ Route::get('settings', function()
 
 // ==========================================================
 
-Route::group(['before' => 'guest', 'prefix' => '/'], function(){	
+Route::group(['before' => 'guest', 'prefix' => '/'], function(){
 	// /login
 	Route::get('login', function(){return Redirect::route('user.showLogin');});
 	
@@ -54,10 +49,16 @@ Route::group(['before' => 'guest', 'prefix' => 'user'], function(){
 	Route::get('create', ['as' => 'user.showCreate', 'uses' => 'UserController@showCreate']);
 	
 	// /user/login
-	Route::get('login', ['as' => 'user.showLogin', 'uses'  => 'UserController@showLogin']);
+	Route::get('login', ['as' => 'user.showLogin', 'uses' => 'UserController@showLogin']);
+	Route::post('login', ['as' => 'user.login', 'uses' => 'UserController@login']);
+});
+
+Route::group(['before' => 'auth', 'prefix' => 'user'], function(){
+	// /user/logout
+	Route::post('logout', ['as' => 'user.logout', 'uses' => 'UserController@logout']);
 });
 
 // /{username}
 Route::group(['prefix' => '{username}'], function(){
-	Route::get('/', ['as' => 'user.show', 'uses' => 'UserController@show']);
+	Route::get('/', ['as' => 'user.show', 'uses' => 'UserController@show'])->where('username', '[a-zA-Z0-9-_]+');
 });

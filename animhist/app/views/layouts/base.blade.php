@@ -2,13 +2,16 @@
 <html lang="en-US">
 	<head>
 		<meta charset="utf-8">
-		
+		<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Expires" content="0">
+
 		<title>Animated History</title>
 		
 		<!-- Stylesheet -->
 		{{ HTML::style('css/reset.css'); }}
 		{{ HTML::style('fonts/icomoon/stylesheet.css'); }}
-		<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,200,200italic,300,300italic,400italic,600,600italic,700,700italic,900,900italic&subset=latin,vietnamese,latin-ext' rel='stylesheet' type='text/css'>
+		{{ HTML::style('fonts/Source_Sans_Pro/stylesheet.css'); }}
 		<link rel="stylesheet/less" type="text/css" href="/css/base/base-left.less.css" />
 		<!---------------->
 		
@@ -18,26 +21,25 @@
 		{{ HTML::script('js/jquery-ui-1.10.3/ui/jquery-ui.js'); }}
 		{{ HTML::script('js/project/left-sidebar.js'); }}
 		<!---------------->
-		
 	</head>
 	<body>
 		<section id="left-panel">
 			@if (Auth::check())
 				<div id="user-bar">	
-					<img id="avatar" src="images/avatar.jpg" width="60" height="60" />
-					<div id="username"><a href="#">{{ $username }}</a></div>
+					<img id="avatar" src="{{ Auth::user()->avatar->url('thumb') }}" width="60" height="60" />
+					<div id="username"><a href="#">{{ Auth::user()->username }}</a></div>
 					<div id="logout-btn">&#57603;</div>
 				</div> 
-				<ul id="nav-list">
-					<li class="nav-item before-selected">
+				<ul id="nav-list" data-highlight-id = "{{ $highlight_id }}">
+					<li class="nav-item">
 						<span class="nav-icon">&#57513;</span>
 						<span class="nav-caption">My Visualizations</span>
 					</li>
-					<li class="nav-item selected" data-url="{{ URL::to('featured') }}">
+					<li class="nav-item" data-url="{{ URL::to('featured') }}">
 						<span class="nav-icon">&#57552;</span>
 						<span class="nav-caption">Featured</span>
 					</li>
-					<li class="nav-item after-selected">
+					<li class="nav-item">
 						<span class="nav-icon">&#57553;</span>
 						<span class="nav-caption">Following</span>
 					</li>
@@ -49,14 +51,20 @@
 						<span class="nav-icon">&#57471;</span>
 						<span class="nav-caption">Search</span>
 					</li>
+					@if ($highlight_id == 6)
+					<li class="nav-item" data-url="{{ URL::route('user.show', [$user->username]) }}">
+						<span class="nav-icon">&#57513;</span>
+						<span class="nav-caption">{{ $user->display_name.'&#39;s Visualizations' }}</span>
+					</li>
+					@endif
 				</ul>
 			@else
-				<ul id="nav-list">
-					<li class="nav-item selected" data-url="{{ URL::route('user.showLogin') }}">
+				<ul id="nav-list" data-highlight-id = "{{ $highlight_id }}">
+					<li class="nav-item" data-url="{{ URL::route('user.showLogin') }}">
 						<span class="nav-icon">&#57604;</span>
 						<span class="nav-caption">Login</span>
 					</li>
-					<li class="nav-item after-selected" data-url="{{ URL::to('featured') }}">
+					<li class="nav-item" data-url="{{ URL::to('featured') }}">
 						<span class="nav-icon">&#57552;</span>
 						<span class="nav-caption">Featured</span>
 					</li>
@@ -64,6 +72,12 @@
 						<span class="nav-icon">&#57471;</span>
 						<span class="nav-caption">Search</span>
 					</li>
+					@if ($highlight_id == 4)
+					<li class="nav-item" data-url="{{ URL::route('user.show', [$user->username]) }}">
+						<span class="nav-icon">&#57513;</span>
+						<span class="nav-caption">{{ $user->display_name.'&#39;s Visualizations' }}</span>
+					</li>
+					@endif
 				</ul>
 			@endif
 		</section>

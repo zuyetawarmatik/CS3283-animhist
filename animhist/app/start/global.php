@@ -69,6 +69,11 @@ App::down(function()
 	return Response::make("Be right back!", 503);
 });
 
+App::missing(function()
+{
+	return Response::make("404", 404);
+});
+
 /*
 |--------------------------------------------------------------------------
 | Require The Filters File

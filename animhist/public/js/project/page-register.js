@@ -10,12 +10,29 @@ $(function() {
 			data: formData,
 			error: function(responseData) {
 				var alertSt = "";
-				$.each(responseData["responseJSON"], function(key, val) {
+				$.each(responseData["responseJSON"]["error"], function(key, val) {
 					$.each(val, function(index, tx) {
-						alertSt += tx + "\n";
+						alertSt += tx + "<br/>";
 					});
 				});
-				alert(alertSt);
+				noty({
+					layout: 'bottomCenter',
+					text: alertSt,
+					type: 'error',
+					timeout: 3000,
+					maxVisible: 1
+				});
+			},
+			success: function(responseData) {
+				noty({
+					layout: 'center',
+					text: "Register successfully!<br/>Redirecting to your personal page...",
+					type: 'success',
+					timeout: 1000,
+					callback: {
+						afterShow: function(){window.top.location.href = responseData["redirect"];}
+					}
+				});
 			}
 		});
 	});

@@ -9,10 +9,10 @@
 @stop
 
 @section('left-area')
-	{{ Form::open(array('name'=>'login-form', 'url'=>'')) }}
+	{{ Form::open(array('name'=>'login-form', 'url'=>URL::route('user.login'))) }}
 		<table>
 			<tr>
-				<td>{{ Form::label('username', 'Username:') }}</td>
+				<td>{{ Form::label('username', 'Username or Email:') }}</td>
 				<td>{{ Form::text('username') }}</td>
 			</tr>
 			<tr>

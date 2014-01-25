@@ -21,7 +21,7 @@ $(function() {
 		rightSidebar.toggleClass("hidden");
 	});
 	
-	/* Right category sidebar animation */
+	/* Right category area animation */
 	$("#category-list > li").prepend('<span class="category-bck"></span>');
 	$("#category-list > li:not(.selected)").hover(
 		function() {

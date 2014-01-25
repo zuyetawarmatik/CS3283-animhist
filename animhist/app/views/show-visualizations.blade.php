@@ -23,11 +23,7 @@
 	<div id="category-area">
 		<h1>Categories</h1>
 		<ul id="category-list">
-			<li class="category-item"><span class="category-caption">All</span></li>
-			<li class="category-item"><span class="category-caption">Arts</span></li>
-			<li class="category-item selected"><span class="category-caption">Science</span></li>
-			<li class="category-item"><span class="category-caption">Social Science</span></li>
-			<li class="category-item"><span class="category-caption">Technology</span></li>
+			<li class="category-item selected"><span class="category-caption">All</span></li>
 		</ul>
 	</div>
 @stop

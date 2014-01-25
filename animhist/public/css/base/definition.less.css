@@ -12,3 +12,5 @@
 @color-shadow-inner-area: #000101;
 @color-border-light: #e2e2e2; /* On white background */
 @color-border-grey-button: #ccc;
+@color-border-nav: #4f4f4f;
+@color-border-hover-nav: @color-type-link;

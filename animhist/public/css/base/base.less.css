@@ -74,3 +74,7 @@ button, input[type='submit'], [id$="btn"] {
 	cursor: pointer;
 	text-align: center;
 }
+
+ul[class^='noty'] {
+	position: absolute;
+}
