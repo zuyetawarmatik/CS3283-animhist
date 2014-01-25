@@ -4,9 +4,9 @@ class UserController extends \BaseController {
 	
 	public function showLogin() {
 		if (Input::get('ajax'))
-			return View::make('login', array('title'=>'Login', 'has_back'=>Input::get('back'), 'has_minimize_right'=>false));
+			return ViewResponseUtility::makeSubView('login', 'Login');
 		else
-			return View::make('layouts.base', array('main_panel_iframe_url'=>URL::route('user.showLogin').'?ajax=1', 'highlight_id'=>1));
+			return ViewResponseUtility::makeBaseView(URL::route('user.showLogin'), Constant::SIDEBAR_GUEST_LOGIN);
 	}
 	
 	/**
@@ -17,9 +17,9 @@ class UserController extends \BaseController {
 	public function showCreate()
 	{
 		if (Input::get('ajax')) {
-			return View::make('register', array('title'=>'Register', 'has_back'=>Input::get('back'), 'has_minimize_right'=>false));
+			return ViewResponseUtility::makeSubView('register', 'Register');
 		} else {
-			return View::make('layouts.base', array('main_panel_iframe_url'=>URL::route('user.showCreate').'?ajax=1', 'highlight_id'=>1));
+			return ViewResponseUtility::makeBaseView(URL::route('user.showCreate'), Constant::SIDEBAR_GUEST_LOGIN);
 		}
 	}
 
@@ -39,7 +39,7 @@ class UserController extends \BaseController {
 		);
 		$validator = Validator::make(Input::all(), $rules);
 		if ($validator->fails())
-			return Response::json(['error'=>$validator->getMessageBag()->toArray()], 400);
+			return JSONResponseUtility::ValidationError($validator->getMessageBag()->toArray());
 		
 		$user = User::create(['avatar' => Input::file('avatar')]);
 		$user->username = Input::get('username');
@@ -51,11 +51,11 @@ class UserController extends \BaseController {
 		
 		Auth::login($user);
 		
-		/* All redirects in login and register are whole-page, no ajax */
+		/* All redirects in login, logout and register are whole-page, no ajax */
 		if (Input::get('referer')) {
-			return Response::json(['redirect'=>URL::to(Input::get('referer'))]);
+			return JSONResponseUtility::Redirect(URL::to(Input::get('referer')));
 		} else {
-			return Response::json(['redirect'=>URL::route('user.show', [$user->username])]);
+			return JSONResponseUtility::Redirect(URL::route('user.show', [$user->username]));
 		}
 	}
 
@@ -73,14 +73,14 @@ class UserController extends \BaseController {
 				$title = '';
 				if (Auth::user() == $user) $title = 'My Visualizations';
 				else $title = $user->display_name.'&#39;s Visualizations';
-					
-				return View::make('show-visualizations-personal', array('title'=>$title, 'has_back'=>Input::get('back'), 'has_minimize_right'=>true, 'user'=>$user));
+				
+				return ViewResponseUtility::makeSubView('show-visualizations-personal', $title, ['user'=>$user], true);
 			} else {
 				if (Auth::user() == $user)
-					return View::make('layouts.base', array('main_panel_iframe_url'=>URL::route('user.show', ['username'=>$username]).'?ajax=1', 'highlight_id'=>1));
+					return ViewResponseUtility::makeBaseView(URL::route('user.show', ['username'=>$username]), Constant::SIDEBAR_MYVISUALIZATION);
 				else {
-					$highlight_id = Auth::check() ? 6 : 4;
-					return View::make('layouts.base', array('main_panel_iframe_url'=>URL::route('user.show', ['username'=>$username]).'?ajax=1', 'highlight_id'=>$highlight_id, 'user'=>$user));
+					$highlight_id = Auth::check() ? Constant::SIDEBAR_USERVISUALIZATION : Constant::SIDEBAR_GUEST_USERVISUALIZATION;
+					return ViewResponseUtility::makeBaseView(URL::route('user.show', ['username'=>$username]), $highlight_id, ['user'=>$user]);
 				}
 			}
 		} else {
@@ -116,7 +116,7 @@ class UserController extends \BaseController {
 		$rules = array('username' => 'required', 'password' => 'required');
 		$validator = Validator::make($input, $rules);
 		if ($validator->fails())
-			return Response::json(['error'=>$validator->getMessageBag()->toArray()], 400);
+			return JSONResponseUtility::ValidationError($validator->getMessageBag()->toArray());
 		
 		$user = User::where('email', $input['username'])->orWhere('username', $input['username'])->first();
 		if (!$user) {
@@ -125,22 +125,25 @@ class UserController extends \BaseController {
 			$attempt = Auth::attempt(array('username' => $user->username, 'password' => $input['password']), true);
 		}
 		
-		/* All redirects in login and register are whole-page, no ajax */
+		/* All redirects in login, logout and register are whole-page, no ajax */
 		if ($attempt) {
+			$url;
 			if (Input::get('referer')) {
-				return Response::json(['redirect'=>URL::to($input['referer'])]);
+				$url = URL::to($input['referer']);
 			} else {
-				return Response::json(['redirect'=>URL::route('user.show', [$user->username])]);
+				$url = URL::route('user.show', [$user->username]);
 			}
+			return JSONResponseUtility::Redirect($url);
 		} else {
-			return Response::json(['error'=>['user'=>['User does not exist or wrong password.']]], 400);
+			return JSONResponseUtility::ValidationError(['user'=>['User does not exist or wrong password.']]);
 		}
 	}
 	
 	public function logout()
 	{
+		/* All redirects in login, logout and register are whole-page, no ajax */
 		Session::flush();
 		Auth::logout();
-		return Response::json(['redirect'=>URL::route('user.showLogin')]); // Should check referer
+		return JSONResponseUtility::Redirect(Input::get('referer'));
 	}
 }

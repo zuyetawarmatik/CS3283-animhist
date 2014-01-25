@@ -31,4 +31,9 @@ $(function() {
 			$(".category-bck", this).stop(true).animate({left: "100%", opacity: "0"}, 300, "easeOutQuad");
 		}
 	);
+	
+	/* Back button click */
+	$("#back-btn").click(function() {
+		parent.changeIFrameSrcOrdinary($(this).data("url"));
+	});
 });

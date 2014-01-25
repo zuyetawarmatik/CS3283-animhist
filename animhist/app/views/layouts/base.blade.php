@@ -19,11 +19,12 @@
 		{{ HTML::script('js/less-1.4.2.min.js'); }}
 		{{ HTML::script('js/jquery-2.0.3.min.js'); }}
 		{{ HTML::script('js/jquery-ui-1.10.3/ui/jquery-ui.js'); }}
+		{{ HTML::script('js/attrchange/attrchange.js'); }}
 		{{ HTML::script('js/project/left-sidebar.js'); }}
 		<!---------------->
 	</head>
 	<body>
-		<section id="left-panel">
+		<section id="left-panel" data-loggedin = "{{ Auth::check() }}">
 			@if (Auth::check())
 				<div id="user-bar">	
 					<img id="avatar" src="{{ Auth::user()->avatar->url('thumb') }}" width="60" height="60" />
@@ -31,7 +32,7 @@
 					<div id="logout-btn">&#57603;</div>
 				</div> 
 				<ul id="nav-list" data-highlight-id = "{{ $highlight_id }}">
-					<li class="nav-item">
+					<li class="nav-item" data-url="{{ URL::route('user.show', [Auth::user()->username]) }}">
 						<span class="nav-icon">&#57513;</span>
 						<span class="nav-caption">My Visualizations</span>
 					</li>
@@ -51,7 +52,7 @@
 						<span class="nav-icon">&#57471;</span>
 						<span class="nav-caption">Search</span>
 					</li>
-					@if ($highlight_id == 6)
+					@if ($highlight_id == Constant::SIDEBAR_USERVISUALIZATION)
 					<li class="nav-item" data-url="{{ URL::route('user.show', [$user->username]) }}">
 						<span class="nav-icon">&#57513;</span>
 						<span class="nav-caption">{{ $user->display_name.'&#39;s Visualizations' }}</span>
@@ -72,7 +73,7 @@
 						<span class="nav-icon">&#57471;</span>
 						<span class="nav-caption">Search</span>
 					</li>
-					@if ($highlight_id == 4)
+					@if ($highlight_id == Constant::SIDEBAR_GUEST_USERVISUALIZATION)
 					<li class="nav-item" data-url="{{ URL::route('user.show', [$user->username]) }}">
 						<span class="nav-icon">&#57513;</span>
 						<span class="nav-caption">{{ $user->display_name.'&#39;s Visualizations' }}</span>

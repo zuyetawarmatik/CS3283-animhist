@@ -1,10 +1,43 @@
-function changeIFrameSrc(src, backable) {
-	if (backable)
-		$('#main-panel iframe').attr("src", src + "?ajax=1&back=1");
-	else
-		$('#main-panel iframe').attr("src", src + "?ajax=1");
-	history.pushState(null, null, src);
+/* Src with inputs */
+function changeIFrameSrcOrdinary(src) {
+	$('#main-panel iframe').attr("src", src);
+	history.pushState(null, null, src.substr(0, src.indexOf("?")));
+	
+	// TODO: Check type of source to highlight respective sidebar item (change highlight id)
 }
+
+/* Src without any input */
+function changeIFrameSrc(src, backable) {
+	if (backable) {
+		/* Only used when clicking a link inside IFRAME */
+		var oldURL = $('#main-panel iframe').attr("src");
+		$('#main-panel iframe').attr("src", src + "?ajax=1&back=1&referer=" + oldURL);
+	} else {
+		$('#main-panel iframe').attr("src", src + "?ajax=1");
+	}
+	history.pushState(null, null, src);
+	
+	// TODO: Check type of source to highlight respective sidebar item (change highlight id)
+}
+
+$(function() {
+	/* Binding highlight-id attribute to highlight the sidebar item */
+	$("#nav-list").attrchange({
+		trackValues: true, 
+		callback: function (event) {
+			if (event.attributeName == "data-highlight-id") {
+				$("#nav-list > li.selected").prev().removeClass("before-selected");
+				$("#nav-list > li.selected").next().removeClass("after-selected");
+				$("#nav-list > li.selected .nav-bck").attr("style", "");
+				$("#nav-list > li.selected").removeClass("selected");
+				
+				$("#nav-list > li:nth-child(" + event.newValue + ")").addClass("selected");
+				$("#nav-list > li.selected").prev().addClass("before-selected");
+				$("#nav-list > li.selected").next().addClass("after-selected");
+			}
+		}
+	});
+});
 
 $(function() {
 	/* Left sidebar at page loaded */
@@ -28,15 +61,7 @@ $(function() {
 	/* Left sidebar navigation */
 	$("#nav-list > li").on("click", function() {
 		changeIFrameSrc($(this).data("url"), false);
-		
-		$("#nav-list > li.selected").prev().removeClass("before-selected");
-		$("#nav-list > li.selected").next().removeClass("after-selected");
-		$("#nav-list > li.selected .nav-bck").attr("style", "");
-		$("#nav-list > li.selected").removeClass("selected");
-		
-		$(this).prev().addClass("before-selected");
-		$(this).addClass("selected");
-		$(this).next().addClass("after-selected");
+		$("#nav-list").attr("data-highlight-id", $(this).index() + 1);
 	});
 	
 	/* Log out */
@@ -44,6 +69,7 @@ $(function() {
 		$.ajax({
 			url: "/user/logout",
 			type: "POST",
+			data: {"referer": window.location.href},
 			success: function(data) {
 				window.location.href = data["redirect"];
 			}
