@@ -22,7 +22,7 @@
 			<tr>
 				<td colspan="2">
 					{{ Form::submit('Login', array('name'=>'login-btn')) }}
-					{{ Form::button('Forget Your Password?', array('name'=>'forget-btn', 'class'=>'grey-btn')) }}
+					{{ Form::button('Forgot Your Password?', array('name'=>'forget-btn', 'class'=>'grey-btn')) }}
 				</td>
 			</tr>
 		</table>

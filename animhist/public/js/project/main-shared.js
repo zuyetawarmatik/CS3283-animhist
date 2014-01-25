@@ -14,8 +14,8 @@ $(function() {
 			mainArea.stop(true).animate({right: "440px"}, 400, "easeOutQuad", mapResizeTrigger);
 			$(this).html("&#57477;");
 		} else {
-			rightSidebar.stop(true).animate({right: "-440px"}, 400, "easeOutQuad");
-			mainArea.stop(true).animate({right: "0"}, 400, "easeOutQuad", mapResizeTrigger);
+			rightSidebar.stop(true).animate({right: "-480px"}, 400, "easeOutQuad");
+			mainArea.stop(true).animate({right: "-40px"}, 400, "easeOutQuad", mapResizeTrigger);
 			$(this).html("&#57528;");
 		}
 		rightSidebar.toggleClass("hidden");
