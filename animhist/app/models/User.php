@@ -13,7 +13,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 					'styles' => [
 						'medium' => '400x400#',
 						'thumb' => '60x60#'
-					]
+					],
+					'default_url' => '/system/:class/:attachment/:style/missing.png'
 				]);
 	
 		parent::__construct($attributes);
@@ -61,6 +62,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	public function getReminderEmail()
 	{
 		return $this->email;
+	}
+	
+	public function getFormattedCreatedDate() {
+		if ($this->created_at->diffInDays() > 30) {
+			return $this->created_at->toFormattedDateString();
+		} else {
+			return $this->created_at->diffForHumans();
+		}
 	}
 
 }

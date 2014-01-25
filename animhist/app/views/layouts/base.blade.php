@@ -27,7 +27,7 @@
 		<section id="left-panel" data-loggedin = "{{ Auth::check() }}">
 			@if (Auth::check())
 				<div id="user-bar">	
-					<img id="avatar" src="{{ Auth::user()->avatar->url('thumb') }}" width="60" height="60" />
+					<img id="avatar" style="background:#666" src="{{ Auth::user()->avatar->url('thumb') }}" width="60" height="60" />
 					<div id="username"><a href="#">{{ Auth::user()->username }}</a></div>
 					<div id="logout-btn">&#57603;</div>
 				</div> 
