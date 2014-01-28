@@ -20,7 +20,6 @@ class AddAvatarFieldsToUsersTable extends Migration {
 			$table->timestamp("avatar_updated_at")->nullable();
 
 		});
-
 	}
 
 	/**
