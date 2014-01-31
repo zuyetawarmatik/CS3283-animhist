@@ -56,5 +56,9 @@ return array(
 		),
 
 	),
+		
+	'failed' => array(
+		'database' => 'mysql', 'table' => 'failed_jobs',
+	),
 
 );
