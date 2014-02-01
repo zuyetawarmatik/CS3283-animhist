@@ -15,7 +15,9 @@
 
 Route::get('/', function()
 {
-	return View::make('layouts.base', array('username'=>'Richard Francesc', 'main_panel_iframe_url'=>URL::to('personal')));
+	Redis::connection();
+	Redis::auth('78d257f1df9e8afc9d503e4b523ccbab');
+	return Redis::get('refresh_token');
 });
 
 Route::get('play', function()

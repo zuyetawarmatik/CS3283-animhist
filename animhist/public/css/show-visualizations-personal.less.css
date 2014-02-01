@@ -1,9 +1,16 @@
 @import (less) "show-visualizations.less.css";
 @import (less) "element/right/description-area.less.css";
 @import (less) "element/right/right-area-tab.less.css";
+@import (less) "element/right/button-area.less.css";
 
 #right-area {
 	#description-area {
 		top: 20px;
+	}
+	
+	#button-area {
+		#follow-btn, #edit-profile-btn {
+			width: 380px;
+		}
 	}
 }
