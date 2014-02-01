@@ -2,6 +2,8 @@ $(function() {
 	$("[name='register-form']").submit(function(event) {
 		event.preventDefault();
 		var formData = new FormData(this);
+		var endReferer = getUrlParameters("end-referer", "", true);
+		if (endReferer) formData.append("referer", endReferer);
 		$.ajax({
 			processData: false,
 		    contentType: false,

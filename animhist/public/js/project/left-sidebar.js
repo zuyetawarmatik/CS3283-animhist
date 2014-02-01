@@ -3,7 +3,7 @@ function changeIFrameSrcOrdinary(src) {
 	$('#main-panel iframe').attr("src", src);
 	history.pushState(null, null, src.substr(0, src.indexOf("?")));
 	
-	// TODO: Check type of source to highlight respective sidebar item (change highlight id)
+	// TODO: Check type of source to highlight respective sidebar item (change data-highlight-id)
 }
 
 /* Src without any input */
@@ -17,7 +17,7 @@ function changeIFrameSrc(src, backable) {
 	}
 	history.pushState(null, null, src);
 	
-	// TODO: Check type of source to highlight respective sidebar item (change highlight id)
+	// TODO: Check type of source to highlight respective sidebar item (change data-highlight-id)
 }
 
 $(function() {
