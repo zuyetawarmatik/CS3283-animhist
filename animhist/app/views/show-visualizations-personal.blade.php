@@ -8,6 +8,13 @@
 	{{ HTML::script('js/project/page-show-visualizations-personal.js'); }}
 @stop
 
+@section('top-bar')
+	@parent
+	@if (Auth::user() == $user)
+		<button id="create-visualization-btn" class="blue-btn" data-url="{{URL::route('visualization.showCreate', $user->username)}}"><i>&#57380;</i>Create New Visualization</button>
+	@endif
+@stop
+
 @section('right-area')
 	@parent
 	<ul id="right-area-tab">

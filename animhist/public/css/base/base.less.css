@@ -68,6 +68,14 @@ button, input[type='submit'] {
 			background: @color-back-hover-grey-button;
 		}
 	}
+	
+	&.blue-btn {
+		background: @color-back-blue-button;
+		border-color: @color-border-blue-button;
+		&:hover {
+			background: @color-back-hover-blue-button;
+		}
+	}
 }
 
 button, input[type='submit'], [id$="btn"] {

@@ -1,4 +1,5 @@
 @import (less) "show-visualizations.less.css";
+@import (less) "element/top/create-visualization-btn.less.css";
 @import (less) "element/right/description-area.less.css";
 @import (less) "element/right/right-area-tab.less.css";
 @import (less) "element/right/button-area.less.css";

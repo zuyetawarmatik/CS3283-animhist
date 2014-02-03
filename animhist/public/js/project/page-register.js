@@ -3,6 +3,7 @@ $(function() {
 		event.preventDefault();
 		var formData = new FormData(this);
 		var endReferer = getUrlParameters("end-referer", "", true);
+		if (!endReferer) endReferer = getUrlParameters("end-referer", window.top.location.href, true);
 		if (endReferer) formData.append("referer", endReferer);
 		$.ajax({
 			processData: false,

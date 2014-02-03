@@ -5,9 +5,13 @@ function mapResizeTrigger() {
 }
 
 function getUrlParameters(parameter, staticURL, decode) {
-	var currLocation = (staticURL.length) ? staticURL : window.location.search, parArr = currLocation
-			.split("?")[1].split("&"), returnBool = true;
-
+	var currLocation = (staticURL.length) ? staticURL : window.location.search;
+	var parArr;
+	if (currLocation.split("?").length > 1)
+		parArr = currLocation.split("?")[1].split("&");
+	else return false; 
+	
+	var	returnBool = true;	
 	for (var i = 0; i < parArr.length; i++) {
 		parr = parArr[i].split("=");
 		if (parr[0] == parameter) {
@@ -18,8 +22,7 @@ function getUrlParameters(parameter, staticURL, decode) {
 		}
 	}
 
-	if (!returnBool)
-		return false;
+	if (!returnBool) return false;
 }
 
 $(function() {

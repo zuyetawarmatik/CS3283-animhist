@@ -35,9 +35,16 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::guest('login');
+	if (Auth::guest()) return Redirect::to(URL::route('user.showLogin').'?referer='.Request::url());
 });
 
+Route::filter('auth.truncateURLToUsername', function()
+{
+	if (!Request::is('login/*') || !Request::is('user/*'))
+	{
+		if (Auth::guest()) return Redirect::route('user.show', [Request::segment(1)]);
+	}
+});
 
 Route::filter('auth.basic', function()
 {

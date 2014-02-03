@@ -4,6 +4,8 @@
 @color-back-button: #19af8f; /* Main green */
 @color-back-grey-button: #6f6f6f;
 @color-back-hover-grey-button: #888;
+@color-back-blue-button: #60b0e6;
+@color-back-hover-blue-button: #77c5fa;
 @color-back-like-button: #1dcca7;
 @color-back-comment: #f9f9f9; /* Main light grey */
 @color-type-link: #11fdcb; /* Text green */
@@ -12,5 +14,6 @@
 @color-shadow-inner-area: #000101;
 @color-border-light: #e2e2e2; /* On white background */
 @color-border-grey-button: #ccc;
+@color-border-blue-button: #13d5e6;
 @color-border-nav: #4f4f4f;
 @color-border-hover-nav: @color-type-link;

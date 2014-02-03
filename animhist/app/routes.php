@@ -15,9 +15,9 @@
 
 Route::get('/', function()
 {
-	Redis::connection();
-	Redis::auth('78d257f1df9e8afc9d503e4b523ccbab');
-	return Redis::get('refresh_token');
+	//Redis::connection();
+	//Redis::auth('78d257f1df9e8afc9d503e4b523ccbab');
+	//return Redis::get('refresh_token');
 });
 
 Route::get('play', function()
@@ -52,7 +52,7 @@ Route::group(['before' => 'guest', 'prefix' => 'user'], function(){
 	
 	// /user/login
 	Route::get('login', ['as' => 'user.showLogin', 'uses' => 'UserController@showLogin']);
-	Route::post('login', ['as' => 'user.login', 'uses' => 'UserController@login']);
+	Route::post('login', ['before' => 'csrf', 'as' => 'user.login', 'uses' => 'UserController@login']);
 });
 
 Route::group(['before' => 'auth', 'prefix' => 'user'], function(){
@@ -63,4 +63,9 @@ Route::group(['before' => 'auth', 'prefix' => 'user'], function(){
 // /{username}
 Route::group(['prefix' => '{username}'], function(){
 	Route::get('/', ['as' => 'user.show', 'uses' => 'UserController@show'])->where('username', '[a-zA-Z0-9-_]+');
+});
+
+Route::group(['before' => 'auth.truncateURLToUsername', 'prefix' => '{username}'], function(){
+	// /{username}/visualization/create
+	Route::get('visualization/create', ['as'=> 'visualization.showCreate', 'uses' => 'VisualizationController@showCreate']);
 });

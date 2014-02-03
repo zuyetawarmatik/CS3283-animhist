@@ -1,4 +1,8 @@
 $(function() {
+	$('#create-visualization-btn').click(function() {
+		parent.changeIFrameSrc($(this).data('url'), true);
+	});
+	
 	$("#category-area").hide();
 	
 	$("#right-area-tab li").click(function() {

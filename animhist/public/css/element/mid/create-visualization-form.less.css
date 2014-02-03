@@ -1,0 +1,61 @@
+#left-area {
+	form[name='create-visualization-form'] {
+		position: absolute;
+		overflow-x: hidden;
+		overflow-y: auto;
+		left: 0;
+		right: 0;
+		top: 10px;
+		bottom: 0;
+		
+		table {
+			position: absolute;
+			display: block;
+			left: 40px;
+			right: 40px;
+			
+			button, input[type='submit'] {
+				padding: 0 10px;
+    			white-space: nowrap;
+			}
+
+			tbody {
+				display: block;
+				width: 100%;
+			
+				tr {
+					td {
+						padding: 10px 0;
+						
+						&:first-child {
+							min-width: 190px;
+						}
+						
+						&:nth-child(2) {
+							width: 99%;
+						}
+						
+						input[type="text"], input[type='password'], textarea {
+							box-sizing: border-box;
+						     -webkit-box-sizing:border-box;
+						     -moz-box-sizing: border-box;
+							width: 100%;
+						}
+					}
+					
+					&:last-child {
+						td {
+							width: 100%;
+							
+							button, input[type='submit'] {
+								float: right;
+								margin-left: 10px;
+								margin-bottom: 10px;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
