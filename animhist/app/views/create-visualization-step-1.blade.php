@@ -9,19 +9,29 @@
 @stop
 
 @section('left-area')
-	{{ Form::open(array('name'=>'create-visualization-form')) }}
+	{{ Form::open(array('name'=>'create-visualization-form', 'url'=>URL::route('visualization.store', Auth::user()->username))) }}
 		<table>
 			<tr>
-				<td>{{ Form::label('display_name', 'Name:') }}</td>
-				<td>{{ Form::text('display_name') }}</td>
+				<td>{{ Form::label('display-name', 'Name:') }}</td>
+				<td>{{ Form::text('display-name') }}</td>
 			</tr>
 			<tr>
 				<td>{{ Form::label('description', 'Brief Description:') }}</td>
 				<td>{{ Form::textarea('description') }}</td>
 			</tr>
 			<tr>
+				<td>{{ Form::label('type', 'Type:') }}</td>
+				<td>{{ Form::radio('type', 'point', true) }} Point
+    				{{ Form::radio('type', 'polygon') }} Polygon
+    			</td>
+			</tr>
+			<tr>
+				<td>{{ Form::label('category', 'Category:') }}</td>
+				<td><div class="styled-select">{{ Form::select('category', array('Social Science' => 'Social Science', 'Science' => 'Science', 'Miscellaneous' => 'Miscellaneous')) }}</div></td>
+			</tr>
+			<tr>
 				<td colspan="2">
-					{{ Form::submit('Next Step', array('name'=>'submit-btn')) }}
+					<button type="submit" name="submit-btn"><i>&#57614;</i>Next Step</button>
 				</td>
 			</tr>
 		</table>

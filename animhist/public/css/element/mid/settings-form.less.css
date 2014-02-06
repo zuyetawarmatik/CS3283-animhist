@@ -29,6 +29,10 @@
 						
 						&:first-child {
 							min-width: 190px;
+							label {
+								font-weight: 700;
+								color: @color-type-link;
+							}
 						}
 						
 						&:nth-child(2) {

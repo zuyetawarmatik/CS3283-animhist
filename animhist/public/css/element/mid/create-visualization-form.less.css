@@ -29,6 +29,10 @@
 						
 						&:first-child {
 							min-width: 190px;
+							label {
+								font-weight: 700;
+								color: @color-type-link;
+							}
 						}
 						
 						&:nth-child(2) {
@@ -40,6 +44,17 @@
 						     -webkit-box-sizing:border-box;
 						     -moz-box-sizing: border-box;
 							width: 100%;
+						}
+						
+						.styled-select select {
+							box-sizing: border-box;
+						     -webkit-box-sizing:border-box;
+						     -moz-box-sizing: border-box;
+							width: 120%;
+						}
+						
+						input[value="polygon"] {
+							margin-left: 15px;
 						}
 					}
 					

@@ -30,34 +30,31 @@ class VisualizationController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store($username)
 	{
-		$rules = array(
-				'username'			=> 'required|unique:users|alpha_dash|not_in:user,featured,search,visualization',
-				'display-name'		=> 'required',
-				'email'      		=> 'required|unique:users|email',
-				'password'     		=> 'required|min:5',
-				'password-retype' 	=> 'required|same:password'
-		);
-		$validator = Validator::make(Input::all(), $rules);
-		if ($validator->fails())
-			return JSONResponseUtility::ValidationError($validator->getMessageBag()->toArray());
-		
-		$user = User::create(['avatar' => Input::file('avatar')]);
-		$user->username = Input::get('username');
-		$user->display_name = Input::get('display-name');
-		$user->email = Input::get('email');
-		$user->password = Hash::make(Input::get('password'));
-		$user->description = Input::get('description');
-		$user->save();
-		
-		Auth::login($user);
-		
-		/* All redirects in login, logout and register are whole-page, no ajax */
-		if (Input::get('referer')) {
-			return JSONResponseUtility::Redirect(URL::to(Input::get('referer')));
+		if (Auth::user()->username == $username) {
+			$rules = array(
+					'display-name'		=> 'required',
+					'type'      		=> 'required',
+			);
+			$validator = Validator::make(Input::all(), $rules);
+			if ($validator->fails())
+				return JSONResponseUtility::ValidationError($validator->getMessageBag()->toArray());
+			
+			$visualization = new Visualization();
+			$visualization->display_name = Input::get('display-name');
+			$visualization->user_id = Auth::user()->id;
+			$visualization->type = Input::get('type');
+			$visualization->description = Input::get('description');
+			$visualization->category = Input::get('cateogory');
+			
+			return GoogleFusionTable::create();
+			
+			//$visualization->
+			
+			//$visualization->save();
 		} else {
-			return JSONResponseUtility::Redirect(URL::route('user.show', [$user->username]));
+			return Response::make('', 401);
 		}
 	}
 

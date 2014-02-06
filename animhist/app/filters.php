@@ -40,7 +40,7 @@ Route::filter('auth', function()
 
 Route::filter('auth.truncateURLToUsername', function()
 {
-	if (!Request::is('login/*') || !Request::is('user/*'))
+	if (!Request::is('login/*') || !Request::is('user/*') || !Request::is('visualization/*') )
 	{
 		if (Auth::guest()) return Redirect::route('user.show', [Request::segment(1)]);
 	}

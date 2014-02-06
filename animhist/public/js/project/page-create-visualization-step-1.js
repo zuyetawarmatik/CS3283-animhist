@@ -1,6 +1,7 @@
 $(function() {
-	$("[name='login-form']").submit(function(event) {
-		event.preventDefault();
+	$("[name='create-visualization-form']").submit(function(event) {
+		//event.preventDefault();
+		/*
 		var formData = new FormData(this);
 		var endReferer = getUrlParameters("referer", "", true);
 		if (endReferer) formData.append("referer", endReferer);
@@ -29,7 +30,7 @@ $(function() {
 			success: function(responseData) {
 				window.top.location.href = responseData["redirect"];
 			}
-		});
+		});*/
 	});
 	
 });

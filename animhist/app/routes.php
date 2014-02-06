@@ -15,9 +15,7 @@
 
 Route::get('/', function()
 {
-	//Redis::connection();
-	//Redis::auth('78d257f1df9e8afc9d503e4b523ccbab');
-	//return Redis::get('refresh_token');
+
 });
 
 Route::get('play', function()
@@ -68,4 +66,5 @@ Route::group(['prefix' => '{username}'], function(){
 Route::group(['before' => 'auth.truncateURLToUsername', 'prefix' => '{username}'], function(){
 	// /{username}/visualization/create
 	Route::get('visualization/create', ['as'=> 'visualization.showCreate', 'uses' => 'VisualizationController@showCreate']);
+	Route::post('visualization/create', ['as'=> 'visualization.store', 'uses' => 'VisualizationController@store']);
 });
