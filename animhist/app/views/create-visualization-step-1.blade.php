@@ -21,13 +21,35 @@
 			</tr>
 			<tr>
 				<td>{{ Form::label('type', 'Type:') }}</td>
-				<td>{{ Form::radio('type', 'point', true) }} Point
-    				{{ Form::radio('type', 'polygon') }} Polygon
+				<td><div class="styled-radio">
+						{{ Form::radio('type', 'point', true) }}
+						<label><span><span></span></span>Point</label>
+					</div>
+					<div class="styled-radio">
+    					{{ Form::radio('type', 'polygon') }}
+    					<label><span><span></span></span>Polygon</label>
+    				</div>
     			</td>
 			</tr>
 			<tr>
 				<td>{{ Form::label('category', 'Category:') }}</td>
 				<td><div class="styled-select">{{ Form::select('category', array('Social Science' => 'Social Science', 'Science' => 'Science', 'Miscellaneous' => 'Miscellaneous')) }}</div></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<div class="styled-radio">
+						{{ Form::radio('option', 'manual', true) }}
+						<label><span><span></span></span>I would like to use Web Interface to input data items manually, provided that my table will have these columns as followed:</label>
+					</div>					
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<div class="styled-radio">
+						{{ Form::radio('option', 'upload') }}
+						<label><span><span></span></span>I would like to upload my data (Make sure your data has Milestone and Position columns, <a>download our template Excel file here</a>)</label>
+					</div>
+				</td>
 			</tr>
 			<tr>
 				<td colspan="2">

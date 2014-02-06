@@ -53,8 +53,9 @@
 							width: 120%;
 						}
 						
-						input[value="polygon"] {
-							margin-left: 15px;
+						input[type="radio"] + label {
+							color: #fff;
+							font-weight: 400;
 						}
 					}
 					
