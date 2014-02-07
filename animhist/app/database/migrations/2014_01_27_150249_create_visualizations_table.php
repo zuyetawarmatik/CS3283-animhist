@@ -18,9 +18,8 @@ class CreateVisualizationsTable extends Migration {
 			$table->boolean('published');
 			$table->enum('type', array('point', 'polygon'));			
 			$table->string('default_column', 512)->nullable();
-			$table->boolean('html_data_enabled');
 			$table->enum('milestone_format', array('hour', 'day', 'month', 'year', 'decade', 'century', 'mixed'));
-			$table->text('milestones')->nullable();
+			$table->text('milestones')->nullable(); // Only needed when using mixed milestones
 			$table->float('zoom');
 			$table->float('center_latitude'); $table->float('center_longitude');
 			$table->timestamps();

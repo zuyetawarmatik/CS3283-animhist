@@ -40,7 +40,8 @@
 					<div class="styled-radio">
 						{{ Form::radio('option', 'manual', true) }}
 						<label><span><span></span></span>I would like to use Web Interface to input data items manually, provided that my table will have these columns as followed:</label>
-					</div>					
+					</div>
+					<ul id="column-list"></ul>
 				</td>
 			</tr>
 			<tr>

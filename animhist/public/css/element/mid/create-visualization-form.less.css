@@ -48,7 +48,7 @@
 						
 						.styled-select select {
 							box-sizing: border-box;
-						     -webkit-box-sizing:border-box;
+						     -webkit-box-sizing: border-box;
 						     -moz-box-sizing: border-box;
 							width: 120%;
 						}
@@ -56,6 +56,14 @@
 						input[type="radio"] + label {
 							color: #fff;
 							font-weight: 400;
+						}
+						
+						ul#column-list {
+							li.btn-group {
+								button.column-edit-btn, button.column-delete-btn, button.column-add-btn {
+									font-family: Conv_icomoon;
+								}
+							}
 						}
 					}
 					
