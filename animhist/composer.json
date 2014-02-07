@@ -6,7 +6,7 @@
 	"require": {
 		"laravel/framework": "4.1.*",
 		"codesleeve/stapler": "dev-master",
-		"mashape/unirest-php": "dev-master"
+		"nategood/httpful": "*"
 	},
 	"autoload": {
 		"classmap": [
@@ -17,8 +17,7 @@
 			"app/database/seeds",
 			"app/library",
 			"app/tests/TestCase.php"
-		],
-		"psr-0": {"Unirest": "lib/"}
+		]
 	},
 	"scripts": {
 		"post-install-cmd": [

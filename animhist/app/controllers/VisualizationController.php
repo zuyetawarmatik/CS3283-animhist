@@ -66,7 +66,7 @@ class VisualizationController extends \BaseController {
 			$fusion_table_id = GoogleFusionTable::create($visualization_name, self::prepareColumnList($column_list, Input::get('type')));
 
 			if ($fusion_table_id) {
-				// TODO
+				// TODO: return redirect response to Step 2 View
 				$visualization->fusion_table_id = $fusion_table_id;
 				$visualization->save();
 				
