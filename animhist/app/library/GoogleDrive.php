@@ -33,7 +33,7 @@ class GoogleDrive {
 				'refresh_token' => self::getGDriveOAuthRefreshToken(),
 				'grant_type' => 'refresh_token']);
 		$response = Request::post('https://accounts.google.com/o/oauth2/token')
-					->addHeaders(['Content-Type'=>'application/x-www-form-urlencoded'])
+					->sends('application/x-www-form-urlencoded')
 					->body($refresh_req_data)
 					->send();
 		$access_token = $response->body->access_token;
@@ -44,10 +44,47 @@ class GoogleDrive {
 	
 	public static function getFileIDForFusionTable($name) {
 		$query = urlencode("title='".$name."' and trashed = false");
-		//self::refreshGDriveOAuthAccessToken();
+
 		$response = Request::get('https://www.googleapis.com/drive/v2/files?q='.$query)
 							->addHeaders(['Authorization'=>'Bearer '.self::getGDriveOAuthAccessToken()])
 							->send();
-		return $response->body->items;
+		if ($response->code == 401) {
+			$access_token = self::refreshGDriveOAuthAccessToken();
+			$response = Request::get('https://www.googleapis.com/drive/v2/files?q='.$query)
+						->addHeaders(['Authorization'=>'Bearer '.$access_token])
+						->send();
+		}
+		
+		if ($response->code == 200) {		
+			if (count($response->body->items) == 0) return false;
+			return $response->body->items[0]->id;
+		}
+		
+		return false;
+	}
+	
+	public static function setPublicPermissionForFusionTable($file_id) {
+		$data = ['type' => 'anyone', 'role' => 'reader'];
+		
+		$url = 'https://www.googleapis.com/drive/v2/files/'.$file_id.'/permissions';
+		$response = Request::post($url)
+					->sendsJson()
+					->addHeaders(['Authorization'=>'Bearer '.self::getGDriveOAuthAccessToken()])
+					->body(json_encode($data))
+					->send();
+		
+		if ($response->code == 401) {
+			$access_token = self::refreshGDriveOAuthAccessToken();
+			$response = Request::post($url)
+						->sendsJson()
+						->addHeaders(['Authorization'=>'Bearer '.$access_token])
+						->body(json_encode($data))
+						->send();
+		}
+		
+		if ($response->code == 200)
+			return true;
+		
+		return false;
 	}
 }

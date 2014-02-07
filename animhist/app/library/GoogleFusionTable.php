@@ -24,7 +24,7 @@ class GoogleFusionTable {
 				'refresh_token' => self::getGFusionOAuthRefreshToken(),
 				'grant_type' => 'refresh_token']);
 		$response = Request::post('https://accounts.google.com/o/oauth2/token')
-					->addHeaders(['Content-Type'=>'application/x-www-form-urlencoded'])
+					->sends('application/x-www-form-urlencoded')
 					->body($refresh_req_data)
 					->send();
 		$access_token = $response->body->access_token;
@@ -50,9 +50,7 @@ class GoogleFusionTable {
 					->body(json_encode($data))
 					->send();
 		
-		$status_code = $response->code;
-		
-		if ($status_code == 401) {
+		if ($response->code == 401) {
 			$access_token = self::refreshGFusionOAuthAccessToken();
 			// Reupload data
 			$response = Request::post('https://www.googleapis.com/fusiontables/v1/tables')
@@ -60,11 +58,13 @@ class GoogleFusionTable {
 						->addHeaders(['Authorization'=>'Bearer '.$access_token])
 						->body(json_encode($data))
 						->send();
-		} else if ($status_code == 400) {
-			return false;
 		}
 		
-		return $response->body->tableId;
+		if ($response->code == 200) {
+			GoogleDrive::setPublicPermissionForFusionTable(GoogleDrive::getFileIDForFusionTable($name));
+			return $response->body->tableId;
+		}
+		
+		return false;
 	}
-
 }

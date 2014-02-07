@@ -64,7 +64,7 @@ class VisualizationController extends \BaseController {
 			
 			$visualization_name = $visualization->user_id.'_'.$visualization->display_name;
 			$fusion_table_id = GoogleFusionTable::create($visualization_name, self::prepareColumnList($column_list, Input::get('type')));
-
+			
 			if ($fusion_table_id) {
 				// TODO: return redirect response to Step 2 View
 				$visualization->fusion_table_id = $fusion_table_id;
@@ -112,11 +112,7 @@ class VisualizationController extends \BaseController {
 	}
 	
 	private static function prepareColumnList($input_column_list, $input_visualization_type) {
-		$column_list = [['name'=>'Milestone', 'type'=>'DATETIME']];
-		if ($input_visualization_type == 'point')
-			$column_list[] = ['name'=>'Position', 'type'=>'LOCATION'];
-		else if ($input_visualization_type == 'polygon')
-			$column_list[] = ['name'=>'Position', 'type'=>'KML'];
+		$column_list = [['name'=>'Milestone', 'type'=>'DATETIME'], ['name'=>'Position', 'type'=>'LOCATION']];
 		
 		foreach ($input_column_list as $input_column) {
 			if ($input_column['caption'] == 'HTMLData' && $input_column['type-caption'] == 'String') {

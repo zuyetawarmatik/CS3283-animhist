@@ -15,7 +15,6 @@
 
 Route::get('/', function()
 {
-	return GoogleDrive::getFileIDForFusionTable('1_xzds');
 });
 
 Route::get('play', function()
