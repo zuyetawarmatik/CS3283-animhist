@@ -1,11 +1,15 @@
 @extends('layouts.main3sections')
 
 @section('css')
+	{{ HTML::style('js/vex-2.0.1/css/vex.css'); }}
+	{{ HTML::style('js/vex-2.0.1/css/vex-theme-wireframe.css'); }}
 	<link rel="stylesheet/less" type="text/css" href="/css/create-visualization-step-1.less.css" />
 @stop
 
 @section('js')
+	{{ HTML::script('js/vex-2.0.1/js/vex.combined.min.js'); }}
 	{{ HTML::script('js/project/page-create-visualization-step-1.js'); }}
+	<script>vex.defaultOptions.className = 'vex-theme-wireframe';</script>
 @stop
 
 @section('left-area')
@@ -54,7 +58,7 @@
 			</tr>
 			<tr>
 				<td colspan="2">
-					<button type="submit" name="submit-btn"><i>&#57614;</i>Next Step</button>
+					<button name="submit-btn"><i>&#57614;</i>Next Step</button>
 				</td>
 			</tr>
 		</table>

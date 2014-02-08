@@ -1,0 +1,63 @@
+.vex {
+	.vex-content {
+		background: @color-back-left-panel!important;
+		border: none!important;
+		width: 450px!important;
+		padding: 1.5em 2em!important;
+		
+		form {
+			.vex-dialog-message {
+				text-align: center;
+				font-weight: 700;
+				color: @color-type-link;
+				margin-bottom: 1.5em!important;
+			}
+			
+			table {
+				width: 100%;
+				
+				td {
+					padding-bottom: 10px;
+					
+					&:first-child {
+						width: 150px;
+					}
+				}
+				
+				input[type="text"] {
+					padding: 10px 20px !important;
+					background: @color-back-top-bar!important;
+					border: none!important;
+				}
+				
+				.styled-select select {
+					width: 107%;
+				}
+			}
+			
+			.vex-dialog-button {
+				font-size: 100%;
+				font-weight: 700;
+				color: #fff!important;
+				height: auto!important;
+				padding: 10px!important;
+				
+				&.vex-dialog-button-secondary {
+					background: @color-back-grey-button!important;
+					border: 1px @color-border-grey-button solid!important;
+					&:hover {
+						background: @color-back-hover-grey-button!important;
+					}
+				}
+				
+				&.vex-dialog-button-primary {
+					background: @color-back-button!important;
+					border: 1px @color-type-link solid!important;
+					&:hover {
+						background: @color-back-like-button!important;
+					}
+				} 
+			}
+		}
+	}
+}

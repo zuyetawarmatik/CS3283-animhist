@@ -60,7 +60,7 @@
 						
 						ul#column-list {
 							li.btn-group {
-								button.column-edit-btn, button.column-delete-btn, button.column-add-btn {
+								.column-edit-btn, .column-delete-btn, .column-add-btn, .column-disable-btn {
 									font-family: Conv_icomoon;
 								}
 							}

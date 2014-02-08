@@ -124,6 +124,8 @@ class VisualizationController extends \BaseController {
 		foreach ($input_column_list as $input_column) {
 			if ($input_column['type-caption'] == 'Number')
 				$column_list[] = ['name'=>$input_column['caption'], 'type'=>'NUMBER'];
+			else if ($input_column['caption'] != 'HTMLData' && $input_column['type-caption'] == 'String')
+				$column_list[] = ['name'=>$input_column['caption'], 'type'=>'STRING'];
 		}
 		
 		return $column_list;
