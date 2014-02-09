@@ -95,8 +95,10 @@ button, input[type='submit'], [id$="btn"] {
 	text-align: center;
 }
 
-ul[class^='noty'] {
-	position: absolute;
+.noty_message {
+	font-size: 100%!important;
+	line-height: 130%!important;
+	font-weight: 700!important;
 }
 
 .styled-select {

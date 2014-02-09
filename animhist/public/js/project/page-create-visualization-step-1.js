@@ -186,7 +186,8 @@ $(function() {
 					layout: 'bottomCenter',
 					text: alertSt,
 					type: 'error',
-					timeout: 3000,
+					killer: true,
+					timeout: 2000,
 					maxVisible: 1
 				});
 			},
@@ -196,6 +197,7 @@ $(function() {
 					layout: 'center',
 					text: "Create visualization successfully!<br/>Redirecting to step 2...",
 					type: 'success',
+					killer: true,
 					timeout: 1000,
 					callback: {
 						afterShow: function(){handleJSONRedirectResponse(responseData, false);}

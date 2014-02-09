@@ -29,7 +29,8 @@ $(function() {
 					layout: 'bottomCenter',
 					text: alertSt,
 					type: 'error',
-					timeout: 3000,
+					killer: true,
+					timeout: 2000,
 					maxVisible: 1
 				});
 			},

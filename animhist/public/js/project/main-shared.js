@@ -66,3 +66,18 @@ $(function() {
 		parent.changeIFrameSrcOrdinary($(this).data("url"));
 	});
 });
+
+$(document).ajaxStart(function() {
+	noty({
+		layout: 'center',
+		text: 'Please wait...',
+		type: 'information',
+		animation: {
+			open: {height: 'toggle'},
+			close: {height: 'toggle'},
+			easing: 'swing',
+		    speed: 300
+		},
+		maxVisible: 1
+	});
+});
