@@ -192,7 +192,15 @@ $(function() {
 			},
 		
 			success: function(responseData) {
-				//window.top.location.href = responseData["redirect"];
+				noty({
+					layout: 'center',
+					text: "Create visualization successfully!<br/>Redirecting to step 2...",
+					type: 'success',
+					timeout: 1000,
+					callback: {
+						afterShow: function(){handleJSONRedirectResponse(responseData, false);}
+					}
+				});
 			}
 		});
 	});

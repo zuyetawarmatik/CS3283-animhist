@@ -25,6 +25,14 @@ function getUrlParameters(parameter, staticURL, decode) {
 	if (!returnBool) return false;
 }
 
+function handleJSONRedirectResponse(response, backable) {
+	if (response["wholePage"])
+		window.top.location.href = response["redirect"];
+	else {
+		parent.changeIFrameSrc(response["redirect"], backable);
+	}
+}
+
 $(function() {
 	/* Right sidebar show-hide */
 	var rightSidebar = $("#right-area");

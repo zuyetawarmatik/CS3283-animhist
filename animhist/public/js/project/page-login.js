@@ -1,7 +1,8 @@
 $(function() {
 	$('#register-btn').click(function() {
-		var endReferer = getUrlParameters("referer", "", true); 
-		var url = endReferer ? $(this).data('url') + "?end-referer=" + endReferer : $(this).data('url');
+		var endReferer = getUrlParameters("referer", "", true);
+		var cs = $(this).data('url').split("?").length > 1 ? "&" : "?";
+		var url = endReferer ? $(this).data('url') + cs + "end-referer=" + endReferer : $(this).data('url');
 		parent.changeIFrameSrc(url, true);
 	});
 	
@@ -34,7 +35,7 @@ $(function() {
 			},
 		
 			success: function(responseData) {
-				window.top.location.href = responseData["redirect"];
+				handleJSONRedirectResponse(responseData, false);
 			}
 		});
 	});

@@ -24,6 +24,10 @@
 					}
 				}
 				
+				label, input {
+					color: #fff;
+				}
+				
 				input[type="text"] {
 					padding: 10px 20px !important;
 					background: @color-back-top-bar!important;

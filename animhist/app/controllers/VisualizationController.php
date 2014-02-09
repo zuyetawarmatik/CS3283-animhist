@@ -11,7 +11,19 @@ class VisualizationController extends \BaseController {
 	{
 		if (Auth::user()->username == $username) {
 			if (Input::get('step') == 2) {
-				
+				if (Input::has('vi_id')) {
+					$vi_id = Input::get('vi_id');
+					$visualization = Visualization::find($vi_id);
+					if ($visualization) {
+						if (!$visualization->published) {
+							if (Input::get('ajax')) {
+								return ViewResponseUtility::makeSubView('create-visualization-step-2', 'New Visualization: <span style="font-weight:300">Step 2 (Edit And Publish The Visualization)</span>');
+							} else {
+								return ViewResponseUtility::makeBaseView(URL::route('visualization.showCreate', [$username]), Constant::SIDEBAR_MYVISUALIZATION, [], ['step'=>2, 'vi_id'=>$vi_id]);
+							}							
+						} else goto fail;
+					} else goto fail;
+				} else goto fail;
 			} else {
 				if (Input::get('ajax')) {
 					return ViewResponseUtility::makeSubView('create-visualization-step-1', 'New Visualization: <span style="font-weight:300">Step 1 (Start A New Visualization)</span>');
@@ -19,10 +31,9 @@ class VisualizationController extends \BaseController {
 					return ViewResponseUtility::makeBaseView(URL::route('visualization.showCreate', [$username]), Constant::SIDEBAR_MYVISUALIZATION);
 				}	
 			}
-		} else {
-			// When requesting full page - no ajax
-			return Redirect::route('user.show', [$username]);
 		}
+		
+		fail: return Redirect::route('user.show', [$username]);
 	}
 
 	/**
@@ -66,11 +77,10 @@ class VisualizationController extends \BaseController {
 			$fusion_table_id = GoogleFusionTable::create($visualization_name, self::prepareColumnList($column_list, Input::get('type')));
 			
 			if ($fusion_table_id) {
-				// TODO: return redirect response to Step 2 View
 				$visualization->fusion_table_id = $fusion_table_id;
 				$visualization->save();
 				
-				return $fusion_table_id;
+				return JSONResponseUtility::Redirect(URL::route('visualization.showCreate', [$username]).'?step=2&vi_id='.$visualization->id, false);
 			} else
 				return Response::make('', 400);
 			

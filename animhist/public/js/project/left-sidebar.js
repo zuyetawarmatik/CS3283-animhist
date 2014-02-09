@@ -8,12 +8,13 @@ function changeIFrameSrcOrdinary(src) {
 
 /* Src without any input */
 function changeIFrameSrc(src, backable) {
+	var cs = src.split("?").length > 1 ? "&" : "?";
 	if (backable) {
 		/* Only used when clicking a link inside IFRAME */
 		var oldURL = $('#main-panel iframe').attr("src");
-		$('#main-panel iframe').attr("src", src + "?ajax=1&back=1&referer=" + oldURL);
+		$('#main-panel iframe').attr("src", src + cs + "ajax=1&back=1&referer=" + oldURL);
 	} else {
-		$('#main-panel iframe').attr("src", src + "?ajax=1");
+		$('#main-panel iframe').attr("src", src + cs + "ajax=1");
 	}
 	history.pushState(null, null, src);
 	

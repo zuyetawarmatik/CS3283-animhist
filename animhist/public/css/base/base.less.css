@@ -46,6 +46,8 @@ span.time {
 	color: inherit;
 }
 
+input, select, textarea, button {font-family:inherit; color:inherit;}
+
 button, input[type='submit'] {
 	background: @color-back-button;
 	border: 1px @color-type-link solid;

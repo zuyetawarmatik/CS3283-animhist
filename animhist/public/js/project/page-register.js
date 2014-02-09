@@ -33,7 +33,7 @@ $(function() {
 					type: 'success',
 					timeout: 1000,
 					callback: {
-						afterShow: function(){window.top.location.href = responseData["redirect"];}
+						afterShow: function(){handleJSONRedirectResponse(responseData, false);}
 					}
 				});
 			}

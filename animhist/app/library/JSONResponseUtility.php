@@ -1,8 +1,8 @@
 <?php
 class JSONResponseUtility {
 	
-	public static function Redirect($url) {
-		return Response::json(['redirect'=>$url]);
+	public static function Redirect($url, $whole_page = true) {
+		return Response::json(['redirect'=>$url, 'wholePage'=>$whole_page]);
 	}
 	
 	public static function ValidationError($arr) {

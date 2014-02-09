@@ -6,7 +6,8 @@
 	left: 0;
 	right: 440px;
 	font-size: 18px;
-
+	color: #fff;
+	
 	#left-area-main {
 		position: absolute;
 		width: 100%;
@@ -23,6 +24,7 @@
 	right: 0;
 	background: @color-back-right-area;
 	font-size: 18px;
+	color: #fff;
 		
 	#action-bar {
 		height: 80px;

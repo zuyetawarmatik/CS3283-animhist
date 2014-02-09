@@ -1,0 +1,11 @@
+@import (less) "base/base-main3-alternative.less.css";
+@import (less) "element/top-bar.less.css";
+@import (less) "element/mid/vex-popup.less.css";
+@import (less) "element/right/description-area.less.css";
+
+#right-area {
+	#description-area {
+		top: 20px;
+		bottom: 0;
+	}
+}
