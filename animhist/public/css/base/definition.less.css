@@ -21,8 +21,10 @@
 @color-border-nav: #4f4f4f;
 @color-border-hover-nav: @color-type-link;
 
-@narrow-iframe: ~"only screen and (max-width: 1168px)";
-@wide-iframe: ~"only screen and (min-width: 1169px)";
+@width-right-area-narrow-iframe: 340px;
+@width-right-area-wide-iframe: 400px;
+@width-left-sidebar: 260px;
 
-@right-area-width-narrow-iframe: 340px;
-@right-area-width-wide-iframe: 400px;
+@narrow-iframe: ~"only screen and (max-width: 1108px)";
+@wide-iframe: ~"only screen and (min-width: 1109px)";
+

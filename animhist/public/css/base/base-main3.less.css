@@ -12,16 +12,16 @@
 		position: absolute;
 		height: 100%;
 		left: 0;
-		@media @wide-iframe {right: @right-area-width-wide-iframe;}
-		@media @narrow-iframe {right: @right-area-width-narrow-iframe;}
+		@media @wide-iframe {right: @width-right-area-wide-iframe;}
+		@media @narrow-iframe {right: @width-right-area-narrow-iframe;}
 		background: #fff;
 	}
 	
 	#right-area {
 		position: absolute;
 		height: 100%;
-		@media @wide-iframe {width: @right-area-width-wide-iframe;}
-		@media @narrow-iframe {width: @right-area-width-narrow-iframe;}
+		@media @wide-iframe {width: @width-right-area-wide-iframe;}
+		@media @narrow-iframe {width: @width-right-area-narrow-iframe;}
 		right: 0;
 		background: @color-back-right-area;
 	}

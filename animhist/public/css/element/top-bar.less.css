@@ -1,7 +1,7 @@
 #top-bar {
 	height: 80px;
 	background: @color-back-top-bar;
-	font-size: 20px;
+	font-size: 18px;
 	color: #fff;
 	
 	#back-btn {

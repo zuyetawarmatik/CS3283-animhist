@@ -28,8 +28,10 @@
 			@if (Auth::check())
 				<div id="user-bar">	
 					<img id="avatar" style="background:#666" src="{{ Auth::user()->avatar->url('thumb') }}" width="60" height="60" />
-					<div id="username"><a href="#">{{ Auth::user()->username }}</a></div>
-					<div id="logout-btn">&#57603;</div>
+					<div id="username">
+						<a href="#">{{ Auth::user()->username }}</a>
+						<div id="logout-btn">&#57603;</div>
+					</div>
 				</div> 
 				<ul id="nav-list" data-highlight-id = "{{ $highlight_id }}">
 					<li class="nav-item" data-url="{{ URL::route('user.show', [Auth::user()->username]) }}">
