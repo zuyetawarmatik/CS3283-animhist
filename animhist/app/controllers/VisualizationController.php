@@ -73,7 +73,7 @@ class VisualizationController extends \BaseController {
 			$visualization->center_latitude = 0.0;
 			$visualization->center_longitude = 0.0;
 			
-			$visualization_name = $visualization->user_id.'_'.$visualization->display_name;
+			$visualization_name = $username.'_'.$visualization->display_name;
 			$fusion_table_id = GoogleFusionTable::create($visualization_name, self::prepareColumnList($column_list, Input::get('type')));
 			
 			if ($fusion_table_id) {

@@ -96,27 +96,38 @@ class UserController extends \BaseController {
 	 */
 	public function showEdit($username)
 	{
-		if (Input::get('ajax')) {
-			return ViewResponseUtility::makeSubView('settings', 'User Settings');
-		} else {
-			return ViewResponseUtility::makeBaseView(URL::route('user.showEdit'), Constant::SIDEBAR_GUEST_LOGIN);
-		}
+		if (Auth::user()->username == $username) {
+			if (Input::get('ajax')) {
+				return ViewResponseUtility::makeSubView('settings', 'User Settings');
+			} else {
+				return ViewResponseUtility::makeBaseView(URL::route('user.showEdit', [$username]), Constant::SIDEBAR_SETTINGS);
+			}
+		} else
+			return Redirect::route('user.show', [$username]);
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  int  $id
+	 * @param  int  $username
 	 * @return Response
 	 */
 	public function update($username)
 	{
 		if (Auth::user()->username == $username) {
-			$user = Auth::user();
+			$rules = ['display-name' => 'required'];
+			$validator = Validator::make(Input::all(), $rules);
+			if ($validator->fails())
+				return JSONResponseUtility::ValidationError($validator->getMessageBag()->toArray());
 			
+			$user = Auth::user();
+
 			$user->display_name = Input::get('display-name');
 			$user->description = Input::get('description');
+			
 			$user->save();
+		} else {
+			return Response::make('', 401);
 		}
 	}
 

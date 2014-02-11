@@ -27,11 +27,6 @@ Route::get('search', function()
 	return View::make('show-visualizations-search', array('title'=>'Search', 'has_back'=>false, 'has_minimize_right'=>true));
 });
 
-Route::get('settings', function()
-{
-	return View::make('settings', array('title'=>'Settings', 'has_back'=>false, 'has_minimize_right'=>false));
-});
-
 // ==========================================================
 
 Route::group(['before' => 'guest', 'prefix' => '/'], function(){
@@ -65,7 +60,6 @@ Route::group(['prefix' => '{username}'], function(){
 Route::group(['before' => 'auth.truncateURLToUsername', 'prefix' => '{username}'], function(){
 	// /{username}/visualization/create
 	Route::get('visualization/create', ['as'=> 'visualization.showCreate', 'uses' => 'VisualizationController@showCreate']);
-	Route::post('visualization/create', ['as'=> 'visualization.store', 'uses' => 'VisualizationController@store']);
 	
 	// /{username}/settings
 	Route::get('settings', ['as' => 'user.showEdit', 'uses' => 'UserController@showEdit']);
@@ -73,8 +67,11 @@ Route::group(['before' => 'auth.truncateURLToUsername', 'prefix' => '{username}'
 
 Route::group(['before' => 'auth', 'prefix' => '{username}'], function(){
 	// /{username}
-	Route::post('/', ['as' => 'user.update', 'uses' => 'UserController@update']);
+	Route::put('/', ['before' => 'csrf', 'as' => 'user.update', 'uses' => 'UserController@update']);
 	
 	// /{username}/follow
-	Route::post('follow', ['as' => 'user.follow', 'uses' => 'UserController@followUser']);
+	Route::post('follow', ['before' => 'csrf', 'as' => 'user.follow', 'uses' => 'UserController@followUser']);
+	
+	// /{username}/visualization/create
+	Route::post('visualization/create', ['before' => 'csrf', 'as'=> 'visualization.store', 'uses' => 'VisualizationController@store']);
 });
