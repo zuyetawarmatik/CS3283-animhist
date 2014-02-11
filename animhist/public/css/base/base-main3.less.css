@@ -12,14 +12,16 @@
 		position: absolute;
 		height: 100%;
 		left: 0;
-		right: 440px;
+		@media @wide-iframe {right: @right-area-width-wide-iframe;}
+		@media @narrow-iframe {right: @right-area-width-narrow-iframe;}
 		background: #fff;
 	}
 	
 	#right-area {
 		position: absolute;
 		height: 100%;
-		width: 440px;
+		@media @wide-iframe {width: @right-area-width-wide-iframe;}
+		@media @narrow-iframe {width: @right-area-width-narrow-iframe;}
 		right: 0;
 		background: @color-back-right-area;
 	}

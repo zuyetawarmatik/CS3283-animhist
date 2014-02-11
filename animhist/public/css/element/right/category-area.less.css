@@ -43,7 +43,10 @@
 			.category-caption {
 				display: block;
 				position: absolute;
-				width: 380px;
+				box-sizing: border-box;
+				-webkit-box-sizing:border-box;
+				-moz-box-sizing: border-box;
+				width: 100%;
 				height: 20px;
 				padding: 20px 30px;
 				color: @color-type-link;

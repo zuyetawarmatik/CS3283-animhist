@@ -20,3 +20,9 @@
 @color-border-red-button: #fd113d;
 @color-border-nav: #4f4f4f;
 @color-border-hover-nav: @color-type-link;
+
+@narrow-iframe: ~"only screen and (max-width: 1168px)";
+@wide-iframe: ~"only screen and (min-width: 1169px)";
+
+@right-area-width-narrow-iframe: 340px;
+@right-area-width-wide-iframe: 400px;
