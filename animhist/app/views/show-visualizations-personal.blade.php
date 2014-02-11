@@ -44,7 +44,7 @@
 	</article>
 	<div id="button-area">
 	@if (Auth::user() != $user)
-		<button id="follow-btn"><i>&#57552;</i>Follow The Author</button>		
+		<button id="follow-btn" data-url="{{ URL::route('user.follow', $user->username) }}"><i>&#57552;</i>Follow The Author</button>		
 	@else
 		<button id="edit-profile-btn"><i>&#57350;</i>Edit My Profile</button>
 	@endif

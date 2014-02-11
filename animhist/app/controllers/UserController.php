@@ -94,9 +94,13 @@ class UserController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function showEdit($id)
+	public function showEdit($username)
 	{
-		//
+		if (Input::get('ajax')) {
+			return ViewResponseUtility::makeSubView('settings', 'User Settings');
+		} else {
+			return ViewResponseUtility::makeBaseView(URL::route('user.showEdit'), Constant::SIDEBAR_GUEST_LOGIN);
+		}
 	}
 
 	/**
@@ -105,9 +109,15 @@ class UserController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($username)
 	{
-		//
+		if (Auth::user()->username == $username) {
+			$user = Auth::user();
+			
+			$user->display_name = Input::get('display-name');
+			$user->description = Input::get('description');
+			$user->save();
+		}
 	}
 
 	public function login()
@@ -139,6 +149,15 @@ class UserController extends \BaseController {
 		}
 	}
 	
+	public function followUser($username)
+	{
+		$follow = new Follow();
+		$follow->user_id = Auth::user()->id;
+		$follow->following_id =  DB::table('users')->where('username', $username)->first()->id;
+		//need check for unique relation		
+		$follow->save();
+	}
+	
 	public function logout()
 	{
 		/* All redirects in login, logout and register are whole-page, no ajax */
@@ -146,4 +165,7 @@ class UserController extends \BaseController {
 		Auth::logout();
 		return JSONResponseUtility::Redirect(Input::get('referer'));
 	}
+	
+	
+	
 }
