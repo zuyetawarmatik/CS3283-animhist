@@ -66,4 +66,15 @@ Route::group(['before' => 'auth.truncateURLToUsername', 'prefix' => '{username}'
 	// /{username}/visualization/create
 	Route::get('visualization/create', ['as'=> 'visualization.showCreate', 'uses' => 'VisualizationController@showCreate']);
 	Route::post('visualization/create', ['as'=> 'visualization.store', 'uses' => 'VisualizationController@store']);
+	
+	// /{username}/settings
+	Route::get('settings', ['as' => 'user.showEdit', 'uses' => 'UserController@showEdit']);
+});
+
+Route::group(['before' => 'auth', 'prefix' => '{username}'], function(){
+	// /{username}
+	Route::post('/', ['as' => 'user.update', 'uses' => 'UserController@update']);
+	
+	// /{username}/follow
+	Route::post('follow', ['as' => 'user.follow', 'uses' => 'UserController@followUser']);
 });

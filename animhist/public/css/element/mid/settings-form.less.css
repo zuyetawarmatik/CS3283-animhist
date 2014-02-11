@@ -39,11 +39,23 @@
 							width: 99%;
 						}
 						
-						input[type="text"], textarea {
+						input[type="text"], input[type='password'], textarea {
 							box-sizing: border-box;
 						     -webkit-box-sizing:border-box;
 						     -moz-box-sizing: border-box;
 							width: 100%;
+						}
+					}
+					
+					&:last-child {
+						width: 100%;
+						
+						td {
+							button, input[type='submit'] {
+								float: right;
+								margin-left: 10px;
+								margin-bottom: 10px;
+							}
 						}
 					}
 				}
