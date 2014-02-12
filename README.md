@@ -13,7 +13,7 @@ How to set up the project
 ```sh
 git clone https://github.com/zuyetawarmatik/CS3283-animhist
 ```
-- In your terminal, go to folder CS3283-animhist/animhist, type
+- In your terminal, go to folder CS3283-animhist/animhist, type:
 ``` sh
 composer update --no-scripts
 composer install
@@ -33,7 +33,9 @@ php artisan serve
 
 Contributing to the project (For beginners)
 -------------------------------------------
-- Remember to do this if you finish a robust feature: Git Commit changes and Git Push.
+- Remember to turn on Apache and MySQL service beforehand.
+- Suggested IDE: Eclipse with PDT Plugin. Setting up Workspace as CS3283-animhist folder, and import CS3283-animhist/animhist folder to the workspace as the project.
+- Remember to do this if you finish a robust feature: Git Commit Changes and Git Push.
 - Remember to do this if you are lacking of updating the project: Git Pull, Git Merge and Resolve Merging Conflicts. If you encounter any new migrations in app/database/migrations folder, please run
 ``` sh
 php artisan migrate
