@@ -6,7 +6,7 @@ Animated History project - A project built with Laravel, Google Maps API, Google
 How to set up the project
 -------------------------
 - Make sure that you have installed Apache, MySQL and PHP >= 5.5 (or XAMPP full package if lazy) in your PC.
-- Make sure that you have installed Composer, Git
+- Make sure that you have installed Composer, Git. Google it if you don't know the link, it should be at the top seach result.
 - Configure Apache/PHP in your PC to allow Laravel properly working (referring to http://www.youtube.com/watch?v=u_OZA27Batc, http://www.youtube.com/watch?v=JNn_tS2KpcY), including: Enable OpenSSL in php.ini, Enable Mcrypt PHP Module, Config Virtual Host.
 
 - Clone this repo to your local disk, using Terminal or Git Bash, or any other Git GUI program. If you are using Windows and XAMPP, clone to htdocs of your XAMPP folder; otherwise, just clone it to your preferred folder.
@@ -18,7 +18,7 @@ git clone https://github.com/zuyetawarmatik/CS3283-animhist
 composer update --no-scripts
 composer install
 ```
-to install the project
+to install the project.
 - Go to animhist/app/config/database.php to config MySQL database souce by providing your database host, username and password.
 - Using Laravel Migration to install project database schema by Terminal (you should be in animhist folder as well to type this command):
 ``` sh
