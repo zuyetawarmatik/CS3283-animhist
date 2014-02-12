@@ -1,14 +1,14 @@
 #top-bar {
-	height: 80px;
+	height: 8rem;
 	background: @color-back-top-bar;
-	font-size: 18px;
+	font-size: 1.8rem;
 	color: #fff;
 	
 	#back-btn {
 		float: left;
-		width: 80px;
-		height: 20px;
-		padding: 30px 0;
+		width: 8rem;
+		height: 2rem;
+		padding: 3rem 0;
 		
 		background: @color-back-right-area;
 		font-family: Conv_icomoon;
@@ -19,9 +19,9 @@
 	}
 	
 	#title {
-		margin-left: 100px;
-		height: 20px;
-		padding: 30px 0;
+		margin-left: 10rem;
+		height: 2rem;
+		padding: 3rem 0;
 		
 		overflow: hidden;
   		white-space: nowrap;
@@ -30,7 +30,7 @@
 		font-weight: 600;
 		
 		&.no-back {
-			margin-left: 40px;
+			margin-left: 4rem;
 		}
 	}
 }

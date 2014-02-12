@@ -3,25 +3,23 @@
 #main-area {
 	position: absolute;
 	width: 100%;
-	top: 80px;
+	top: 8rem;
 	bottom: 0;
-	font-size: 18px;
+	font-size: 1.6rem;
 	color: #fff;
 	
 	#left-area {
 		position: absolute;
 		height: 100%;
 		left: 0;
-		@media @wide-iframe {right: @width-right-area-wide-iframe;}
-		@media @narrow-iframe {right: @width-right-area-narrow-iframe;}
+		right: 40rem;
 		background: #fff;
 	}
 	
 	#right-area {
 		position: absolute;
 		height: 100%;
-		@media @wide-iframe {width: @width-right-area-wide-iframe;}
-		@media @narrow-iframe {width: @width-right-area-narrow-iframe;}
+		width: 40rem;
 		right: 0;
 		background: @color-back-right-area;
 	}

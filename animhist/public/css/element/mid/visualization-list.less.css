@@ -6,41 +6,49 @@
 		right: 0;
 		top: 0;
 		bottom: 0;
-		padding-right: 10px;
+		padding-right: 1rem;
 		
 		.visualization-item {
-			width: 340px;
-			height: 260px;
-			margin: 40px 0 0 40px;
+			width: 34rem;
+			height: 26rem;
+			margin: 4rem 0 0 4rem;
 			border: 1px @color-border-light solid;
 			float: left;
 			
 			.visualization-link {
 				display: block;
-				width: 340px;
-				height: 200px;
+				width: 34rem;
+				height: 20rem;
+				img {
+					width: 34rem;
+					height: 20rem;
+				}
 			}
 			
 			.avatar-wrapper {
 				float: left;
-				width: 60px;
+				width: 6rem;
+				img {
+					width: 6rem;
+					height: 6rem;
+				}
 			}
 			
 			.visualization-main {
-				margin-left: 60px;
-				height: 47px;
-				padding: 7px 0 6px; 
+				margin-left: 6rem;
+				height: 4.7rem;
+				padding: 0.7rem 0 0.6rem; 
 				background: @color-back-comment;
 				
 				p {
-					margin: 0 20px;
+					margin: 0 2rem;
 					color: @color-type-on-white;
 					display: block;
 					white-space: nowrap;
 					text-overflow: ellipsis;
 					overflow: hidden;
 					&.visualization-author {
-						margin-top: 3px;
+						margin-top: 0.3rem;
 					}
 				}
 			}

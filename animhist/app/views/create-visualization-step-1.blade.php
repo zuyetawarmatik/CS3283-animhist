@@ -8,7 +8,7 @@
 
 @section('js')
 	{{ HTML::script('js/vex-2.0.1/js/vex.combined.min.js'); }}
-	{{ HTML::script('js/project/page-create-visualization-step-1.js'); }}
+	{{ HTML::script('js/project/page-create-visualization-step-1.js'); }}	
 	<script>vex.defaultOptions.className = 'vex-theme-wireframe';</script>
 @stop
 

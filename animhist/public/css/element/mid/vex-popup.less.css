@@ -2,10 +2,12 @@
 	.vex-content {
 		background: @color-back-left-panel!important;
 		border: none!important;
-		width: 450px!important;
+		width: 45rem!important;
 		padding: 1.5em 2em!important;
 		
 		form {
+			font-size: 1.6rem;
+			
 			.vex-dialog-message {
 				text-align: center;
 				font-weight: 700;
@@ -17,10 +19,10 @@
 				width: 100%;
 				
 				td {
-					padding-bottom: 10px;
+					padding-bottom: 1rem;
 					
 					&:first-child {
-						width: 150px;
+						width: 15rem;
 					}
 				}
 				
@@ -29,7 +31,7 @@
 				}
 				
 				input[type="text"] {
-					padding: 10px 20px !important;
+					padding: 1rem 2rem !important;
 					background: @color-back-top-bar!important;
 					border: none!important;
 				}
@@ -44,7 +46,7 @@
 				font-weight: 700;
 				color: #fff!important;
 				height: auto!important;
-				padding: 10px!important;
+				padding: 1rem!important;
 				
 				&.vex-dialog-button-secondary {
 					background: @color-back-grey-button!important;

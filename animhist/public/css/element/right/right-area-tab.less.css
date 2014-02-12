@@ -1,13 +1,13 @@
 #right-area-tab {
 	position: absolute;
 	z-index: 200;
-	left: -40px;
+	left: -4rem;
 	
 	li {
 		font-family: Conv_icomoon;
-		height: 20px;
-		width: 40px;
-		padding: 10px 0;
+		height: 2rem;
+		width: 4rem;
+		padding: 1rem 0;
 		background: @color-back-top-bar;
 		cursor: pointer;
 		text-align: center;

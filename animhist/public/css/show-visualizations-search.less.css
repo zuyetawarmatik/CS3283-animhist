@@ -3,7 +3,7 @@
 
 #search-info {
 	color: @color-type-on-white;
-	margin: 20px 40px;
+	margin: 2rem 4rem;
 	
 	span {
 		color: @color-type-on-white;
@@ -12,6 +12,6 @@
 
 #left-area {
 	#visualization-list {
-		top: 20px;
+		top: 2rem;
 	}
 }

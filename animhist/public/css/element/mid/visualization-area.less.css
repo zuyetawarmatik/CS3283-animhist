@@ -3,27 +3,27 @@
 		position: absolute;
 		width: 100%;
 		top: 0;
-		bottom: 60px;
+		bottom: 6rem;
 	
 		#map {
 			position: absolute;
 			width: 100%;
 			top: 0;
-			bottom: 60px;
+			bottom: 6rem;
 		}
 	
 		#seek {
 			position: absolute;
 			width: 100%;
 			bottom: 0;
-			height: 60px;
+			height: 6rem;
 			background: @color-back-top-bar;
 			
 			#play-btn {
 				float: left;
-				height: 20px;
-				width: 60px;
-				padding: 20px 0;
+				height: 2rem;
+				width: 6rem;
+				padding: 2rem 0;
 				font-family: Conv_icomoon;
 				background: @color-back-button;
 				
@@ -33,9 +33,9 @@
 			}
 			
 			#timeline-list {
-				height: 60px;
-				margin-left: 60px;
-				padding-left: 10px;
+				height: 6rem;
+				margin-left: 6rem;
+				padding-left: 1rem;
 				overflow-x: auto;
 				overflow-y: hidden;
 				white-space: nowrap;
@@ -43,8 +43,8 @@
 				.timeline-item {
 					display: inline-block;
 					text-align: center;
-					padding: 20px 10px;
-					height: 20px;
+					padding: 2rem 1rem;
+					height: 2rem;
 					cursor: pointer;
 					
 					&.focused {

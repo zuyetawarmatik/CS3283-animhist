@@ -1,9 +1,9 @@
 #right-area {
 	#button-area {
 		position: absolute;
-		height: 40px;
-		left: 30px;
-		right: 30px;
-		bottom: 30px;
+		height: 4rem;
+		left: 3rem;
+		right: 3rem;
+		bottom: 3rem;
 	}
 }

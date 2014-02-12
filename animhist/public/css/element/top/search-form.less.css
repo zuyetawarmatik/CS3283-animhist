@@ -1,22 +1,21 @@
 #top-bar {
 	form[name='search-form'] {
 		position: absolute;
-		top: 20px;
-		left: 140px;
+		top: 2rem;
+		left: 14rem;
 		
 		input[name='search-box'] {
-			width: 420px;
-			height: 20px;
+			width: 42rem;
+			height: 2rem;
 			background: @color-back-left-panel;
-			font-size: 16px;
 			font-weight: 600;
-			padding-left: 40px;
+			padding-left: 4rem;
 		}
 		
 		i {
 			position: absolute;
 			font-family: Conv_icomoon;
-			top: 10px; left: 10px;
+			top: 1rem; left: 1rem;
 		}
 	}
 }

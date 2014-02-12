@@ -25,7 +25,7 @@
 			</tr>
 			<tr>
 				<td colspan="2">
-					{{ Form::submit('Save Changes', array('name'=>'submit-btn')) }}
+					<button name="submit-btn"><i>&#57598;</i>Save Changes</button>
 				</td>
 			</tr>
 		</table>

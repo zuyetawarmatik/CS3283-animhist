@@ -1,19 +1,19 @@
 #right-area {
 	form[name='comment-form'] {
-		height: 130px;
-		margin: 15px 20px 0 20px;
-		padding-bottom: 20px;
+		height: 13rem;
+		margin: 15px 2rem 0 2rem;
+		padding-bottom: 2rem;
 		border-bottom: 1px dashed #afafaf;
 		
 		textarea[name='comment-box'] {
-			width: 360px;
-			height: 60px;
+			width: 36rem;
+			height: 6rem;
 		}
 		
 		input[name='submit-btn'] {
-			margin-left: 270px;
-			margin-top: 10px;
-			width: 130px;
+			margin-left: 27rem;
+			margin-top: 1rem;
+			width: 13rem;
 		}
 	}
 }

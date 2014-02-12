@@ -4,29 +4,31 @@
 #left-panel {
 	position: fixed;
 	height: 100%;
-	width: @width-left-sidebar;
+	width: 26rem;
 	
 	box-shadow: 0 0 5px #222;
 	background: @color-back-left-panel;
 	/* Bring to front to show shadow */
 	z-index: 1;
 	
-	font-size: 18px;
+	font-size: 1.8rem;
 	color: #fff;
 	
 	#user-bar {
-		height: 80px;
+		height: 8rem;
 		
 		img#avatar {
 			float: left;
-			margin: 10px;
+			margin: 1rem;
 			cursor: pointer;
+			width: 6rem;
+			height: 6rem;
 		}
 		
 		#username {
-			margin-left: 80px;
-			height: 20px;
-			padding: 30px 10px 30px 0;
+			margin-left: 8rem;
+			height: 2rem;
+			padding: 3rem 1rem 3rem 0;
 			text-overflow: ellipsis;
 			
 			font-weight: 700;
@@ -40,9 +42,9 @@
 			#logout-btn {
 				position: absolute;
 				top: 0; right: 0;
-				width: 60px;
-				height: 20px;
-				padding: 30px 0;
+				width: 6rem;
+				height: 2rem;
+				padding: 3rem 0;
 				font-family: Conv_icomoon;
 				color: @color-type-link;
 				
@@ -55,12 +57,12 @@
 	
 	#nav-list {
 		position: absolute;
-		top: 80px;
+		top: 8rem;
 		width: 100%;
 		
 		.nav-item {
 			border-bottom: @color-border-nav 1px solid;
-			height: 50px;
+			height: 5rem;
 			cursor: pointer;
 			transition: border 0.4s;
 			
@@ -102,7 +104,7 @@
 				position: absolute;
 				left: -100%;
 				width: 100%;
-				height: 50px;
+				height: 5rem;
 				background: @color-back-button;
 				opacity: 0;
 				z-index: -100;
@@ -111,9 +113,9 @@
 			.nav-icon {
 				display: block;
 				position: absolute;
-				width: 50px;
-				height: 20px;
-				padding: 15px 0;
+				width: 5rem;
+				height: 2rem;
+				padding: 1.5rem 0;
 				transition: border 0.4s;
 				border-right: @color-border-nav 1px solid;
 				background: rgba(0,0,0,0);
@@ -123,9 +125,9 @@
 			
 			.nav-caption {
 				display: block;
-				margin-left: 50px;
-				height: 20px;
-				padding: 15px 20px;
+				margin-left: 5rem;
+				height: 2rem;
+				padding: 1.5rem 2rem;
 				font-weight: 600;
 				
 				overflow: hidden;
@@ -140,7 +142,7 @@
 #main-panel {
 	position: fixed;
 	height: 100%;
-	left: @width-left-sidebar;
+	left: 26rem;
 	right: 0;
 	background: @color-back-right-area;
 }

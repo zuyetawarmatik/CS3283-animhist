@@ -5,17 +5,17 @@
 		overflow-y: auto;
 		left: 0;
 		right: 0;
-		top: 10px;
+		top: 1rem;
 		bottom: 0;
 		
 		table {
 			position: absolute;
 			display: block;
-			left: 40px;
-			right: 40px;
+			left: 4rem;
+			right: 4rem;
 			
 			button, input[type='submit'] {
-				padding: 0 10px;
+				padding: 0 1rem;
     			white-space: nowrap;
 			}
 
@@ -25,10 +25,10 @@
 			
 				tr {
 					td {
-						padding: 10px 0;
+						padding: 1rem 0;
 						
 						&:first-child {
-							min-width: 190px;
+							min-width: 19rem;
 							label {
 								font-weight: 700;
 								color: @color-type-link;
@@ -53,8 +53,8 @@
 						td {
 							button, input[type='submit'] {
 								float: right;
-								margin-left: 10px;
-								margin-bottom: 10px;
+								margin-left: 1rem;
+								margin-bottom: 1rem;
 							}
 						}
 					}

@@ -5,11 +5,11 @@
 
 #right-area {
 	#description-area {
-		top: 20px;
+		top: 2rem;
 		bottom: 0;
 		
 		#register-btn {
-			margin-top: 20px;
+			margin-top: 2rem;
 			width: 100%;
 		}
 	}
