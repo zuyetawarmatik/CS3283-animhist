@@ -23,6 +23,7 @@ composer update --no-scripts
 composer install
 ```
 to install the project.
+- In MySQL (phpmyadmin), create a new database name "animhist", collation = utf8_unicode_ci.
 - Go to animhist/app/config/database.php to config MySQL database souce by providing your database host, username and password.
 - Using Laravel Migration to install project database schema by Terminal (you should be in animhist folder as well to type this command):
 ``` sh
