@@ -74,4 +74,7 @@ Route::group(['before' => 'auth', 'prefix' => '{username}'], function(){
 	
 	// /{username}/visualization/create
 	Route::post('visualization/create', ['before' => 'csrf', 'as'=> 'visualization.store', 'uses' => 'VisualizationController@store']);
+	
+	// /{username}/visualization/{id}/info
+	Route::get('visualization/{id}/info', ['before' => 'csrf', 'as'=> 'visualization.info', 'uses' => 'VisualizationController@info']);
 });

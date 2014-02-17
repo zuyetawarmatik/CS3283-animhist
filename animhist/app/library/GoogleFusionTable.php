@@ -67,4 +67,42 @@ class GoogleFusionTable {
 		
 		return false;
 	}
+	
+	public static function retrieve($gf_table_id) {
+		$access_token = self::getGFusionOAuthAccessToken();
+		
+		/*= Get general info =*/
+		$returnArr = [];
+		$response1 = Request::get('https://www.googleapis.com/fusiontables/v1/tables/'.$gf_table_id)
+							->addHeaders(['Authorization'=>'Bearer '.$access_token])
+							->send();
+		
+		if ($response1->code == 200)
+			$returnArr['tableProps'] = $response1->body;
+		else if ($response1->code == 401) {
+			$access_token = self::refreshGFusionOAuthAccessToken();
+			$response1 = Request::get('https://www.googleapis.com/fusiontables/v1/tables/'.$gf_table_id)
+							->addHeaders(['Authorization'=>'Bearer '.$access_token])
+							->send();
+			$returnArr['tableProps'] = $response1->body;
+		} else return false;
+		
+		/*= Get data body =*/
+		$sql = urlencode('SELECT * FROM '.$gf_table_id);
+		$response2 = Request::get('https://www.googleapis.com/fusiontables/v1/query?sql='.$sql)
+							->addHeaders(['Authorization'=>'Bearer '.$access_token])
+							->send();
+		
+		if ($response2->code == 200)
+			$returnArr['tableData'] = $response2->body;
+		else if ($response1->code == 401) {
+			$access_token = self::refreshGFusionOAuthAccessToken();
+			$response2 = Request::get('https://www.googleapis.com/fusiontables/v1/query?sql='.$sql)
+							->addHeaders(['Authorization'=>'Bearer '.$access_token])
+							->send();
+			$returnArr['tableData'] = $response2->body;
+		} else return false;
+		
+		return $returnArr;
+	}
 }

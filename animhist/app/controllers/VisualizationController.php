@@ -2,11 +2,6 @@
 
 class VisualizationController extends \BaseController {
 	
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
 	public function showCreate($username)
 	{
 		if (Auth::user()->username == $username) {
@@ -15,9 +10,10 @@ class VisualizationController extends \BaseController {
 					$vi_id = Input::get('vi_id');
 					$visualization = Visualization::find($vi_id);
 					if ($visualization) {
+						if ($visualization->user != Auth::user()) goto fail;
 						if (!$visualization->published) {
 							if (Input::get('ajax')) {
-								return ViewResponseUtility::makeSubView('create-visualization-step-2', 'New Visualization: <span style="font-weight:300">Step 2 (Edit And Publish The Visualization)</span>');
+								return ViewResponseUtility::makeSubView('create-visualization-step-2', 'New Visualization: <span style="font-weight:300">Step 2 (Edit And Publish The Visualization)</span>', ['visualization'=>$visualization]);
 							} else {
 								return ViewResponseUtility::makeBaseView(URL::route('visualization.showCreate', [$username]), Constant::SIDEBAR_MYVISUALIZATION, [], ['step'=>2, 'vi_id'=>$vi_id]);
 							}							
@@ -36,11 +32,6 @@ class VisualizationController extends \BaseController {
 		fail: return Redirect::route('user.show', [$username]);
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
 	public function store($username)
 	{
 		if (Auth::user()->username == $username) {
@@ -83,42 +74,46 @@ class VisualizationController extends \BaseController {
 				return JSONResponseUtility::Redirect(URL::route('visualization.showCreate', [$username]).'?step=2&vi_id='.$visualization->id, false);
 			} else
 				return Response::make('', 400);
-			
 		} else {
 			return Response::make('', 401);
 		}
 	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  $username
-	 * @return Response
-	 */
 	public function show($id)
 	{
+		
 	}
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	public function showEdit($id)
 	{
 		
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	public function update($id)
 	{
 		
+	}
+	
+	public function info($username, $id) {
+		if (Auth::user()->username == $username) {
+			if (Input::get('request') == 'data') {
+				$visualization = Visualization::find($id);
+				if (!$visualization) goto fail;
+				if ($visualization->user != Auth::user()) goto fail;
+				
+				$ret = GoogleFusionTable::retrieve($visualization->fusion_table_id);
+						
+				if (!$ret) goto fail;
+				return Response::json($ret);
+			} if (Input::get('request') == 'property') {
+				
+			} else
+				goto fail;
+		} else {
+			return Response::make('', 401);
+		}
+		
+		fail: return Response::make('', 400);
 	}
 	
 	private static function prepareColumnList($input_column_list, $input_visualization_type) {

@@ -1,0 +1,68 @@
+#left-area {
+	#edit-area {
+		height: 100%;
+		
+		#tab {
+			height: 5rem;
+			overflow: hidden;
+			white-space: nowrap;
+			
+			li {
+				display: inline-block;
+				a {
+					display: inline-block;
+					height: 2rem;
+					padding: 1.5rem 3rem;
+					background: #446a85;
+					color: inherit;
+					transition: background 0.4s ease-out;
+					
+					&.current {
+						font-weight: 600;
+					}
+					
+					&.current, &:hover {
+						background: @color-back-blue-button;
+						transition: background 0.4s ease-out;
+						outline: none;
+					}
+					
+					&:focus {
+						outline: none;
+					}
+				}
+			}
+		}
+	}
+	
+	#edit-area-table {
+		#timeline-bar {
+			height: 5rem;
+		}
+		
+		#table {
+			font-size: inherit;
+			background: #fff;
+			position: absolute;
+			top: 10rem;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
+	}	
+}
+
+.table-header {
+	text-align: center;
+	padding-top: 1rem!important;
+	padding-bottom: 1rem!important;
+	background: @color-back-comment;
+	color: @color-back-blue-button;
+	font-weight: 600;
+}
+
+.table-cell {
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+	text-align: right;
+}

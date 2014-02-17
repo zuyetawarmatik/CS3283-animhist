@@ -101,7 +101,7 @@ button, input[type='submit'], [id$="btn"] {
 }
 
 .noty_message {
-	font-size: 100%!important;
+	font-size: 1.6rem!important;
 	line-height: 130%!important;
 	font-weight: 700!important;
 }

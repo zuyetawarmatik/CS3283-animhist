@@ -30,5 +30,8 @@ class Visualization extends Eloquent {
 			return $this->created_at->diffForHumans();
 		}
 	}
-
+	
+	public function user() {
+		return $this->belongsTo('User');
+	}
 }

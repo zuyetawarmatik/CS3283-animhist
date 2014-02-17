@@ -71,5 +71,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 			return $this->created_at->diffForHumans();
 		}
 	}
+	
+	public function visualizations()
+	{
+		return $this->hasMany('Visualization');
+	}
 
 }
