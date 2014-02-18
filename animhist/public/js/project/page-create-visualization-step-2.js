@@ -3,7 +3,6 @@ var gridColumns = new Array(), gridData = new Array();
 var slickGrid;
 
 var gridOptions = {
-	asyncEditorLoading: false,
 	editable: true,
 	enableAddRow: true,
 	enableCellNavigation: true,
@@ -19,6 +18,7 @@ $(function() {
 
 function parseRetrievedData() {
 	/* Parse column */
+	if (!fusionProps["columns"]) return;
 	for (var i = 0; i < fusionProps["columns"].length; i++) {
 		var columnItem = {id: fusionProps["columns"][i]["columnId"],
 						name: fusionProps["columns"][i]["name"],
@@ -35,6 +35,7 @@ function parseRetrievedData() {
 	}
 	
 	/* Parse row */
+	if (!fusionProps["rows"]) return;
 	for (var i = 0; i < fusionData["rows"].length; i++) {
 		var rowItem = {};
 		for (var j = 0; j < fusionData["columns"].length; j++) {
@@ -48,8 +49,9 @@ function retrieveFusionData() {
 	$.ajax({
 		processData: false,
 	    contentType: false,
-		url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/info?request=data&_token=" + $("[name='hidden-form'] [type='hidden']").val(),
+		url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/info?request=data",
 		type: "GET",
+		headers: {'X-CSRF-Token': $("[name='hidden-form'] [type='hidden']").val()},
 		error: function(responseData) {
 			noty({
 				layout: 'bottomCenter',

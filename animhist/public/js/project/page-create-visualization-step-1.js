@@ -99,6 +99,7 @@ $(function() {
 						"</tr>" +
 					"</table>",
 			callback: function(data) {
+				if (!data.columnname) return;
 				var columnName = data.columnname.trim();
 				if (columnName != "" && columnName.match(/^[a-z0-9\-\s]+$/i)) {
 					var exit = false;
@@ -143,6 +144,7 @@ $(function() {
 				$("option[value='" + columnType + "']").attr("selected", "selected");
 			},
 			callback: function(data) {
+				if (!data.columnname) return;
 				var newColumnName = columnName == "Milestone" ? "Milestone" : data.columnname.trim();
 				if (newColumnName != "" && newColumnName.match(/^[a-z0-9\-\s]+$/i)) {
 					var exit = false;

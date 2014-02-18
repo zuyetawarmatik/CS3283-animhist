@@ -106,7 +106,19 @@ class VisualizationController extends \BaseController {
 				if (!$ret) goto fail;
 				return Response::json($ret);
 			} if (Input::get('request') == 'property') {
-				// TODO
+				$json = ["displayName" => $visualization->display_name,
+						"username" => $visualization->user->username,
+						"type" => $visualization->type,
+						"description" => $visualization->description,
+						"category" => $visualization->category,
+						"published" => $visualization->published,
+						"milestoneFormat" => $visualization->milestone_format,
+						"milestones" => $visualization->milestones,
+						"defaultColumn" => $visualization->default_column,
+						"zoom" => $visualization->zoom,
+						"centerLatitude" => $visualization->center_latitude,
+						"centerLongitude" => $visualization->center_longitude];
+				return Response::json($json);
 			} else
 				goto fail;
 		} else {
