@@ -65,7 +65,7 @@ class VisualizationController extends \BaseController {
 			$visualization->center_longitude = 0.0;
 			
 			$visualization_name = $username.'_'.$visualization->display_name;
-			$fusion_table_id = GoogleFusionTable::create($visualization_name, self::prepareColumnList($column_list, Input::get('type')));
+			$fusion_table_id = GoogleFusionTable::create($visualization_name, self::prepareColumnListSentToGFusion($column_list, Input::get('type')));
 			
 			if ($fusion_table_id) {
 				$visualization->fusion_table_id = $fusion_table_id;
@@ -89,9 +89,35 @@ class VisualizationController extends \BaseController {
 		
 	}
 
-	public function update($id)
+	public function updateProperty($username, $id)
 	{
 		
+	}
+	
+	public function updateTable($username, $id)
+	{
+		if (Auth::user()->username == $username) {
+			switch (Input::get('type')) {
+				case 'row-update':
+					
+				case 'row-add':
+					
+				case 'row-remove':
+				
+				case 'column-update':
+				
+				case 'column-add':
+					
+				case 'column-remove':
+			}
+		} else {
+			return Response::make('', 401);
+		}
+	}
+	
+	public function updateStyle($username, $id)
+	{
+	
 	}
 	
 	public function info($username, $id) {
@@ -101,7 +127,7 @@ class VisualizationController extends \BaseController {
 				if (!$visualization) goto fail;
 				if ($visualization->user != Auth::user()) goto fail;
 				
-				$ret = GoogleFusionTable::retrieve($visualization->fusion_table_id);
+				$ret = GoogleFusionTable::retrieveGFusionAll($visualization->fusion_table_id);
 						
 				if (!$ret) goto fail;
 				return Response::json($ret);
@@ -118,6 +144,7 @@ class VisualizationController extends \BaseController {
 						"zoom" => $visualization->zoom,
 						"centerLatitude" => $visualization->center_latitude,
 						"centerLongitude" => $visualization->center_longitude];
+				// TODO: get column list
 				return Response::json($json);
 			} else
 				goto fail;
@@ -128,7 +155,7 @@ class VisualizationController extends \BaseController {
 		fail: return Response::make('', 400);
 	}
 	
-	private static function prepareColumnList($input_column_list, $input_visualization_type) {
+	private static function prepareColumnListSentToGFusion($input_column_list, $input_visualization_type) {
 		$column_list = [['name'=>'Milestone', 'type'=>'DATETIME'], ['name'=>'Position', 'type'=>'LOCATION']];
 		
 		foreach ($input_column_list as $input_column) {
@@ -147,4 +174,6 @@ class VisualizationController extends \BaseController {
 		
 		return $column_list;
 	}
+	
+	
 }

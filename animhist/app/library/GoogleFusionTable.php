@@ -5,10 +5,15 @@ use Httpful\Request;
 class GoogleFusionTable {
 	
 	private static function getGFusionOAuthAccessToken() {
-		Redis::connection();
-		Redis::auth('78d257f1df9e8afc9d503e4b523ccbab');
-		$access_token = Redis::get('gfusion_access_token');
-		return $access_token;
+		if (Session::get('gfusion_access_token'))
+			return Session::get('gfusion_access_token');
+		else {
+			Redis::connection();
+			Redis::auth('78d257f1df9e8afc9d503e4b523ccbab');
+			$access_token = Redis::get('gfusion_access_token');
+			Session::set('gfusion_access_token', $access_token);
+			return $access_token;
+		}
 		//return 'ya29.1.AADtN_XKOVOHEnoaN7Vzw5nX7XibHSa1IrsMVjFuRH_XjfhE7uQHQRStc3ug8BuOqKnx2w';
 	}
 
@@ -16,6 +21,7 @@ class GoogleFusionTable {
 		Redis::connection();
 		Redis::auth('78d257f1df9e8afc9d503e4b523ccbab');
 		Redis::set('gfusion_access_token', $val);
+		Session::set('gfusion_access_token', $val);
 	}
 	
 	private static function refreshGFusionOAuthAccessToken() {
@@ -68,41 +74,75 @@ class GoogleFusionTable {
 		return false;
 	}
 	
-	public static function retrieve($gf_table_id) {
-		$access_token = self::getGFusionOAuthAccessToken();
-		
-		/*= Get general info =*/
+	public static function retrieveGFusionAll($gf_table_id) {
 		$returnArr = [];
-		$response1 = Request::get('https://www.googleapis.com/fusiontables/v1/tables/'.$gf_table_id)
-							->addHeaders(['Authorization'=>'Bearer '.$access_token])
-							->send();
+
+		$gfusionProps = self::retrieveGFusionProperties($gf_table_id);
+		if (!$gfusionProps) return false;		
+		$returnArr["gfusionProps"] = $gfusionProps;
 		
-		if ($response1->code == 200)
-			$returnArr['fusionProps'] = $response1->body;
-		else if ($response1->code == 401) {
-			$access_token = self::refreshGFusionOAuthAccessToken();
-			$response1 = Request::get('https://www.googleapis.com/fusiontables/v1/tables/'.$gf_table_id)
-							->addHeaders(['Authorization'=>'Bearer '.$access_token])
-							->send();
-			$returnArr['fusionProps'] = $response1->body;
-		} else return false;
-		
-		/*= Get data body =*/
-		$sql = urlencode('SELECT * FROM '.$gf_table_id);
-		$response2 = Request::get('https://www.googleapis.com/fusiontables/v1/query?sql='.$sql)
-							->addHeaders(['Authorization'=>'Bearer '.$access_token])
-							->send();
-		
-		if ($response2->code == 200)
-			$returnArr['fusionData'] = $response2->body;
-		else if ($response1->code == 401) {
-			$access_token = self::refreshGFusionOAuthAccessToken();
-			$response2 = Request::get('https://www.googleapis.com/fusiontables/v1/query?sql='.$sql)
-							->addHeaders(['Authorization'=>'Bearer '.$access_token])
-							->send();
-			$returnArr['fusionData'] = $response2->body;
-		} else return false;
+		$gfusionData = self::retrieveGFusionData($gf_table_id);
+		if (!$gfusionData) return false;
+		$returnArr["gfusionData"] = $gfusionData;
 		
 		return $returnArr;
+	}
+	
+	public static function retrieveGFusionProperties($gf_table_id) {
+		$access_token = self::getGFusionOAuthAccessToken();
+		
+		$response = Request::get('https://www.googleapis.com/fusiontables/v1/tables/'.$gf_table_id)
+					->addHeaders(['Authorization'=>'Bearer '.$access_token])
+					->send();
+		
+		if ($response->code == 200)
+			return $response->body;
+		else if ($response->code == 401) {
+			$access_token = self::refreshGFusionOAuthAccessToken();
+			$response = Request::get('https://www.googleapis.com/fusiontables/v1/tables/'.$gf_table_id)
+							->addHeaders(['Authorization'=>'Bearer '.$access_token])
+							->send();
+			return $response->body;
+		} else return false;
+	}
+	
+	public static function retrieveGFusionData($gf_table_id) {
+		$access_token = self::getGFusionOAuthAccessToken();
+		
+		$sql = 'SELECT * FROM '.$gf_table_id;
+		return self::sendSQLToGFusion($sql);
+	}
+	
+	public static function updateRow($gf_table_id, $row_id, $arr) {
+		if (count($arr) == 0) return true;
+		
+		$setStr = 'SET ';
+		foreach ($arr as $key=>$val) {
+			$str = $key.' = '.$val.',';
+			$setStr .= $str;
+		}
+		$setStr = substr($setStr, 0, -1);
+		
+		$sql = 'UPDATE '.$gf_table_id . $setStr.' WHERE ROWID = '.$row_id;
+		return self::sendSQLToGFusion($sql);
+	}
+	
+	private static function sendSQLToGFusion($sql) {
+		$access_token = self::getGFusionOAuthAccessToken();
+		$encoded_sql = urlencode($sql);
+		
+		$response = Request::get('https://www.googleapis.com/fusiontables/v1/query?sql='.$encoded_sql)
+						->addHeaders(['Authorization'=>'Bearer '.$access_token])
+						->send();
+		
+		if ($response->code == 200)
+			return $response->body;
+		else if ($response->code == 401) {
+			$access_token = self::refreshGFusionOAuthAccessToken();
+			$response = Request::get('https://www.googleapis.com/fusiontables/v1/query?sql='.$encoded_sql)
+							->addHeaders(['Authorization'=>'Bearer '.$access_token])
+							->send();
+			return $response->body;
+		} else return false;
 	}
 }

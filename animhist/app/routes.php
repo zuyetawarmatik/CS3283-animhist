@@ -15,6 +15,7 @@
 
 Route::get('/', function()
 {
+	
 });
 
 Route::get('play', function()
@@ -77,4 +78,8 @@ Route::group(['before' => 'auth', 'prefix' => '{username}'], function(){
 	
 	// /{username}/visualization/{id}/info
 	Route::get('visualization/{id}/info', ['before' => 'csrf', 'as'=> 'visualization.info', 'uses' => 'VisualizationController@info']);
+	
+	// /{username}/visualization/{id}/updatetable
+	Route::put('visualization/{id}/updatetable', ['before' => 'csrf', 'as'=> 'visualization.updateTable', 'uses' => 'VisualizationController@updateTable']);
+	
 });

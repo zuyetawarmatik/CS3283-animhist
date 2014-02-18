@@ -1,8 +1,13 @@
-var fusionProps, fusionData;
+// TODO: data validation: number
+
+var gfusionProps, gfusionData;
 var gridColumns = new Array(), gridData = new Array();
 var slickGrid;
 
+var backupActiveRow, backupActiveCol, backupActiveRowItem, backupCellValue;
+
 var gridOptions = {
+	asyncEditorLoading: false,
 	editable: true,
 	enableAddRow: true,
 	enableCellNavigation: true,
@@ -18,16 +23,16 @@ $(function() {
 
 function parseRetrievedData() {
 	/* Parse column */
-	if (!fusionProps["columns"]) return;
-	for (var i = 0; i < fusionProps["columns"].length; i++) {
-		var columnItem = {id: fusionProps["columns"][i]["columnId"],
-						name: fusionProps["columns"][i]["name"],
-						field: fusionProps["columns"][i]["name"],
+	if (!gfusionProps["columns"]) return;
+	for (var i = 0; i < gfusionProps["columns"].length; i++) {
+		var columnItem = {id: gfusionProps["columns"][i]["columnId"],
+						name: gfusionProps["columns"][i]["name"],
+						field: gfusionProps["columns"][i]["name"],
 						headerCssClass: "table-header",
 						cssClass: "table-cell",
 						minWidth: 150};
 		
-		switch (fusionProps["columns"][i]["type"]) {
+		switch (gfusionProps["columns"][i]["type"]) {
 		case "DATETIME": columnItem["editor"] = Slick.Editors.Date; break;
 		default: columnItem["editor"] = Slick.Editors.Text; break;
 		}
@@ -35,11 +40,11 @@ function parseRetrievedData() {
 	}
 	
 	/* Parse row */
-	if (!fusionProps["rows"]) return;
-	for (var i = 0; i < fusionData["rows"].length; i++) {
+	if (!gfusionData["rows"]) return;
+	for (var i = 0; i < gfusionData["rows"].length; i++) {
 		var rowItem = {};
-		for (var j = 0; j < fusionData["columns"].length; j++) {
-			rowItem[fusionData["columns"][j]] = fusionData["rows"][i][j];
+		for (var j = 0; j < gfusionData["columns"].length; j++) {
+			rowItem[gfusionData["columns"][j]] = gfusionData["rows"][i][j];
 		}
 		gridData.push(rowItem);
 	}
@@ -71,10 +76,13 @@ function retrieveFusionData() {
 				timeout: 500,
 				maxVisible: 1
 			});
-			fusionProps = responseData["fusionProps"];
-			fusionData = responseData["fusionData"];
+			gfusionProps = responseData["gfusionProps"];
+			gfusionData = responseData["gfusionData"];
 			parseRetrievedData();
+			
 			slickGrid = new Slick.Grid("#edit-area-table #table", gridData, gridColumns, gridOptions);
+			slickGrid.onBeforeEditCell.subscribe(slickGrid_BeforeEditCell);
+			slickGrid.onCellChange.subscribe(slickGrid_CellChange);
 		}
 	});
 }
@@ -82,3 +90,24 @@ function retrieveFusionData() {
 $(function() {
 	retrieveFusionData();
 });
+
+function slickGrid_BeforeEditCell(e, args) {
+	backupActiveRow = args["row"];
+	backupActiveCol = args["cell"];
+	backupActiveRowItem = args["item"];
+	backupCellValue = getCellValue(backupActiveRowItem, backupActiveCol);
+}
+
+function slickGrid_CellChange(e, args) {
+	var activeRow = args["row"];
+    var activeCol = args["cell"];
+    var activeRowItem = args["item"]; // the whole row data
+    var cellValue = getCellValue(activeRowItem, activeCol);
+    
+    
+}
+
+function getCellValue(rowItem, col) {
+	var colField = gridColumns[col]["field"];
+	return rowItem[colField];
+}

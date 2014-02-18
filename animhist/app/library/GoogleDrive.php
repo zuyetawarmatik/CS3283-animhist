@@ -5,10 +5,15 @@ use Httpful\Request;
 class GoogleDrive {
 	
 	private static function getGDriveOAuthAccessToken() {
-		Redis::connection();
-		Redis::auth('78d257f1df9e8afc9d503e4b523ccbab');
-		$access_token = Redis::get('gdrive_access_token');
-		return $access_token;
+		if (Session::get('gdrive_access_token'))
+			return Session::get('gdrive_access_token');
+		else {
+			Redis::connection();
+			Redis::auth('78d257f1df9e8afc9d503e4b523ccbab');
+			$access_token = Redis::get('gdrive_access_token');
+			Session::set('gdrive_access_token', $access_token);
+			return $access_token;
+		}
 		//return 'ya29.1.AADtN_XE5XDCH3CaHAnA38J0KlDahzNxaV7RfMffxAdw0Lzvslu0l9w-rW5eGzy5Gj0VOg';
 	}
 
@@ -16,6 +21,7 @@ class GoogleDrive {
 		Redis::connection();
 		Redis::auth('78d257f1df9e8afc9d503e4b523ccbab');
 		Redis::set('gdrive_access_token', $val);
+		Session::set('gdrive_access_token', $val);
 	}
 	
 	private static function getGDriveOAuthRefreshToken() {
