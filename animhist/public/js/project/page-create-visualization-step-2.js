@@ -1,82 +1,50 @@
-var tableProps, tableData;
+var fusionProps, fusionData;
+var gridColumns = new Array(), gridData = new Array();
+var slickGrid;
 
-/*
-var grid;
-
-var columns = [ {
-		id : "title",
-		name : "Title",
-		field : "title",
-		headerCssClass: "table-header",
-		cssClass: "table-cell",
-		minWidth: 150
-	}, {
-		id : "duration",
-		name : "Duration",
-		field : "duration",
-		headerCssClass: "table-header",
-		cssClass: "table-cell",
-		minWidth: 150
-	}, {
-		id : "%",
-		name : "% Complete",
-		field : "percentComplete",
-		headerCssClass: "table-header",
-		cssClass: "table-cell",
-		minWidth: 150
-	}, {
-		id : "start",
-		name : "Start",
-		field : "start",
-		headerCssClass: "table-header",
-		cssClass: "table-cell",
-		minWidth: 150
-	}, {
-		id : "finish",
-		name : "Finish",
-		field : "finish",
-		headerCssClass: "table-header",
-		cssClass: "table-cell",
-		minWidth: 150
-	}, {
-		id : "effort-driven",
-		name : "Effort Driven",
-		field : "effortDriven",
-		headerCssClass: "table-header",
-		cssClass: "table-cell",
-		minWidth: 150
-}];
-
-var options = {
+var gridOptions = {
+	asyncEditorLoading: false,
+	editable: true,
+	enableAddRow: true,
 	enableCellNavigation: true,
 	enableColumnReorder: false,
 	forceFitColumns: true
 };
 
 $(function() {
-	var data = [];
-	for (var i = 0; i < 250; i++) {
-		data[i] = {
-			title : "Task " + i,
-			duration : "5 days",
-			percentComplete : Math.round(Math.random() * 100),
-			start : "01/01/2009",
-			finish : "01/05/2009",
-			effortDriven : (i % 5 == 0)
-		};
-	}
-
-	grid = new Slick.Grid("#edit-area-table #table", data, columns, options);
-});
-
-$(function() {
 	$(window).resize(function() {
-		grid.resizeCanvas();
+		slickGrid.resizeCanvas();
 	});
 });
-*/
 
-function retrieveTableData() {
+function parseRetrievedData() {
+	/* Parse column */
+	for (var i = 0; i < fusionProps["columns"].length; i++) {
+		var columnItem = {id: fusionProps["columns"][i]["columnId"],
+						name: fusionProps["columns"][i]["name"],
+						field: fusionProps["columns"][i]["name"],
+						headerCssClass: "table-header",
+						cssClass: "table-cell",
+						minWidth: 150};
+		
+		switch (fusionProps["columns"][i]["type"]) {
+		case "DATETIME": columnItem["editor"] = Slick.Editors.Date; break;
+		default: columnItem["editor"] = Slick.Editors.Text; break;
+		}
+		gridColumns.push(columnItem);
+	}
+	
+	/* Parse row */
+	for (var i = 0; i < fusionData["rows"].length; i++) {
+		var rowItem = {};
+		for (var j = 0; j < fusionData["columns"].length; j++) {
+			rowItem[fusionData["columns"][j]] = fusionData["rows"][i][j];
+		}
+		gridData.push(rowItem);
+	}
+}
+
+function retrieveFusionData() {
 	$.ajax({
 		processData: false,
 	    contentType: false,
@@ -101,13 +69,14 @@ function retrieveTableData() {
 				timeout: 500,
 				maxVisible: 1
 			});
-			tableProps = responseData["tableProps"];
-			tableData = responseData["tableData"];
+			fusionProps = responseData["fusionProps"];
+			fusionData = responseData["fusionData"];
+			parseRetrievedData();
+			slickGrid = new Slick.Grid("#edit-area-table #table", gridData, gridColumns, gridOptions);
 		}
 	});
 }
 
-
 $(function() {
-	retrieveTableData();
+	retrieveFusionData();
 });

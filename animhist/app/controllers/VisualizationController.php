@@ -106,7 +106,7 @@ class VisualizationController extends \BaseController {
 				if (!$ret) goto fail;
 				return Response::json($ret);
 			} if (Input::get('request') == 'property') {
-				
+				// TODO
 			} else
 				goto fail;
 		} else {

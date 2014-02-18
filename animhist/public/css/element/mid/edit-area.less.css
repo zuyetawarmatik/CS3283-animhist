@@ -36,7 +36,7 @@
 	}
 	
 	#edit-area-table {
-		#timeline-bar {
+		#toolbar {
 			height: 5rem;
 		}
 		
@@ -62,7 +62,28 @@
 }
 
 .table-cell {
-	padding-left: 0.5rem;
-	padding-right: 0.5rem;
 	text-align: right;
+	border-style: solid;
+}
+
+.table-cell.active {
+	border-color: @color-back-blue-button!important;
+	box-shadow: 0 0 2px @color-back-blue-button inset;
+}
+
+.editor-text {
+	padding: 0!important;
+	background: #fff!important;
+	font: inherit!important;
+	width: 100%!important;
+	box-shadow: none!important;
+}
+
+.ui-datepicker-trigger {
+	background: url(../../../js/slickgrid/images/calendar.gif) no-repeat;
+	position: relative;
+	left: -20px;
+	color: rgba(0, 0, 0, 0);
+	display: inline-block;
+	width: 20px;
 }

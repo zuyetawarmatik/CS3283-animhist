@@ -78,13 +78,13 @@ class GoogleFusionTable {
 							->send();
 		
 		if ($response1->code == 200)
-			$returnArr['tableProps'] = $response1->body;
+			$returnArr['fusionProps'] = $response1->body;
 		else if ($response1->code == 401) {
 			$access_token = self::refreshGFusionOAuthAccessToken();
 			$response1 = Request::get('https://www.googleapis.com/fusiontables/v1/tables/'.$gf_table_id)
 							->addHeaders(['Authorization'=>'Bearer '.$access_token])
 							->send();
-			$returnArr['tableProps'] = $response1->body;
+			$returnArr['fusionProps'] = $response1->body;
 		} else return false;
 		
 		/*= Get data body =*/
@@ -94,13 +94,13 @@ class GoogleFusionTable {
 							->send();
 		
 		if ($response2->code == 200)
-			$returnArr['tableData'] = $response2->body;
+			$returnArr['fusionData'] = $response2->body;
 		else if ($response1->code == 401) {
 			$access_token = self::refreshGFusionOAuthAccessToken();
 			$response2 = Request::get('https://www.googleapis.com/fusiontables/v1/query?sql='.$sql)
 							->addHeaders(['Authorization'=>'Bearer '.$access_token])
 							->send();
-			$returnArr['tableData'] = $response2->body;
+			$returnArr['fusionData'] = $response2->body;
 		} else return false;
 		
 		return $returnArr;

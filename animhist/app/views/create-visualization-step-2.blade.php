@@ -15,6 +15,11 @@
 	{{ HTML::script('js/jquery.event.drop-2.2/jquery.event.drop-2.2.js'); }}
 	{{ HTML::script('js/jquery.event.drop-2.2/jquery.event.drop.live-2.2.js'); }}
 	{{ HTML::script('js/slickgrid/slick.core.js'); }}
+	{{ HTML::script('js/slickgrid/plugins/slick.cellrangedecorator.js'); }}
+	{{ HTML::script('js/slickgrid/plugins/slick.cellrangeselector.js'); }}
+	{{ HTML::script('js/slickgrid/plugins/slick.cellselectionmodel.js'); }}
+	{{ HTML::script('js/slickgrid/slick.formatters.js'); }}
+	{{ HTML::script('js/slickgrid/slick.editors.js'); }}
 	{{ HTML::script('js/slickgrid/slick.grid.js'); }}
 	{{ HTML::script('js/project/page-create-visualization-step-2.js'); }}
 	<script>vex.defaultOptions.className = 'vex-theme-wireframe';</script>
@@ -32,7 +37,7 @@
 	<div id="edit-area-visualization">
 	</div>
 	<div id="edit-area-table" class="current">
-		<div id="timeline-bar"></div>
+		<div id="toolbar"></div>
 		<div id="table"></div>
 	</div>
 	<div id="edit-area-style">

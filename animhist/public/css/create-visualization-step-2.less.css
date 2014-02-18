@@ -5,6 +5,7 @@
 @import (less) "element/right/description-area.less.css";
 
 #right-area {
+	z-index: 500;
 	#description-area {
 		top: 2rem;
 		bottom: 0;
