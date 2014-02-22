@@ -1,11 +1,9 @@
 // TODO: data validation: number
 
 var gfusionProps, gfusionData;
-var gridColumns = new Array(), gridData = new Array();
+var gridColumns, gridData;
 var slickGrid;
 var commandQueue = [];
-
-var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 var gridOptions = {
 	asyncEditorLoading: false,
@@ -19,7 +17,7 @@ var gridOptions = {
 
 var dateFormatter = function(row, cell, value, columnDef, dataContext) {
 	date = new Date(value);
-	return date.getDate() + " " + month[date.getMonth()] + " " + date.getFullYear();
+	return date.format("d mmm yyyy");
 };
 
 $(function() {
@@ -29,6 +27,8 @@ $(function() {
 });
 
 function parseRetrievedData() {
+	gridColumns = new Array();
+	gridData = new Array();
 	/* Parse column */
 	if (!gfusionProps["columns"]) return;
 	for (var i = 0; i < gfusionProps["columns"].length; i++) {
@@ -89,6 +89,7 @@ function retrieveFusionData() {
 			
 			slickGrid = new Slick.Grid("#edit-area-table #table", gridData, gridColumns, gridOptions);
 			slickGrid.onCellChange.subscribe(slickGrid_cellChange);
+			slickGrid.onAddNewRow.subscribe(slickGrid_addNewRow);
 		}
 	});
 }
@@ -156,6 +157,59 @@ function slickGrid_cellChange(e, args) {
 				maxVisible: 1
 			});
 		}
+	});
+}
+
+function slickGrid_addNewRow(e, args) {
+	var rowItem = args["item"];
+	var col = args["col"];
+	
+	if (!rowItem["Milestone"]) {
+		var date = new Date(2000, 0, 1);
+		rowItem["Milestone"] = date.format("mm/dd/yyyy");
+	}
+	
+	var pairs = {};
+	$.each(rowItem, function(key, val) {
+		if (val) pairs[key] = val;
+	});
+	
+	$.ajax({
+		processData: false,
+	    contentType: "application/json; charset=utf-8",
+		url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/updatetable",
+		type: "POST",
+		headers: {'X-CSRF-Token': $("[name='hidden-form'] [type='hidden']").val()},
+		data: JSON.stringify({
+			type: "row-insert",
+			colvalPairs: pairs
+		}),
+		global: false,
+		error: function(responseData) {
+			noty({
+				layout: 'bottomCenter',
+				text: "Updating data error, rolling back...",
+				type: 'error',
+				killer: true,
+				timeout: 500,
+				maxVisible: 1
+			});
+		},
+		success: function(responseData) {
+			noty({
+				layout: 'bottomCenter',
+				text: "New row added, refreshing page...",
+				type: 'success',
+				killer: true,
+				timeout: 500,
+				maxVisible: 1,
+				callback: {
+					afterShow: function() {
+						window.location.reload();
+					}
+				}
+			});
+		},
 	});
 }
 

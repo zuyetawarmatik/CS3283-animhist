@@ -108,13 +108,14 @@ class VisualizationController extends \BaseController {
 				case 'row-update':
 					$result = GoogleFusionTable::updateRow($gf_table_id, $original_row_id, $col_val_pairs);
 					break;
-				case 'row-add':
+				case 'row-insert':
+					$result = GoogleFusionTable::insertRow($gf_table_id, $col_val_pairs);
 					break;
 				case 'row-remove':
 					break;
 				case 'column-update':
 					break;
-				case 'column-add':
+				case 'column-insert':
 					break;
 				case 'column-remove':
 					break;

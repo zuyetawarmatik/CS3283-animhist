@@ -133,6 +133,21 @@ class GoogleFusionTable {
 		return self::sendSQLToGFusion($sql, 'post');
 	}
 	
+	public static function insertRow($gf_table_id, $arr) {
+		if (count($arr) == 0) return true;
+		
+		$colStr = '('; $valStr = '(';
+		foreach ($arr as $key=>$val) {
+			$colStr .= "'".$key."',";
+			$valStr .= "'".$val."',";
+		}
+		$colStr = substr($colStr, 0, -1); $valStr = substr($valStr, 0, -1);
+		$colStr .= ')'; $valStr .= ')';
+		
+		$sql = 'INSERT INTO '.$gf_table_id.' '.$colStr.' VALUES '.$valStr;
+		return self::sendSQLToGFusion($sql, 'post');
+	}
+	
 	private static function sendSQLToGFusion($sql, $method) {
 		$access_token = self::getGFusionOAuthAccessToken();
 		$encoded_sql = urlencode($sql);

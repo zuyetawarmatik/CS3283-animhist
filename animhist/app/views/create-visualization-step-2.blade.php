@@ -21,6 +21,7 @@
 	{{ HTML::script('js/slickgrid/slick.formatters.js'); }}
 	{{ HTML::script('js/slickgrid/slick.editors.js'); }}
 	{{ HTML::script('js/slickgrid/slick.grid.js'); }}
+	{{ HTML::script('js/date-format.js'); }}
 	{{ HTML::script('js/project/page-create-visualization-step-2.js'); }}
 	<script>vex.defaultOptions.className = 'vex-theme-wireframe';</script>
 @stop
