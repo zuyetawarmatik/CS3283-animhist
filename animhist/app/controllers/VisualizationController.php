@@ -9,16 +9,12 @@ class VisualizationController extends \BaseController {
 				if (Input::has('vi_id')) {
 					$vi_id = Input::get('vi_id');
 					$visualization = Visualization::find($vi_id);
-					if ($visualization) {
-						if ($visualization->user != Auth::user()) goto fail;
-						if (!$visualization->published) {
-							if (Input::get('ajax')) {
-								return ViewResponseUtility::makeSubView('create-visualization-step-2', 'New Visualization: <span style="font-weight:300">Step 2 (Edit And Publish The Visualization)</span>', ['visualization'=>$visualization]);
-							} else {
-								return ViewResponseUtility::makeBaseView(URL::route('visualization.showCreate', [$username]), Constant::SIDEBAR_MYVISUALIZATION, [], ['step'=>2, 'vi_id'=>$vi_id]);
-							}							
-						} else goto fail;
-					} else goto fail;
+					if (!$visualization || $visualization->user != Auth::user() || $visualization->published) goto fail;
+					if (Input::get('ajax')) {
+						return ViewResponseUtility::makeSubView('create-visualization-step-2', 'New Visualization: <span style="font-weight:300">Step 2 (Edit And Publish The Visualization)</span>', ['visualization'=>$visualization]);
+					} else {
+						return ViewResponseUtility::makeBaseView(URL::route('visualization.showCreate', [$username]), Constant::SIDEBAR_MYVISUALIZATION, [], ['step'=>2, 'vi_id'=>$vi_id]);
+					}
 				} else goto fail;
 			} else {
 				if (Input::get('ajax')) {
@@ -94,25 +90,42 @@ class VisualizationController extends \BaseController {
 		
 	}
 	
+	/* Require JSON request */
 	public function updateTable($username, $id)
 	{
 		if (Auth::user()->username == $username) {
-			switch (Input::get('type')) {
+			if (!Input::isJson()) goto fail;
+			
+			$visualization = Visualization::find($id);
+			if (!$visualization || $visualization->user != Auth::user()) goto fail;
+			$gf_table_id = $visualization->fusion_table_id;
+			
+			$original_row_id = Input::json('row');
+			$col_val_pairs = Input::json('colvalPairs');
+			
+			$result;
+			switch (Input::json('type')) {
 				case 'row-update':
-					
+					$result = GoogleFusionTable::updateRow($gf_table_id, $original_row_id, $col_val_pairs);
+					break;
 				case 'row-add':
-					
+					break;
 				case 'row-remove':
-				
+					break;
 				case 'column-update':
-				
+					break;
 				case 'column-add':
-					
+					break;
 				case 'column-remove':
+					break;
 			}
+			if (!$result) goto fail;
+			return Response::make('', 200);
 		} else {
 			return Response::make('', 401);
 		}
+		
+		fail: return Response::make('', 400);
 	}
 	
 	public function updateStyle($username, $id)
@@ -124,11 +137,9 @@ class VisualizationController extends \BaseController {
 		if (Auth::user()->username == $username) {
 			if (Input::get('request') == 'data') {
 				$visualization = Visualization::find($id);
-				if (!$visualization) goto fail;
-				if ($visualization->user != Auth::user()) goto fail;
+				if (!$visualization || $visualization->user != Auth::user()) goto fail;
 				
 				$ret = GoogleFusionTable::retrieveGFusionAll($visualization->fusion_table_id);
-						
 				if (!$ret) goto fail;
 				return Response::json($ret);
 			} if (Input::get('request') == 'property') {

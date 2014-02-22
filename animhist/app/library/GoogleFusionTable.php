@@ -5,7 +5,7 @@ use Httpful\Request;
 class GoogleFusionTable {
 	
 	private static function getGFusionOAuthAccessToken() {
-		if (Session::get('gfusion_access_token'))
+		if (Session::has('gfusion_access_token'))
 			return Session::get('gfusion_access_token');
 		else {
 			Redis::connection();
@@ -107,31 +107,37 @@ class GoogleFusionTable {
 	}
 	
 	public static function retrieveGFusionData($gf_table_id) {
-		$access_token = self::getGFusionOAuthAccessToken();
-		
 		$sql = 'SELECT * FROM '.$gf_table_id;
-		return self::sendSQLToGFusion($sql);
+		return self::sendSQLToGFusion($sql, 'get');
 	}
 	
-	public static function updateRow($gf_table_id, $row_id, $arr) {
+	private static function getGFusionRowIDForOriginalRowID($gf_table_id, $original_row_id) {
+		$sql = 'SELECT ROWID FROM '.$gf_table_id;
+		$response_body = self::sendSQLToGFusion($sql, 'get');
+		$rows = $response_body->rows;
+		return $rows[$original_row_id][0];
+	}
+	
+	public static function updateRow($gf_table_id, $original_row_id, $arr) {
 		if (count($arr) == 0) return true;
-		
-		$setStr = 'SET ';
+
+		$setStr = ' SET ';
 		foreach ($arr as $key=>$val) {
-			$str = $key.' = '.$val.',';
+			$str = "'".$key."' = '".$val."',";
 			$setStr .= $str;
 		}
 		$setStr = substr($setStr, 0, -1);
 		
-		$sql = 'UPDATE '.$gf_table_id . $setStr.' WHERE ROWID = '.$row_id;
-		return self::sendSQLToGFusion($sql);
+		$gfusion_row_id = self::getGFusionRowIDForOriginalRowID($gf_table_id, $original_row_id);
+		$sql = 'UPDATE '.$gf_table_id . $setStr." WHERE ROWID = '".$gfusion_row_id."'";
+		return self::sendSQLToGFusion($sql, 'post');
 	}
 	
-	private static function sendSQLToGFusion($sql) {
+	private static function sendSQLToGFusion($sql, $method) {
 		$access_token = self::getGFusionOAuthAccessToken();
 		$encoded_sql = urlencode($sql);
 		
-		$response = Request::get('https://www.googleapis.com/fusiontables/v1/query?sql='.$encoded_sql)
+		$response = Request::$method('https://www.googleapis.com/fusiontables/v1/query?sql='.$encoded_sql)
 						->addHeaders(['Authorization'=>'Bearer '.$access_token])
 						->send();
 		
@@ -139,7 +145,7 @@ class GoogleFusionTable {
 			return $response->body;
 		else if ($response->code == 401) {
 			$access_token = self::refreshGFusionOAuthAccessToken();
-			$response = Request::get('https://www.googleapis.com/fusiontables/v1/query?sql='.$encoded_sql)
+			$response = Request::$method('https://www.googleapis.com/fusiontables/v1/query?sql='.$encoded_sql)
 							->addHeaders(['Authorization'=>'Bearer '.$access_token])
 							->send();
 			return $response->body;

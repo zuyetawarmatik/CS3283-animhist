@@ -80,6 +80,6 @@ Route::group(['before' => 'auth', 'prefix' => '{username}'], function(){
 	Route::get('visualization/{id}/info', ['before' => 'csrf', 'as'=> 'visualization.info', 'uses' => 'VisualizationController@info']);
 	
 	// /{username}/visualization/{id}/updatetable
-	Route::put('visualization/{id}/updatetable', ['before' => 'csrf', 'as'=> 'visualization.updateTable', 'uses' => 'VisualizationController@updateTable']);
+	Route::post('visualization/{id}/updatetable', ['before' => 'csrf', 'as'=> 'visualization.updateTable', 'uses' => 'VisualizationController@updateTable']);
 	
 });
