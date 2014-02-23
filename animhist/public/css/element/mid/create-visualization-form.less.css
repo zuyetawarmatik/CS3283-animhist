@@ -62,6 +62,7 @@
 							li.btn-group {
 								.column-edit-btn, .column-delete-btn, .column-add-btn, .column-disable-btn {
 									font-family: Conv_icomoon;
+									font-weight: normal;
 								}
 							}
 						}

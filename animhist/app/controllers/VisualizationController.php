@@ -111,13 +111,14 @@ class VisualizationController extends \BaseController {
 				case 'row-insert':
 					$result = GoogleFusionTable::insertRow($gf_table_id, $col_val_pairs);
 					break;
-				case 'row-remove':
+				case 'row-delete':
+					$result = GoogleFusionTable::deleteRows($gf_table_id, $row_id);
 					break;
 				case 'column-update':
 					break;
 				case 'column-insert':
 					break;
-				case 'column-remove':
+				case 'column-delete':
 					break;
 			}
 			if (!$result) goto fail;

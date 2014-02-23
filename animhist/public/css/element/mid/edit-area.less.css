@@ -9,6 +9,7 @@
 			
 			li {
 				display: inline-block;
+				margin-left: -1px;
 				a {
 					display: inline-block;
 					height: 2rem;
@@ -38,6 +39,16 @@
 	#edit-area-table {
 		#toolbar {
 			height: 5rem;
+			background: @color-back-top-bar; 
+			
+			button {
+				width: 5rem;
+				height: 100%;
+				border: none;
+				i {
+					margin: 0;
+				}
+			}
 		}
 		
 		#table {

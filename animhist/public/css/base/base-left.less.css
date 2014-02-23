@@ -46,6 +46,7 @@
 				height: 2rem;
 				padding: 3rem 0;
 				font-family: Conv_icomoon;
+				font-weight: normal;
 				color: @color-type-link;
 				
 				&:hover {

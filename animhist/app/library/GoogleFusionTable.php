@@ -149,6 +149,23 @@ class GoogleFusionTable {
 		return self::sendSQLToGFusion($sql, 'post');
 	}
 	
+	public static function deleteRows($gf_table_id, $rows_arr) {
+		if (count($rows_arr) == 0) return true;
+		
+		$rowsID = self::retrieveGFusionRowsID($gf_table_id);
+		$rowsCount = count($rowsID->rows);
+		if (count($rows_arr) == $rowsCount) {
+			$sql = "DELETE FROM ".$gf_table_id;
+			self::sendSQLToGFusion($sql, 'post');
+		} else {
+			foreach ($rows_arr as $row_id) {
+				$sql = "DELETE FROM ".$gf_table_id." WHERE ROWID = '".$row_id."';";
+				self::sendSQLToGFusion($sql, 'post');
+			}
+		}
+		return true;
+	}
+	
 	private static function sendSQLToGFusion($sql, $method) {
 		$access_token = self::getGFusionOAuthAccessToken();
 		$encoded_sql = urlencode($sql);

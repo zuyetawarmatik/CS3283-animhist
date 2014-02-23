@@ -6,6 +6,7 @@
 		padding: 3rem 0;
 		background: @color-back-like-button;
 		font-family: Conv_icomoon;
+		//font-weight: normal;
 		
 		&:hover {
 			background: darken(@color-back-like-button, 10%);

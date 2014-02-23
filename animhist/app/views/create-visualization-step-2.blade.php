@@ -38,7 +38,9 @@
 	<div id="edit-area-visualization">
 	</div>
 	<div id="edit-area-table" class="current">
-		<div id="toolbar"></div>
+		<div id="toolbar">	
+			<button id="delete-row-btn" title="Delete Row(s)" disabled><i>&#57597;</i></button>
+		</div>
 		<div id="table"></div>
 	</div>
 	<div id="edit-area-style">

@@ -15,6 +15,11 @@ var gridOptions = {
 };
 
 var dateFormatter = function(row, cell, value, columnDef, dataContext) {
+	/* Fix issue for year before 1000 AD */
+	var res = value.split("/");
+	if (res.length == 1 && res[0] < 1000) value = "1/1/" + value;
+	else if (res.length == 2 && res[1] < 1000) value = "1/" + value; 
+	
 	date = new Date(value);
 	switch (viProps["milestoneFormat"]) {
 	case "day": return date.format("d mmm yyyy");
@@ -36,12 +41,6 @@ var numberValidator = function(value) {
 		};
 	}
 }
-
-$(function() {
-	$(window).resize(function() {
-		slickGrid.resizeCanvas();
-	});
-});
 
 function parseRetrievedData() {
 	gridColumns = new Array();
@@ -118,12 +117,18 @@ function retrieveFusionData() {
 			slickGrid.registerPlugin(checkboxSelector);
 			slickGrid.onCellChange.subscribe(slickGrid_cellChange);
 			slickGrid.onAddNewRow.subscribe(slickGrid_addNewRow);
+			slickGrid.onSelectedRowsChanged.subscribe(slickGrid_selectedRowsChanged);
 		}
 	});
 }
 
 $(function() {
 	retrieveFusionData();
+	
+	$(window).resize(function() {
+		if (slickGrid)
+			slickGrid.resizeCanvas();
+	});
 });
 
 function slickGrid_queueAndExecuteCommand(item, column, editCommand) {
@@ -268,6 +273,75 @@ function slickGrid_addNewRow(e, args) {
 		},
 	});
 }
+
+function slickGrid_selectedRowsChanged(e, args) {
+	var selectedRows = args["rows"];
+	if (!selectedRows.length) $("#delete-row-btn").attr("disabled", true);
+	else $("#delete-row-btn").attr("disabled", false);
+}
+
+$(function() {
+	$("#delete-row-btn").click(function() {
+		var rows = slickGrid.getSelectedRows();
+		var rowsID = [];
+		$.each(rows, function(i, val) {
+			rowsID.push(gridData[val]["ROWID"]);
+		});
+		
+	    $.ajax({
+			processData: false,
+		    contentType: "application/json; charset=utf-8",
+			url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/updatetable",
+			type: "POST",
+			headers: {'X-CSRF-Token': $("[name='hidden-form'] [type='hidden']").val()},
+			data: JSON.stringify({
+				type: "row-delete",
+				row: rowsID
+			}),
+			global: false,
+			beforeSend: function() {
+				noty({
+					layout: 'bottomCenter',
+					text: '.................',
+					type: 'information',
+					animation: {
+						open: {height: 'toggle'},
+						close: {height: 'toggle'},
+						easing: 'swing',
+					    speed: 300
+					},
+					maxVisible: 1
+				});
+			},
+			error: function(responseData) {
+				noty({
+					layout: 'bottomCenter',
+					text: "Updating data error, rolling back...",
+					type: 'error',
+					killer: true,
+					timeout: 500,
+					maxVisible: 1
+				});
+			},
+			success: function(responseData) {
+				noty({
+					layout: 'bottomCenter',
+					text: "Rows removed, refreshing page...",
+					type: 'success',
+					killer: true,
+					timeout: 500,
+					maxVisible: 1,
+					callback: {
+						afterShow: function() {
+							$("#delete-row-btn").attr("disabled", true);
+							window.location.reload();
+						}
+					}
+				});
+			}
+		});
+	});
+});
 
 function getCellValue(rowItem, col) {
 	var colField = gridColumns[col]["field"];
