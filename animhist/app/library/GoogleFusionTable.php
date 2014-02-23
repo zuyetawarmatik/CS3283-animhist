@@ -174,7 +174,7 @@ class GoogleFusionTable {
 						->addHeaders(['Authorization'=>'Bearer '.$access_token])
 						->send();
 		
-		if ($response->code == 200)
+		if ($response->code >= 200 && $response->code < 300)
 			return $response->body;
 		else if ($response->code == 401) {
 			$access_token = self::refreshGFusionOAuthAccessToken();

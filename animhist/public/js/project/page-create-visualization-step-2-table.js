@@ -69,6 +69,18 @@ function parseRetrievedData() {
 		gridColumns.push(columnItem);
 	}
 	
+	/* Move the HTMLData column to third place */
+	var htmlDataIndex = -1;
+	for (var i = 0; i < gfusionProps["columns"].length; i++) {
+		if (gfusionProps["columns"][i]["name"].toLowerCase() == "htmldata" && gfusionProps["columns"][i]["type"] == "STRING") {
+			htmlDataIndex = i; break;
+		}
+	}
+	if (htmlDataIndex != -1) {
+		var tempArr = gridColumns.splice(htmlDataIndex + 1, 1); // Need +1 as the first column is checkbox column
+		gridColumns.splice(3, 0, tempArr[0]);
+	}
+	
 	/* Parse row */
 	if (!gfusionData["rows"]) return;
 	for (var i = 0; i < gfusionData["rows"].length; i++) {

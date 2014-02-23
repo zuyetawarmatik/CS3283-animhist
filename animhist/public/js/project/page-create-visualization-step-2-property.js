@@ -57,3 +57,9 @@ function addColumnListButtons() {
 $(function() {
 	retrieveVisualizationProperty();
 });
+
+$(function() {
+	$("#column-list").on("click", ".column-delete-btn", function() {
+		
+	});
+});
