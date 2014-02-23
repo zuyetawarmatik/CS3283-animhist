@@ -1,6 +1,42 @@
 var viProps;
 var columnList;
 
+var ajaxTemplate;
+$(function(){
+	ajaxTemplate = {
+		processData: false,
+	    contentType: "application/json; charset=utf-8",
+	    url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/updatetable",
+		type: "POST",
+		headers: {'X-CSRF-Token': $("[name='hidden-form'] [type='hidden']").val()},
+		global: false,
+		beforeSend: function() {
+			noty({
+				layout: 'bottomCenter',
+				text: '.................',
+				type: 'information',
+				animation: {
+					open: {height: 'toggle'},
+					close: {height: 'toggle'},
+					easing: 'swing',
+				    speed: 300
+				},
+				maxVisible: 1
+			});
+		},
+		error: function(responseData) {
+			noty({
+				layout: 'bottomCenter',
+				text: "Updating data error, rolling back...",
+				type: 'error',
+				killer: true,
+				timeout: 500,
+				maxVisible: 1
+			});
+		}
+	};
+});
+
 function retrieveVisualizationProperty() {
 	$.ajax({
 		processData: false,
@@ -61,45 +97,15 @@ $(function() {
 $(function() {
 	$("#column-list").on("click", ".column-delete-btn", function() {
 		var index = $(this).parent().index();
-		$.ajax({
-			processData: false,
-		    contentType: "application/json; charset=utf-8",
-			url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/updatetable",
-			type: "POST",
-			headers: {'X-CSRF-Token': $("[name='hidden-form'] [type='hidden']").val()},
+		var ajaxVar = $.extend({}, ajaxTemplate, {
 			data: JSON.stringify({
 				type: "column-delete",
 				col: columnList[index]["column-id"]
 			}),
-			global: false,
-			beforeSend: function() {
-				noty({
-					layout: 'bottomCenter',
-					text: '.................',
-					type: 'information',
-					animation: {
-						open: {height: 'toggle'},
-						close: {height: 'toggle'},
-						easing: 'swing',
-					    speed: 300
-					},
-					maxVisible: 1
-				});
-			},
-			error: function(responseData) {
-				noty({
-					layout: 'bottomCenter',
-					text: "Updating data error, rolling back...",
-					type: 'error',
-					killer: true,
-					timeout: 500,
-					maxVisible: 1
-				});
-			},
 			success: function(responseData) {
 				noty({
 					layout: 'bottomCenter',
-					text: "New row added, refreshing page...",
+					text: "Column removed, refreshing page...",
 					type: 'success',
 					killer: true,
 					timeout: 500,
@@ -110,7 +116,37 @@ $(function() {
 						}
 					}
 				});
-			},
+			}
 		});
+		
+		$.ajax(ajaxVar);
+	});
+	
+	$("#column-list").on("click", ".column-disable-btn", function() {
+		var index = $(this).parent().index();
+		if (!columnList[index]["disabled"]) {
+			var ajaxVar = $.extend({}, ajaxTemplate, {
+				data: JSON.stringify({
+					type: "column-delete",
+					col: columnList[index]["column-id"]
+				}),
+				success: function(responseData) {
+					noty({
+						layout: 'bottomCenter',
+						text: "Column removed, refreshing page...",
+						type: 'success',
+						killer: true,
+						timeout: 500,
+						maxVisible: 1,
+						callback: {
+							afterShow: function() {
+								window.location.reload();
+							}
+						}
+					});
+				}
+			});
+			$.ajax(ajaxVar);
+		} else;
 	});
 });
