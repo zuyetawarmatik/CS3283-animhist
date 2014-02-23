@@ -85,6 +85,10 @@ class GoogleFusionTable {
 		if (!$gfusionData) return false;
 		$returnArr["gfusionData"] = $gfusionData;
 		
+		$gfusionRowsID = self::retrieveGFusionRowsID($gf_table_id);
+		if (!$gfusionRowsID) return false;
+		$returnArr["gfusionRowsID"] = $gfusionRowsID;
+		
 		return $returnArr;
 	}
 	
@@ -111,14 +115,12 @@ class GoogleFusionTable {
 		return self::sendSQLToGFusion($sql, 'get');
 	}
 	
-	private static function getGFusionRowIDForOriginalRowID($gf_table_id, $original_row_id) {
+	public static function retrieveGFusionRowsID($gf_table_id) {
 		$sql = 'SELECT ROWID FROM '.$gf_table_id;
-		$response_body = self::sendSQLToGFusion($sql, 'get');
-		$rows = $response_body->rows;
-		return $rows[$original_row_id][0];
+		return self::sendSQLToGFusion($sql, 'get');
 	}
-	
-	public static function updateRow($gf_table_id, $original_row_id, $arr) {
+
+	public static function updateRow($gf_table_id, $row_id, $arr) {
 		if (count($arr) == 0) return true;
 
 		$setStr = ' SET ';
@@ -127,9 +129,8 @@ class GoogleFusionTable {
 			$setStr .= $str;
 		}
 		$setStr = substr($setStr, 0, -1);
-		
-		$gfusion_row_id = self::getGFusionRowIDForOriginalRowID($gf_table_id, $original_row_id);
-		$sql = 'UPDATE '.$gf_table_id . $setStr." WHERE ROWID = '".$gfusion_row_id."'";
+
+		$sql = 'UPDATE '.$gf_table_id . $setStr." WHERE ROWID = '".$row_id."'";
 		return self::sendSQLToGFusion($sql, 'post');
 	}
 	

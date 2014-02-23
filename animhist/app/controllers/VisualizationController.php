@@ -100,13 +100,13 @@ class VisualizationController extends \BaseController {
 			if (!$visualization || $visualization->user != Auth::user()) goto fail;
 			$gf_table_id = $visualization->fusion_table_id;
 			
-			$original_row_id = Input::json('row');
+			$row_id = Input::json('row');
 			$col_val_pairs = Input::json('colvalPairs');
 			
 			$result;
 			switch (Input::json('type')) {
 				case 'row-update':
-					$result = GoogleFusionTable::updateRow($gf_table_id, $original_row_id, $col_val_pairs);
+					$result = GoogleFusionTable::updateRow($gf_table_id, $row_id, $col_val_pairs);
 					break;
 				case 'row-insert':
 					$result = GoogleFusionTable::insertRow($gf_table_id, $col_val_pairs);
@@ -136,14 +136,15 @@ class VisualizationController extends \BaseController {
 	
 	public function info($username, $id) {
 		if (Auth::user()->username == $username) {
+			
+			$visualization = Visualization::find($id);
+			if (!$visualization || $visualization->user != Auth::user()) goto fail;
+			
 			if (Input::get('request') == 'data') {
-				$visualization = Visualization::find($id);
-				if (!$visualization || $visualization->user != Auth::user()) goto fail;
-				
 				$ret = GoogleFusionTable::retrieveGFusionAll($visualization->fusion_table_id);
 				if (!$ret) goto fail;
 				return Response::json($ret);
-			} if (Input::get('request') == 'property') {
+			} else if (Input::get('request') == 'property') {
 				$json = ["displayName" => $visualization->display_name,
 						"username" => $visualization->user->username,
 						"type" => $visualization->type,
