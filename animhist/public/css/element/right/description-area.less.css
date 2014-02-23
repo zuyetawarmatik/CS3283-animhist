@@ -1,7 +1,8 @@
 #right-area {
 	#description-area {
 		position: absolute;
-		bottom: 10rem;
+		top: 2rem;
+		bottom: 1rem;
 		left: 3rem;
 		right: 3rem;
 		overflow-y: auto;

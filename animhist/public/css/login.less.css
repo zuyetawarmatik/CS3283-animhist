@@ -4,10 +4,7 @@
 @import (less) "element/right/description-area.less.css";
 
 #right-area {
-	#description-area {
-		top: 2rem;
-		bottom: 0;
-		
+	#description-area {	
 		#register-btn {
 			margin-top: 2rem;
 			width: 100%;

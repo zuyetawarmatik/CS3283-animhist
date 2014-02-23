@@ -2,10 +2,3 @@
 @import (less) "element/top-bar.less.css";
 @import (less) "element/mid/register-form.less.css";
 @import (less) "element/right/description-area.less.css";
-
-#right-area {
-	#description-area {
-		top: 2rem;
-		bottom: 0;
-	}
-}
