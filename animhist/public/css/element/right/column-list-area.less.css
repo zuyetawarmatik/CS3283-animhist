@@ -1,0 +1,59 @@
+#column-list-area {
+	position: absolute;
+	top: 2rem;
+	bottom: 0;
+	left: 3rem;
+	right: 3rem;
+	
+	span.h2 {
+		display: block;
+		margin-top: 2rem;
+	}
+	
+	#column-list {
+		position: absolute;
+		width: 100%;
+		top: 9rem;
+		bottom: 0;
+		overflow-y: auto;
+		overflow-x: hidden;
+		
+		li.btn-group {
+			display: block;
+			white-space: nowrap;
+			margin-right: 0;
+			
+			button:first-child {
+				text-align: left;
+				width: 100%;
+				padding: 0 1rem;
+				box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis; 
+			}
+			
+			button:last-child:not(:first-child) {
+				position: absolute;
+				right: 0;
+			}
+			
+			button:nth-last-child(2):not(:first-child) {
+				position: absolute;
+				right: 4rem;
+			}
+			
+			.column-edit-btn, .column-delete-btn, .column-add-btn, .column-disable-btn {
+				width: 4rem;
+				font-family: Conv_icomoon;
+				font-weight: normal;
+			}
+			
+			.column-add-btn {
+				text-align: center!important;
+			}
+		}
+	}	
+}

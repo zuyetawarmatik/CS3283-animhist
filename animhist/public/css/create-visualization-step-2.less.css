@@ -2,12 +2,8 @@
 @import (less) "element/top-bar.less.css";
 @import (less) "element/mid/vex-popup.less.css";
 @import (less) "element/mid/edit-area.less.css";
-@import (less) "element/right/description-area.less.css";
+@import (less) "element/right/column-list-area.less.css";
 
 #right-area {
 	z-index: 500;
-	#description-area {
-		top: 2rem;
-		bottom: 0;
-	}
 }

@@ -158,7 +158,8 @@ class VisualizationController extends \BaseController {
 						"zoom" => $visualization->zoom,
 						"centerLatitude" => $visualization->center_latitude,
 						"centerLongitude" => $visualization->center_longitude];
-				// TODO: get column list
+				$gfusion_props = GoogleFusionTable::retrieveGFusionProperties($visualization->fusion_table_id);
+				$json["columnList"] = self::prepareColumnListSentToClient($gfusion_props->columns, $visualization->type, $visualization->milestone_format);
 				return Response::json($json);
 			} else
 				goto fail;
@@ -187,6 +188,31 @@ class VisualizationController extends \BaseController {
 		}
 		
 		return $column_list;
+	}
+	
+	private static function prepareColumnListSentToClient($gfusion_column_list, $visualization_type, $milestone_format) {
+		$result = [];
+		$result[] = ['caption'=>'Milestone', 'type-caption'=>ucfirst($milestone_format), 'editable'=>true];
+		$result[] = ['caption'=>'Position', 'type-caption'=>'Location: KML or Lat/Long or String'];
+		
+		$has_html_data = false;
+		foreach ($gfusion_column_list as $column) {
+			if ($column->name == 'HTMLData' && $column->type == 'STRING') {
+				$has_html_data = true;
+				break;
+			}
+		}
+		
+		$result[] = ['caption'=>'HTMLData', 'type-caption'=>'String', 'disable'=>true, 'disabled'=>!$has_html_data];
+		
+		foreach ($gfusion_column_list as $column) {
+			if ($column->type == 'NUMBER')
+				$result[] = ['caption'=>$column->name, 'type-caption'=>'Number', 'editable'=>true, 'deletable'=>true];
+			else if ($column->type == 'STRING' && $column->name != 'HTMLData')
+				$result[] = ['caption'=>$column->name, 'type-caption'=>'String', 'editable'=>true, 'deletable'=>true];
+		}
+		
+		return $result;
 	}
 	
 	

@@ -1,6 +1,6 @@
 var columnList = [
                   {"caption":"Milestone", "type-caption":"Year", "editable":true},
-                  {"caption":"Position", "type-caption":"Location: KML or Lat/Long"},
+                  {"caption":"Position", "type-caption":"Location: KML or Lat/Long or String"},
                   {"caption":"HTMLData", "type-caption":"String", "disable":true, "disabled":false},
                   {"caption":"New Valuable", "type-caption":"Number", "editable":true, "deletable":true}
                  ];
