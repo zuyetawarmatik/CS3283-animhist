@@ -1,6 +1,7 @@
 var gfusionProps, gfusionData, gfusionRowsID;
 var gridColumns, gridData;
 var slickGrid;
+var checkboxSelector;
 var commandQueue = [];
 
 var gridOptions = {
@@ -47,6 +48,12 @@ function parseRetrievedData() {
 	gridData = new Array();
 	/* Parse column */
 	if (!gfusionProps["columns"]) return;
+	
+	checkboxSelector = new Slick.CheckboxSelectColumn();
+	gridColumns.push(checkboxSelector.getColumnDefinition());
+	gridColumns[0]["headerCssClass"] = "table-header";
+	gridColumns[0]["cssClass"] = "table-cell-checkbox";
+	
 	for (var i = 0; i < gfusionProps["columns"].length; i++) {
 		var columnItem = {id: gfusionProps["columns"][i]["columnId"],
 						name: gfusionProps["columns"][i]["name"],
@@ -107,6 +114,8 @@ function retrieveFusionData() {
 			parseRetrievedData();
 			
 			slickGrid = new Slick.Grid("#edit-area-table #table", gridData, gridColumns, gridOptions);
+			slickGrid.setSelectionModel(new Slick.RowSelectionModel({selectActiveRow: false}));
+			slickGrid.registerPlugin(checkboxSelector);
 			slickGrid.onCellChange.subscribe(slickGrid_cellChange);
 			slickGrid.onAddNewRow.subscribe(slickGrid_addNewRow);
 		}

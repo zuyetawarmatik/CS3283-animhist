@@ -66,9 +66,18 @@
 	border-style: solid;
 }
 
+.table-cell-checkbox {
+	text-align: center;
+	border-style: solid;
+}
+
 .table-cell.active {
 	border-color: @color-back-blue-button!important;
 	box-shadow: 0 0 2px @color-back-blue-button inset;
+}
+
+.table-cell-checkbox.selected, .table-cell.selected {
+	background: beige;
 }
 
 .editor-text {
