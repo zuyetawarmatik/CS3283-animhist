@@ -101,6 +101,7 @@ class VisualizationController extends \BaseController {
 			$gf_table_id = $visualization->fusion_table_id;
 			
 			$row_id = Input::json('row');
+			$col_id = Input::json('col');
 			$col_val_pairs = Input::json('colvalPairs');
 			
 			$result;
@@ -119,6 +120,7 @@ class VisualizationController extends \BaseController {
 				case 'column-insert':
 					break;
 				case 'column-delete':
+					$result = GoogleFusionTable::deleteColumn($gf_table_id, $col_id);
 					break;
 			}
 			if (!$result) goto fail;
@@ -192,24 +194,26 @@ class VisualizationController extends \BaseController {
 	
 	private static function prepareColumnListSentToClient($gfusion_column_list, $visualization_type, $milestone_format) {
 		$result = [];
-		$result[] = ['caption'=>'Milestone', 'type-caption'=>ucfirst($milestone_format), 'editable'=>true];
-		$result[] = ['caption'=>'Position', 'type-caption'=>'Location: KML or Lat/Long or String'];
+		$result[] = ['caption'=>'Milestone', 'type-caption'=>ucfirst($milestone_format), 'editable'=>true, 'column-id'=>0];
+		$result[] = ['caption'=>'Position', 'type-caption'=>'Location: KML or Lat/Long or String', 'column-id'=>1];
 		
-		$has_html_data = false;
+		$has_html_data = false; $html_data_col_id;
 		foreach ($gfusion_column_list as $column) {
 			if ($column->name == 'HTMLData' && $column->type == 'STRING') {
 				$has_html_data = true;
+				$html_data_col_id = $column->columnId;
 				break;
 			}
 		}
-		
-		$result[] = ['caption'=>'HTMLData', 'type-caption'=>'String', 'disable'=>true, 'disabled'=>!$has_html_data];
+		$html_data_item = ['caption'=>'HTMLData', 'type-caption'=>'String', 'disable'=>true, 'disabled'=>!$has_html_data];
+		if ($has_html_data) $html_data_item['column-id'] = $html_data_col_id;
+		$result[] = $html_data_item;
 		
 		foreach ($gfusion_column_list as $column) {
 			if ($column->type == 'NUMBER')
-				$result[] = ['caption'=>$column->name, 'type-caption'=>'Number', 'editable'=>true, 'deletable'=>true];
+				$result[] = ['caption'=>$column->name, 'type-caption'=>'Number', 'editable'=>true, 'deletable'=>true, 'column-id'=>$column->columnId];
 			else if ($column->type == 'STRING' && $column->name != 'HTMLData')
-				$result[] = ['caption'=>$column->name, 'type-caption'=>'String', 'editable'=>true, 'deletable'=>true];
+				$result[] = ['caption'=>$column->name, 'type-caption'=>'String', 'editable'=>true, 'deletable'=>true, 'column-id'=>$column->columnId];
 		}
 		
 		return $result;

@@ -166,6 +166,24 @@ class GoogleFusionTable {
 		return true;
 	}
 	
+	public static function deleteColumn($gf_table_id, $col_id) {
+		$access_token = self::getGFusionOAuthAccessToken();
+		
+		$response = Request::delete('https://www.googleapis.com/fusiontables/v1/tables/'.$gf_table_id.'/columns/'.$col_id)
+							->addHeaders(['Authorization'=>'Bearer '.$access_token])
+							->send();
+		
+		if ($response->code == 204)
+			return true;
+		else if ($response->code == 401) {
+			$access_token = self::refreshGFusionOAuthAccessToken();
+			$response = Request::delete('https://www.googleapis.com/fusiontables/v1/tables/'.$gf_table_id.'/columns/'.$col_id)
+								->addHeaders(['Authorization'=>'Bearer '.$access_token])
+								->send();
+			return true;
+		} else return false;
+	}
+	
 	private static function sendSQLToGFusion($sql, $method) {
 		$access_token = self::getGFusionOAuthAccessToken();
 		$encoded_sql = urlencode($sql);
