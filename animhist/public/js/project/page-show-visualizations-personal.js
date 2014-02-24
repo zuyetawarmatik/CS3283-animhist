@@ -7,6 +7,7 @@ $(function() {
 		$.ajax({
 			url: $(this).data('url'),
 			type: "POST",
+			global: false,
 			error: function(responseData) {
 				var alertSt = "";
 				$.each(responseData["responseJSON"]["error"], function(key, val) {
@@ -25,7 +26,12 @@ $(function() {
 			},
 		
 			success: function(responseData) {
-				//handleJSONRedirectResponse(responseData, false);
+				var text = $(this).data('url');
+				if (text.substr(text.length - 7, 7) === "/follow")
+				// check $(this).data('url') whether having "/follow" at the end
+					$('#follow-btn').text('Unfollow The Author');
+				else
+					$('#follow-btn').text('Follow The Author');
 			}
 		});
 	});
