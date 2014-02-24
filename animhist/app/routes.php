@@ -71,7 +71,10 @@ Route::group(['before' => 'auth', 'prefix' => '{username}'], function(){
 	Route::put('/', ['before' => 'csrf', 'as' => 'user.update', 'uses' => 'UserController@update']);
 	
 	// /{username}/follow
-	Route::post('follow', ['before' => 'csrf', 'as' => 'user.follow', 'uses' => 'UserController@followUser']);
+	Route::post('follow', [ 'as' => 'user.follow', 'uses' => 'UserController@followUser']);
+	
+	// /{username}/unfollow
+	Route::post('unfollow', ['as' => 'user.unfollow', 'uses' => 'UserController@unfollowUser']);
 	
 	// /{username}/visualization/create
 	Route::post('visualization/create', ['before' => 'csrf', 'as'=> 'visualization.store', 'uses' => 'VisualizationController@store']);
