@@ -165,8 +165,19 @@ class UserController extends \BaseController {
 		$follow = new Follow();
 		$follow->user_id = Auth::user()->id;
 		$follow->following_id =  DB::table('users')->where('username', $username)->first()->id;
-		//need check for unique relation		
+		//need to check for unique relation		
 		$follow->save();
+	}
+	
+	public function unfollowUser($username)
+	{
+		//$follow = new Follow();
+		$subjectid = Auth::user()->id;
+		$objectid =  DB::table('users')->where('username', $username)->first()->id;
+		$existing =  DB::table('follows')->where('user_id', $subjectid)->where('following_id', $objectid)->first();
+		if($existing)
+			User::destroy($existing->id);
+		
 	}
 	
 	public function logout()
