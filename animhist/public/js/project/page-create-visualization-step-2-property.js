@@ -1,9 +1,10 @@
 var viProps;
 var columnList;
 
-var ajaxTemplate;
+var ajaxTemplate2, notySuccessTemplate2;
+
 $(function(){
-	ajaxTemplate = {
+	ajaxTemplate2 = {
 		processData: false,
 	    contentType: "application/json; charset=utf-8",
 	    url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/updatetable",
@@ -35,6 +36,20 @@ $(function(){
 			});
 		}
 	};
+	
+	notySuccessTemplate2 = {
+		layout: 'bottomCenter',
+		text: "Column removed, refreshing page...",
+		type: 'success',
+		killer: true,
+		timeout: 500,
+		maxVisible: 1,
+		callback: {
+			afterShow: function() {
+				window.location.reload();
+			}
+		}
+	}
 });
 
 function retrieveVisualizationProperty() {
@@ -97,25 +112,14 @@ $(function() {
 $(function() {
 	$("#column-list").on("click", ".column-delete-btn", function() {
 		var index = $(this).parent().index();
-		var ajaxVar = $.extend({}, ajaxTemplate, {
+		var ajaxVar = $.extend({}, ajaxTemplate2, {
 			data: JSON.stringify({
 				type: "column-delete",
 				col: columnList[index]["column-id"]
 			}),
 			success: function(responseData) {
-				noty({
-					layout: 'bottomCenter',
-					text: "Column removed, refreshing page...",
-					type: 'success',
-					killer: true,
-					timeout: 500,
-					maxVisible: 1,
-					callback: {
-						afterShow: function() {
-							window.location.reload();
-						}
-					}
-				});
+				var notySuccessVar = $.extend({}, notySuccessTemplate2);
+				noty(notySuccessVar);
 			}
 		});
 		
@@ -125,25 +129,14 @@ $(function() {
 	$("#column-list").on("click", ".column-disable-btn", function() {
 		var index = $(this).parent().index();
 		if (!columnList[index]["disabled"]) {
-			var ajaxVar = $.extend({}, ajaxTemplate, {
+			var ajaxVar = $.extend({}, ajaxTemplate2, {
 				data: JSON.stringify({
 					type: "column-delete",
 					col: columnList[index]["column-id"]
 				}),
 				success: function(responseData) {
-					noty({
-						layout: 'bottomCenter',
-						text: "Column removed, refreshing page...",
-						type: 'success',
-						killer: true,
-						timeout: 500,
-						maxVisible: 1,
-						callback: {
-							afterShow: function() {
-								window.location.reload();
-							}
-						}
-					});
+					var notySuccessVar = $.extend({}, notySuccessTemplate2);
+					noty(notySuccessVar);
 				}
 			});
 			$.ajax(ajaxVar);
