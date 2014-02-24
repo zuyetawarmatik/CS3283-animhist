@@ -175,8 +175,9 @@ class UserController extends \BaseController {
 		$subjectid = Auth::user()->id;
 		$objectid =  DB::table('users')->where('username', $username)->first()->id;
 		$existing =  DB::table('follows')->where('user_id', $subjectid)->where('following_id', $objectid)->first();
-		if($existing)
-			User::destroy($existing->id);
+		if ($existing)
+			Follow::destroy($existing->id);
+		return ($existing->id);
 		
 	}
 	

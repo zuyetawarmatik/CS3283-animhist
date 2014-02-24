@@ -4,11 +4,13 @@ $(function() {
 	});
 	
 	$('#follow-btn').click(function() {
+		var text = String($(this).data('url'));
 		$.ajax({
 			url: $(this).data('url'),
 			type: "POST",
 			global: false,
 			error: function(responseData) {
+				/*
 				var alertSt = "";
 				$.each(responseData["responseJSON"]["error"], function(key, val) {
 					$.each(val, function(index, tx) {
@@ -22,16 +24,20 @@ $(function() {
 					killer: true,
 					timeout: 2000,
 					maxVisible: 1
-				});
+				});*/
 			},
 		
 			success: function(responseData) {
-				var text = $(this).data('url');
-				if (text.substr(text.length - 7, 7) === "/follow")
-				// check $(this).data('url') whether having "/follow" at the end
-					$('#follow-btn').text('Unfollow The Author');
-				else
-					$('#follow-btn').text('Follow The Author');
+				if (text.substr(text.length - 7, text.length) === "/follow") {
+					$('#follow-btn').html('<i>&#57552;</i>Unfollow The Author');
+					//console.log(text.replace("follow","unfollow"));
+					$('#follow-btn').data('url', text.replace("follow","unfollow"));
+				} else {
+					$('#follow-btn').html('<i>&#57552;</i>Follow The Author');
+					//console.log(text.replace("unfollow","follow"));
+					$('#follow-btn').data('url', text.replace("unfollow","follow"));
+				}
+					
 			}
 		});
 	});
