@@ -3,6 +3,7 @@ var gridColumns, gridData;
 var slickGrid;
 var checkboxSelector;
 var commandQueue = [];
+var ajaxUpdateTemplate, notyErrorTemplate, notySuccessTemplate;
 
 var gridOptions = {
 	asyncEditorLoading: false,
@@ -135,6 +136,47 @@ function retrieveFusionData() {
 }
 
 $(function() {
+	ajaxUpdateTemplate = {
+		processData: false,
+	    contentType: "application/json; charset=utf-8",
+		url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/updatetable",
+		type: "POST",
+		headers: {'X-CSRF-Token': $("[name='hidden-form'] [type='hidden']").val()},
+		global: false,
+		beforeSend: function() {
+			noty({
+				layout: 'bottomCenter',
+				text: '.................',
+				type: 'information',
+				animation: {
+					open: {height: 'toggle'},
+					close: {height: 'toggle'},
+					easing: 'swing',
+				    speed: 300
+				},
+				maxVisible: 1
+			});
+		}
+	};
+	
+	notyErrorTemplate = {
+		layout: 'bottomCenter',
+		text: "Updating data error, rolling back...",
+		type: 'error',
+		killer: true,
+		timeout: 500,
+		maxVisible: 1
+	};
+	
+	notySuccessTemplate = {
+		layout: 'bottomCenter',
+		text: "All changes saved",
+		type: 'success',
+		killer: true,
+		timeout: 500,
+		maxVisible: 1
+	};
+	
 	retrieveFusionData();
 	
 	$(window).resize(function() {
@@ -165,58 +207,28 @@ function slickGrid_cellChange(e, args) {
     var pairs = {};
     pairs[activeColField] = cellValue;
 
-    $.ajax({
-		processData: false,
-	    contentType: "application/json; charset=utf-8",
-		url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/updatetable",
-		type: "POST",
-		headers: {'X-CSRF-Token': $("[name='hidden-form'] [type='hidden']").val()},
-		data: JSON.stringify({
+    var ajaxVar = $.extend({}, ajaxUpdateTemplate, {
+    	data: JSON.stringify({
 			type: "row-update",
 			row: activeRowID,
 			colvalPairs: pairs
 		}),
-		global: false,
-		beforeSend: function() {
-			noty({
-				layout: 'bottomCenter',
-				text: '.................',
-				type: 'information',
-				animation: {
-					open: {height: 'toggle'},
-					close: {height: 'toggle'},
-					easing: 'swing',
-				    speed: 300
-				},
-				maxVisible: 1
-			});
-		},
 		error: function(responseData) {
-			noty({
-				layout: 'bottomCenter',
-				text: "Updating data error, rolling back...",
-				type: 'error',
-				killer: true,
-				timeout: 500,
-				maxVisible: 1,
+			var notyErrorVar = $.extend({}, notyErrorTemplate, {
 				callback: {
 					onShow: function(){
 						slickGrid_undo();
 					}
 				}
 			});
+			noty(notyErrorVar);
 		},
 		success: function(responseData) {
-			noty({
-				layout: 'bottomCenter',
-				text: "All changes saved",
-				type: 'success',
-				killer: true,
-				timeout: 500,
-				maxVisible: 1
-			});
+			var notySuccessVar = $.extend({}, notySuccessTemplate);
+			noty(notySuccessVar);
 		}
-	});
+    });
+    $.ajax(ajaxVar);
 }
 
 function slickGrid_addNewRow(e, args) {
@@ -233,57 +245,28 @@ function slickGrid_addNewRow(e, args) {
 		if (val) pairs[key] = val;
 	});
 	
-	$.ajax({
-		processData: false,
-	    contentType: "application/json; charset=utf-8",
-		url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/updatetable",
-		type: "POST",
-		headers: {'X-CSRF-Token': $("[name='hidden-form'] [type='hidden']").val()},
+	var ajaxVar = $.extend({}, ajaxUpdateTemplate, {
 		data: JSON.stringify({
 			type: "row-insert",
 			colvalPairs: pairs
 		}),
-		global: false,
-		beforeSend: function() {
-			noty({
-				layout: 'bottomCenter',
-				text: '.................',
-				type: 'information',
-				animation: {
-					open: {height: 'toggle'},
-					close: {height: 'toggle'},
-					easing: 'swing',
-				    speed: 300
-				},
-				maxVisible: 1
-			});
-		},
 		error: function(responseData) {
-			noty({
-				layout: 'bottomCenter',
-				text: "Updating data error, rolling back...",
-				type: 'error',
-				killer: true,
-				timeout: 500,
-				maxVisible: 1
-			});
+			var notyErrorVar = $.extend({}, notyErrorTemplate);
+			noty(notyErrorVar);
 		},
 		success: function(responseData) {
-			noty({
-				layout: 'bottomCenter',
+			var notySuccessVar = $.extend({}, notySuccessTemplate, {
 				text: "New row added, refreshing page...",
-				type: 'success',
-				killer: true,
-				timeout: 500,
-				maxVisible: 1,
 				callback: {
 					afterShow: function() {
 						window.location.reload();
 					}
 				}
 			});
-		},
+			noty(notySuccessVar);
+		}
 	});
+	$.ajax(ajaxVar);
 }
 
 function slickGrid_selectedRowsChanged(e, args) {
@@ -300,49 +283,18 @@ $(function() {
 			rowsID.push(gridData[val]["ROWID"]);
 		});
 		
-	    $.ajax({
-			processData: false,
-		    contentType: "application/json; charset=utf-8",
-			url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/updatetable",
-			type: "POST",
-			headers: {'X-CSRF-Token': $("[name='hidden-form'] [type='hidden']").val()},
+		var ajaxVar = $.extend({}, ajaxUpdateTemplate, {
 			data: JSON.stringify({
 				type: "row-delete",
 				row: rowsID
 			}),
-			global: false,
-			beforeSend: function() {
-				noty({
-					layout: 'bottomCenter',
-					text: '.................',
-					type: 'information',
-					animation: {
-						open: {height: 'toggle'},
-						close: {height: 'toggle'},
-						easing: 'swing',
-					    speed: 300
-					},
-					maxVisible: 1
-				});
-			},
 			error: function(responseData) {
-				noty({
-					layout: 'bottomCenter',
-					text: "Updating data error, rolling back...",
-					type: 'error',
-					killer: true,
-					timeout: 500,
-					maxVisible: 1
-				});
+				var notyErrorVar = $.extend({}, notyErrorTemplate);
+				noty(notyErrorVar);
 			},
 			success: function(responseData) {
-				noty({
-					layout: 'bottomCenter',
+				var notySuccessVar = $.extend({}, notySuccessTemplate, {
 					text: "Rows removed, refreshing page...",
-					type: 'success',
-					killer: true,
-					timeout: 500,
-					maxVisible: 1,
 					callback: {
 						afterShow: function() {
 							$("#delete-row-btn").attr("disabled", true);
@@ -350,8 +302,10 @@ $(function() {
 						}
 					}
 				});
+				noty(notySuccessVar);
 			}
 		});
+		$.ajax(ajaxVar);
 	});
 });
 
