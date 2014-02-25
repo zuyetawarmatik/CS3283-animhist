@@ -43,9 +43,11 @@
 		</p>
 	</article>
 	<div id="button-area">
+	{{ Form::open(array('name'=>'hidden-form', 'url'=>'#')) }}
+	{{ Form::close() }}
 	@if (Auth::user() != $user)
-		@if (DB::table('follows')->where('user_id', Auth::user()->id)->where('following_id', $user->id)->first())
-		<button id="follow-btn" data-url="{{ URL::route('user.unfollow', $user->username) }}"><i>&#57552;</i>Unfollow The Author</button>
+		@if (Auth::check() && DB::table('follows')->where('user_id', Auth::user()->id)->where('following_id', $user->id)->first())
+		<button id="follow-btn" data-url="{{ URL::route('user.unfollow', $user->username) }}"><i>&#57551;</i>Unfollow The Author</button>
 		@else
 		<button id="follow-btn" data-url="{{ URL::route('user.follow', $user->username) }}"><i>&#57552;</i>Follow The Author</button>
 		@endif

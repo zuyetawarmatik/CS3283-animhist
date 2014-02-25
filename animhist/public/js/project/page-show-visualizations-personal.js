@@ -4,13 +4,13 @@ $(function() {
 	});
 	
 	$('#follow-btn').click(function() {
-		var text = String($(this).data('url'));
+		var link = $(this).data('url');
 		$.ajax({
-			url: $(this).data('url'),
+			url: link,
 			type: "POST",
 			global: false,
+			headers: {'X-CSRF-Token': $("[name='hidden-form'] [type='hidden']").val()},
 			error: function(responseData) {
-				/*
 				var alertSt = "";
 				$.each(responseData["responseJSON"]["error"], function(key, val) {
 					$.each(val, function(index, tx) {
@@ -24,20 +24,22 @@ $(function() {
 					killer: true,
 					timeout: 2000,
 					maxVisible: 1
-				});*/
+				});
 			},
 		
 			success: function(responseData) {
-				if (text.substr(text.length - 7, text.length) === "/follow") {
-					$('#follow-btn').html('<i>&#57552;</i>Unfollow The Author');
-					//console.log(text.replace("follow","unfollow"));
-					$('#follow-btn').data('url', text.replace("follow","unfollow"));
+				if (responseData["redirect"]) {
+					handleJSONRedirectResponse(responseData, true);
+					return;
+				}
+				
+				if (link.substr(link.length - 7, link.length) === "/follow") {
+					$('#follow-btn').html('<i>&#57551;</i>Unfollow The Author');
+					$('#follow-btn').data('url', link.replace("follow", "unfollow"));
 				} else {
 					$('#follow-btn').html('<i>&#57552;</i>Follow The Author');
-					//console.log(text.replace("unfollow","follow"));
-					$('#follow-btn').data('url', text.replace("unfollow","follow"));
+					$('#follow-btn').data('url', link.replace("unfollow", "follow"));
 				}
-					
 			}
 		});
 	});

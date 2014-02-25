@@ -28,9 +28,8 @@ function getUrlParameters(parameter, staticURL, decode) {
 function handleJSONRedirectResponse(response, backable) {
 	if (response["wholePage"])
 		window.top.location.href = response["redirect"];
-	else {
+	else
 		parent.changeIFrameSrc(response["redirect"], backable);
-	}
 }
 
 $(function() {

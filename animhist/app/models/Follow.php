@@ -10,5 +10,4 @@ class Follow extends Eloquent {
 	 * @var string
 	 */
 	protected $table = 'follows';
-
 }

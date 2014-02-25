@@ -162,23 +162,34 @@ class UserController extends \BaseController {
 	
 	public function followUser($username)
 	{
+		$following_user = DB::table('users')->where('username', $username)->first();
+		if (!$following_user) return JSONResponseUtility::ValidationError(['user'=>['User to follow does not exist.']]);
+		
+		$following_id = $following_user->id;
+		if (Auth::user()->id == $following_id) return JSONResponseUtility::ValidationError(['user'=>['User and followed user are the same.']]);
+		
+		$existing_follow = DB::table('follows')->where('user_id', Auth::user()->id)->where('following_id', $following_id)->first();
+		if ($existing_follow) return JSONResponseUtility::ValidationError(['follow'=>['Already following this person.']]);
+		
 		$follow = new Follow();
 		$follow->user_id = Auth::user()->id;
-		$follow->following_id =  DB::table('users')->where('username', $username)->first()->id;
-		//need to check for unique relation		
+		$follow->following_id = $following_id;
 		$follow->save();
 	}
 	
 	public function unfollowUser($username)
 	{
-		//$follow = new Follow();
-		$subjectid = Auth::user()->id;
-		$objectid =  DB::table('users')->where('username', $username)->first()->id;
-		$existing =  DB::table('follows')->where('user_id', $subjectid)->where('following_id', $objectid)->first();
-		if ($existing)
-			Follow::destroy($existing->id);
-		return ($existing->id);
+		$following_user = DB::table('users')->where('username', $username)->first();
+		if (!$following_user) return JSONResponseUtility::ValidationError(['user'=>['User to unfollow does not exist.']]);
 		
+		$following_id = $following_user->id;
+		if (Auth::user()->id == $following_id) return JSONResponseUtility::ValidationError(['user'=>['User and followed user are the same.']]);
+		
+		$existing_follow = DB::table('follows')->where('user_id', Auth::user()->id)->where('following_id', $following_id)->first();
+		if (!$existing_follow)
+			return JSONResponseUtility::ValidationError(['unfollow'=>['You haven\'t followed this user yet to unfollow.']]);
+		
+		Follow::destroy($existing_follow->id);
 	}
 	
 	public function logout()
@@ -188,7 +199,5 @@ class UserController extends \BaseController {
 		Auth::logout();
 		return JSONResponseUtility::Redirect(Input::get('referer'));
 	}
-	
-	
 	
 }

@@ -35,7 +35,12 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::to(URL::route('user.showLogin').'?referer='.Request::url());
+	if (Auth::guest()) {
+		if (Request::ajax())
+			return JSONResponseUtility::Redirect(URL::route('user.showLogin'), false);
+		else
+			return Redirect::to(URL::route('user.showLogin').'?referer='.Request::url());
+	}
 });
 
 Route::filter('auth.truncateURLToUsername', function()
