@@ -26,7 +26,6 @@ $(function() {
 					maxVisible: 1
 				});
 			},
-		
 			success: function(responseData) {
 				if (responseData["redirect"]) {
 					handleJSONRedirectResponse(responseData, true);
@@ -35,10 +34,10 @@ $(function() {
 				
 				if (link.substr(link.length - 7, link.length) === "/follow") {
 					$('#follow-btn').html('<i>&#57551;</i>Unfollow The Author');
-					$('#follow-btn').data('url', link.replace("follow", "unfollow"));
+					$('#follow-btn').data('url', link.replace("/follow", "/unfollow"));
 				} else {
 					$('#follow-btn').html('<i>&#57552;</i>Follow The Author');
-					$('#follow-btn').data('url', link.replace("unfollow", "follow"));
+					$('#follow-btn').data('url', link.replace("/unfollow", "/follow"));
 				}
 			}
 		});
