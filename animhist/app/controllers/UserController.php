@@ -175,6 +175,8 @@ class UserController extends \BaseController {
 		$follow->user_id = Auth::user()->id;
 		$follow->following_id = $following_id;
 		$follow->save();
+		
+		return Response::json(['followers'=>count(User::find($following_id)->followers)]);
 	}
 	
 	public function unfollowUser($username)
@@ -190,6 +192,8 @@ class UserController extends \BaseController {
 			return JSONResponseUtility::ValidationError(['unfollow'=>['You haven\'t followed this user yet to unfollow.']]);
 		
 		Follow::destroy($existing_follow->id);
+		
+		return Response::json(['followers'=>count(User::find($following_id)->followers)]);
 	}
 	
 	public function logout()

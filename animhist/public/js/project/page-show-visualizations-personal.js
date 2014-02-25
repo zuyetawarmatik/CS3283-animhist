@@ -39,6 +39,8 @@ $(function() {
 					$('#follow-btn').html('<i>&#57552;</i>Follow The Author');
 					$('#follow-btn').data('url', link.replace("/unfollow", "/follow"));
 				}
+				
+				$("#num-followers").html(responseData["followers"]);
 			}
 		});
 	});
