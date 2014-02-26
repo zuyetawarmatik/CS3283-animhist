@@ -102,6 +102,7 @@ class VisualizationController extends \BaseController {
 			
 			$row_id = Input::json('row');
 			$col_id = Input::json('col');
+			$col_type = Input::json('colType');
 			$col_val_pairs = Input::json('colvalPairs');
 			
 			$result;
@@ -118,6 +119,7 @@ class VisualizationController extends \BaseController {
 				case 'column-update':
 					break;
 				case 'column-insert':
+					$result = GoogleFusionTable::insertColumn($gf_table_id, $col_id, $col_type);
 					break;
 				case 'column-delete':
 					$result = GoogleFusionTable::deleteColumn($gf_table_id, $col_id);

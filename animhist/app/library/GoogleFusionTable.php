@@ -96,18 +96,20 @@ class GoogleFusionTable {
 		$access_token = self::getGFusionOAuthAccessToken();
 		
 		$response = Request::get('https://www.googleapis.com/fusiontables/v1/tables/'.$gf_table_id)
-					->addHeaders(['Authorization'=>'Bearer '.$access_token])
-					->send();
+						->addHeaders(['Authorization'=>'Bearer '.$access_token])
+						->send();
 		
-		if ($response->code == 200)
-			return $response->body;
-		else if ($response->code == 401) {
+		if ($response->code == 401) {
 			$access_token = self::refreshGFusionOAuthAccessToken();
 			$response = Request::get('https://www.googleapis.com/fusiontables/v1/tables/'.$gf_table_id)
 							->addHeaders(['Authorization'=>'Bearer '.$access_token])
 							->send();
+		}
+		
+		if ($response->code == 200)
 			return $response->body;
-		} else return false;
+		
+		return false;
 	}
 	
 	public static function retrieveGFusionData($gf_table_id) {
@@ -166,6 +168,35 @@ class GoogleFusionTable {
 		return true;
 	}
 	
+	public static function insertColumn($gf_table_id, $col_name, $col_type) {
+		if (empty($col_name)) return true;
+		if (empty($col_type)) $col_type = 'STRING';
+		
+		$access_token = self::getGFusionOAuthAccessToken();
+		
+		$data = ['name'=>$col_name, 'type'=>$col_type];
+		
+		$response = Request::post('https://www.googleapis.com/fusiontables/v1/tables/'.$gf_table_id.'/columns')
+							->sendsJson()
+							->addHeaders(['Authorization'=>'Bearer '.$access_token])
+							->body(json_encode($data))
+							->send();
+		
+		if ($response->code == 401) {
+			$access_token = self::refreshGFusionOAuthAccessToken();
+			$response = Request::post('https://www.googleapis.com/fusiontables/v1/tables/'.$gf_table_id.'/columns')
+							->sendsJson()
+							->addHeaders(['Authorization'=>'Bearer '.$access_token])
+							->body(json_encode($data))
+							->send();
+		}
+		
+		if ($response->code == 200)
+			return true;
+		
+		return false;
+	} 
+	
 	public static function deleteColumn($gf_table_id, $col_id) {
 		$access_token = self::getGFusionOAuthAccessToken();
 		
@@ -173,15 +204,17 @@ class GoogleFusionTable {
 							->addHeaders(['Authorization'=>'Bearer '.$access_token])
 							->send();
 		
-		if ($response->code == 204)
-			return true;
-		else if ($response->code == 401) {
+		if ($response->code == 401) {
 			$access_token = self::refreshGFusionOAuthAccessToken();
 			$response = Request::delete('https://www.googleapis.com/fusiontables/v1/tables/'.$gf_table_id.'/columns/'.$col_id)
 								->addHeaders(['Authorization'=>'Bearer '.$access_token])
 								->send();
+		} 
+		
+		if ($response->code == 204)
 			return true;
-		} else return false;
+		
+		return false;
 	}
 	
 	private static function sendSQLToGFusion($sql, $method) {
@@ -192,14 +225,16 @@ class GoogleFusionTable {
 						->addHeaders(['Authorization'=>'Bearer '.$access_token])
 						->send();
 		
-		if ($response->code >= 200 && $response->code < 300)
-			return $response->body;
-		else if ($response->code == 401) {
+		if ($response->code == 401) {
 			$access_token = self::refreshGFusionOAuthAccessToken();
 			$response = Request::$method('https://www.googleapis.com/fusiontables/v1/query?sql='.$encoded_sql)
 							->addHeaders(['Authorization'=>'Bearer '.$access_token])
 							->send();
+		}
+		
+		if ($response->code >= 200 && $response->code < 300)
 			return $response->body;
-		} else return false;
+		
+		return false;
 	}
 }

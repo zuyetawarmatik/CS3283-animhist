@@ -140,6 +140,82 @@ $(function() {
 				}
 			});
 			$.ajax(ajaxVar);
-		} else;
+		} else {
+			var exit = false;
+			$.each(columnList, function(i, obj) {
+				if (obj["caption"].toLowerCase() == "htmldata" && obj["disabled"] == false) exit = true;
+			});
+			if (exit) return;
+			
+			var ajaxVar = $.extend({}, ajaxTemplate2, {
+				data: JSON.stringify({
+					type: "column-insert",
+					col: "HTMLData",
+					colType: "STRING"
+				}),
+				success: function(responseData) {
+					var notySuccessVar = $.extend({}, notySuccessTemplate2, {
+						text: "Column added, refreshing page..."
+					});
+					noty(notySuccessVar);
+				}
+			});
+			
+			$.ajax(ajaxVar);
+		}
 	});
+	
+	$("#column-list").on("click", ".column-add-btn", function() {
+		vex.dialog.open({
+			message: "Add a new column",
+			input: "<table>" +
+						"<tr>" +
+							"<td>" +
+								"<label for='columnname'>Column name:</label>" +
+							"</td>" +
+							"<td>" +
+								"<input name='columnname' type='text'/>" +
+							"</td>" +
+						"</tr>" +
+						"<tr>" +
+							"<td>" +
+								"<label for='columntype'>Column type:</label>" +
+							"</td>" +
+							"<td>" +
+								"<div class='styled-select'><select name='columntype'>" +
+									"<option value='String'>String</option><option value='Number'>Number</option>" +
+								"</select></div>" +
+							"</td>" +
+						"</tr>" +
+					"</table>",
+			callback: function(data) {
+				if (!data.columnname) return;
+				var columnName = data.columnname.trim();
+				if (columnName != "" && columnName.match(/^[a-z0-9\-\s]+$/i)) {
+					var exit = false;
+					$.each(columnList, function(i, obj) {
+						if (columnName.toLowerCase() == obj["caption"].toLowerCase()) exit = true;
+					});
+					if (exit) return;
+					
+					var ajaxVar = $.extend({}, ajaxTemplate2, {
+						data: JSON.stringify({
+							type: "column-insert",
+							col: columnName,
+							colType: data.columntype.toUpperCase()
+						}),
+						success: function(responseData) {
+							var notySuccessVar = $.extend({}, notySuccessTemplate2, {
+								text: "Column added, refreshing page..."
+							});
+							noty(notySuccessVar);
+						}
+					});
+					
+					$.ajax(ajaxVar);
+				}
+			}
+		});
+	});
+	
 });
