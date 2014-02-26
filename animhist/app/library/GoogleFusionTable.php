@@ -197,6 +197,37 @@ class GoogleFusionTable {
 		return false;
 	} 
 	
+	public static function updateColumn($gf_table_id, $col_id, $col_name, $col_type) {
+		if (empty($col_name)) return true;
+		if (empty($col_type)) $col_type = 'STRING';
+		
+		$access_token = self::getGFusionOAuthAccessToken();
+	
+		$data = ['name'=>$col_name, 'type'=>$col_type];
+		
+		$response = Request::put('https://www.googleapis.com/fusiontables/v1/tables/'.$gf_table_id.'/columns/'.$col_id)
+							->sendsJson()
+							->addHeaders(['Authorization'=>'Bearer '.$access_token])
+							->body(json_encode($data))
+							->send();
+	
+		if ($response->code == 401) {
+			$access_token = self::refreshGFusionOAuthAccessToken();
+			$response = Request::put('https://www.googleapis.com/fusiontables/v1/tables/'.$gf_table_id.'/columns/'.$col_id)
+							->sendsJson()
+							->addHeaders(['Authorization'=>'Bearer '.$access_token])
+							->body(json_encode($data))
+							->send();
+		}
+	
+		if ($response->code == 200)
+			return true;
+		
+		return $response->raw_body;
+		
+		return false;
+	}
+	
 	public static function deleteColumn($gf_table_id, $col_id) {
 		$access_token = self::getGFusionOAuthAccessToken();
 		

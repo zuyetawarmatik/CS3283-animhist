@@ -150,7 +150,7 @@ $(function() {
 			var ajaxVar = $.extend({}, ajaxTemplate2, {
 				data: JSON.stringify({
 					type: "column-insert",
-					col: "HTMLData",
+					colName: "HTMLData",
 					colType: "STRING"
 				}),
 				success: function(responseData) {
@@ -201,12 +201,71 @@ $(function() {
 					var ajaxVar = $.extend({}, ajaxTemplate2, {
 						data: JSON.stringify({
 							type: "column-insert",
-							col: columnName,
+							colName: columnName,
 							colType: data.columntype.toUpperCase()
 						}),
 						success: function(responseData) {
 							var notySuccessVar = $.extend({}, notySuccessTemplate2, {
 								text: "Column added, refreshing page..."
+							});
+							noty(notySuccessVar);
+						}
+					});
+					
+					$.ajax(ajaxVar);
+				}
+			}
+		});
+	});
+	
+	$("#column-list").on("click", ".column-edit-btn", function() {
+		var index = $(this).parent().index();
+		var columnName = columnList[index]["caption"], columnType = columnList[index]["type-caption"];
+		var nameEditRow = columnName != "Milestone" ? "<tr><td><label for='columnname'>Column name:</label></td><td><input name='columnname' type='text'/></td></tr>" : "";
+		var typeEditOption = columnName != "Milestone" ?
+								"<option value='String'>String</option><option value='Number'>Number</option>" :
+								"<option value='Hour'>Hour</option><option value='Day'>Day</option><option value='Month'>Month</option><option value='Year'>Year</option><option value='Decade'>Decade</option><option value='Century'>Century</option><option value='Mixed'>Mixed</option>"
+		
+		var vexContent = "<table>" + nameEditRow +
+							"<tr>" +
+								"<td>" +
+									"<label for='columntype'>Column type:</label>" +
+								"</td>" +
+								"<td>" +
+									"<div class='styled-select'><select name='columntype'>" +
+										typeEditOption +
+									"</select></div>" +
+								"</td>" +
+							"</tr>" +
+						"</table>";
+		
+		vex.dialog.open({
+			message: "Edit '" + columnName +  "' column",
+			input: vexContent,
+			afterOpen: function() {
+				$("[name='columnname']").val(columnName);
+				$("option[value='" + columnType + "']").attr("selected", "selected");
+			},
+			callback: function(data) {
+				if (columnName != "Milestone" && !data.columnname) return;
+				var newColumnName = columnName == "Milestone" ? "Milestone" : data.columnname.trim();
+				if (newColumnName != "" && newColumnName.match(/^[a-z0-9\-\s]+$/i)) {
+					var exit = false;
+					$.each(columnList, function(i, obj) {
+						if (newColumnName.toLowerCase() == obj["caption"].toLowerCase() && i != index) exit = true;
+					});
+					if (exit) return;
+					
+					var ajaxVar = $.extend({}, ajaxTemplate2, {
+						data: JSON.stringify({
+							type: "column-update",
+							col: columnList[index]["column-id"],
+							colName: newColumnName,
+							colType: data.columntype.toUpperCase()
+						}),
+						success: function(responseData) {
+							var notySuccessVar = $.extend({}, notySuccessTemplate2, {
+								text: "Column updated, refreshing page..."
 							});
 							noty(notySuccessVar);
 						}
