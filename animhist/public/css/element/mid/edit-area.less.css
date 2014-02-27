@@ -2,7 +2,7 @@
 	#edit-area {
 		height: 100%;
 		
-		#tab {
+		ul#tab {
 			height: 5rem;
 			overflow: hidden;
 			white-space: nowrap;
@@ -33,6 +33,10 @@
 					}
 				}
 			}
+		}
+		
+		&>div:not(.current) {
+			display: none;	
 		}
 	}
 	
