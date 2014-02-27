@@ -191,6 +191,7 @@ $(function() {
 			callback: function(data) {
 				if (!data.columnname) return;
 				var columnName = data.columnname.trim();
+				if (columnName.toLowerCase() == "created at") return;
 				if (columnName != "" && columnName.match(/^[a-z0-9\-\s]+$/i)) {
 					var exit = false;
 					$.each(columnList, function(i, obj) {
@@ -249,6 +250,7 @@ $(function() {
 			callback: function(data) {
 				if (columnName != "Milestone" && !data.columnname) return;
 				var newColumnName = columnName == "Milestone" ? "Milestone" : data.columnname.trim();
+				if (newColumnName.toLowerCase() == "created at") return;
 				if (newColumnName != "" && newColumnName.match(/^[a-z0-9\-\s]+$/i)) {
 					var exit = false;
 					$.each(columnList, function(i, obj) {

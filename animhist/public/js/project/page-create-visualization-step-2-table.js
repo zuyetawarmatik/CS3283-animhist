@@ -3,7 +3,7 @@ var gridColumns, gridData;
 var slickGrid;
 var checkboxSelector;
 var commandQueue = [];
-var ajaxUpdateTemplate, notyErrorTemplate, notySuccessTemplate;
+var ajaxTemplate, notyErrorTemplate, notySuccessTemplate;
 
 var gridOptions = {
 	asyncEditorLoading: false,
@@ -18,8 +18,8 @@ var gridOptions = {
 var dateFormatter = function(row, cell, value, columnDef, dataContext) {
 	/* Fix issue for year before 1000 AD */
 	var res = value.split("/");
-	if (res.length == 1 && res[0] < 1000) value = "1/1/" + value;
-	else if (res.length == 2 && res[1] < 1000) value = "1/" + value; 
+	if (res.length == 1) value = "1/1/" + value;
+	else if (res.length == 2) value = res[0] + "/1/" + res[1]; 
 	
 	date = new Date(value);
 	switch (viProps["milestoneFormat"]) {
@@ -54,7 +54,7 @@ function parseRetrievedData() {
 	gridColumns[0]["headerCssClass"] = "table-header";
 	gridColumns[0]["cssClass"] = "table-cell-checkbox";
 	
-	for (var i = 0; i < gfusionProps["columns"].length; i++) {
+	for (var i = 1; i < gfusionProps["columns"].length; i++) { // Omit Created at column
 		var columnItem = {id: gfusionProps["columns"][i]["columnId"],
 						name: gfusionProps["columns"][i]["name"],
 						field: gfusionProps["columns"][i]["name"],
@@ -72,13 +72,13 @@ function parseRetrievedData() {
 	
 	/* Move the HTMLData column to third place */
 	var htmlDataIndex = -1;
-	for (var i = 0; i < gfusionProps["columns"].length; i++) {
-		if (gfusionProps["columns"][i]["name"].toLowerCase() == "htmldata" && gfusionProps["columns"][i]["type"] == "STRING") {
+	for (var i = 0; i < gridColumns.length; i++) {
+		if (gridColumns[i]["name"].toLowerCase() == "htmldata") {
 			htmlDataIndex = i; break;
 		}
 	}
 	if (htmlDataIndex != -1) {
-		var tempArr = gridColumns.splice(htmlDataIndex + 1, 1); // Need +1 as the first column is checkbox column
+		var tempArr = gridColumns.splice(htmlDataIndex, 1);
 		gridColumns.splice(3, 0, tempArr[0]);
 	}
 	
@@ -87,7 +87,7 @@ function parseRetrievedData() {
 	for (var i = 0; i < gfusionData["rows"].length; i++) {
 		var rowItem = {};
 		rowItem["ROWID"] = gfusionRowsID["rows"][i][0];
-		for (var j = 0; j < gfusionData["columns"].length; j++) {
+		for (var j = 1; j < gfusionData["columns"].length; j++) { // Omit Created at column
 			rowItem[gfusionData["columns"][j]] = gfusionData["rows"][i][j];
 		}
 		gridData.push(rowItem);
@@ -136,7 +136,7 @@ function retrieveFusionData() {
 }
 
 $(function() {
-	ajaxUpdateTemplate = {
+	ajaxTemplate = {
 		processData: false,
 	    contentType: "application/json; charset=utf-8",
 		url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/updatetable",
@@ -207,7 +207,7 @@ function slickGrid_cellChange(e, args) {
     var pairs = {};
     pairs[activeColField] = cellValue;
 
-    var ajaxVar = $.extend({}, ajaxUpdateTemplate, {
+    var ajaxVar = $.extend({}, ajaxTemplate, {
     	data: JSON.stringify({
 			type: "row-update",
 			row: activeRowID,
@@ -245,7 +245,7 @@ function slickGrid_addNewRow(e, args) {
 		if (val) pairs[key] = val;
 	});
 	
-	var ajaxVar = $.extend({}, ajaxUpdateTemplate, {
+	var ajaxVar = $.extend({}, ajaxTemplate, {
 		data: JSON.stringify({
 			type: "row-insert",
 			colvalPairs: pairs
@@ -283,7 +283,7 @@ $(function() {
 			rowsID.push(gridData[val]["ROWID"]);
 		});
 		
-		var ajaxVar = $.extend({}, ajaxUpdateTemplate, {
+		var ajaxVar = $.extend({}, ajaxTemplate, {
 			data: JSON.stringify({
 				type: "row-delete",
 				row: rowsID

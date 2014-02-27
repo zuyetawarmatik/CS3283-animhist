@@ -113,12 +113,12 @@ class GoogleFusionTable {
 	}
 	
 	public static function retrieveGFusionData($gf_table_id) {
-		$sql = 'SELECT * FROM '.$gf_table_id;
+		$sql = 'SELECT * FROM '.$gf_table_id." ORDER BY 'Created at'";
 		return self::sendSQLToGFusion($sql, 'get');
 	}
 	
 	public static function retrieveGFusionRowsID($gf_table_id) {
-		$sql = 'SELECT ROWID FROM '.$gf_table_id;
+		$sql = "SELECT ROWID, 'Created at' FROM ".$gf_table_id." ORDER BY 'Created at'";
 		return self::sendSQLToGFusion($sql, 'get');
 	}
 

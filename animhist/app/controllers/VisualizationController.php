@@ -112,6 +112,7 @@ class VisualizationController extends \BaseController {
 					$result = GoogleFusionTable::updateRow($gf_table_id, $row_id, $col_val_pairs);
 					break;
 				case 'row-insert':
+					$col_val_pairs['Created at'] = date("Y-m-d H:i:s");
 					$result = GoogleFusionTable::insertRow($gf_table_id, $col_val_pairs);
 					break;
 				case 'row-delete':
@@ -171,7 +172,7 @@ class VisualizationController extends \BaseController {
 						"centerLatitude" => $visualization->center_latitude,
 						"centerLongitude" => $visualization->center_longitude];
 				$gfusion_props = GoogleFusionTable::retrieveGFusionProperties($visualization->fusion_table_id);
-				$json["columnList"] = self::prepareColumnListSentToClient($gfusion_props->columns, $visualization->type, $visualization->milestone_format);
+				$json["columnList"] = self::prepareColumnListSentToClient($gfusion_props->columns, $visualization->milestone_format);
 				return Response::json($json);
 			} else
 				goto fail;
@@ -183,7 +184,7 @@ class VisualizationController extends \BaseController {
 	}
 	
 	private static function prepareColumnListSentToGFusion($input_column_list, $input_visualization_type) {
-		$column_list = [['name'=>'Milestone', 'type'=>'DATETIME'], ['name'=>'Position', 'type'=>'LOCATION']];
+		$column_list = [['name'=>'Created at', 'type'=>'DATETIME'], ['name'=>'Milestone', 'type'=>'DATETIME'], ['name'=>'Position', 'type'=>'LOCATION']];
 		
 		foreach ($input_column_list as $input_column) {
 			if ($input_column['caption'] == 'HTMLData' && $input_column['type-caption'] == 'String') {
@@ -202,10 +203,10 @@ class VisualizationController extends \BaseController {
 		return $column_list;
 	}
 	
-	private static function prepareColumnListSentToClient($gfusion_column_list, $visualization_type, $milestone_format) {
+	private static function prepareColumnListSentToClient($gfusion_column_list, $milestone_format) {
 		$result = [];
-		$result[] = ['caption'=>'Milestone', 'type-caption'=>ucfirst($milestone_format), 'editable'=>true, 'column-id'=>0];
-		$result[] = ['caption'=>'Position', 'type-caption'=>'Location: KML or Lat/Long or String', 'column-id'=>1];
+		$result[] = ['caption'=>'Milestone', 'type-caption'=>ucfirst($milestone_format), 'editable'=>true, 'column-id'=>1];
+		$result[] = ['caption'=>'Position', 'type-caption'=>'Location: KML or Lat/Long or String', 'column-id'=>2];
 		
 		$has_html_data = false; $html_data_col_id;
 		foreach ($gfusion_column_list as $column) {
