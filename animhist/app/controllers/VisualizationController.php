@@ -98,7 +98,9 @@ class VisualizationController extends \BaseController {
 			
 			$visualization = Visualization::find($id);
 			if (!$visualization || $visualization->user != Auth::user()) goto fail;
-			$gf_table_id = $visualization->fusion_table_id;
+			$gft = new GoogleFusionTable($visualization->fusion_table_id);
+			
+			$datetime_format_str = $visualization->getMilestoneFormatString();
 			
 			$row_id = Input::json('row');
 			$col_id = Input::json('col');
@@ -109,32 +111,41 @@ class VisualizationController extends \BaseController {
 			$result;
 			switch (Input::json('type')) {
 				case 'row-update':
-					$result = GoogleFusionTable::updateRow($gf_table_id, $row_id, $col_val_pairs);
+					if (isset($col_val_pairs['Milestone'])) {
+						$datetime = new DateTime(self::prepareProperDateTime($col_val_pairs['Milestone']));
+						$col_val_pairs['MilestoneRep'] = $datetime->format($datetime_format_str);
+					}
+					$result = $gft->updateRow($row_id, $col_val_pairs);
 					break;
 				case 'row-insert':
-					$col_val_pairs['Created at'] = date("Y-m-d H:i:s");
-					$result = GoogleFusionTable::insertRow($gf_table_id, $col_val_pairs);
+					$col_val_pairs['CreatedAt'] = date('Y/m/d H:i:s');
+					if (!isset($col_val_pairs['Milestone']))
+						$col_val_pairs['Milestone'] = '1/1/2000';
+					$datetime = new DateTime(self::prepareProperDateTime($col_val_pairs['Milestone']));
+					$col_val_pairs['MilestoneRep'] = $datetime->format($datetime_format_str);
+					$result = $gft->insertRow($col_val_pairs);
 					break;
 				case 'row-delete':
-					$result = GoogleFusionTable::deleteRows($gf_table_id, $row_id);
+					$result = $gft->deleteRows($row_id);
 					break;
 				case 'column-update':
-					if ($col_id == 1 || $col_name == 'Milestone') {
+					if ($col_name == 'Milestone') {
 						$visualization->milestone_format = $col_type;
 						$visualization->save();
-						$result = true;
+						$result = $gft->updateAllRowsMilestoneRep($visualization->getMilestoneFormatString());
 					} else {
-						$result = GoogleFusionTable::updateColumn($gf_table_id, $col_id, $col_name, $col_type);
+						$result = $gft->updateColumn($col_id, $col_name, $col_type);
 					}
 					break;
 				case 'column-insert':
-					$result = GoogleFusionTable::insertColumn($gf_table_id, $col_name, $col_type);
+					$result = $gft->insertColumn($col_name, $col_type);
 					break;
 				case 'column-delete':
-					$result = GoogleFusionTable::deleteColumn($gf_table_id, $col_id);
+					$result = $gft->deleteColumn($col_id);
 					break;
 			}
 			if (!$result) goto fail;
+			// TODO: return response depending on type of request, switch
 			return Response::make('', 200);
 		} else {
 			return Response::make('', 401);
@@ -153,9 +164,10 @@ class VisualizationController extends \BaseController {
 			
 			$visualization = Visualization::find($id);
 			if (!$visualization || $visualization->user != Auth::user()) goto fail;
+			$gft = new GoogleFusionTable($visualization->fusion_table_id);
 			
 			if (Input::get('request') == 'data') {
-				$ret = GoogleFusionTable::retrieveGFusionAll($visualization->fusion_table_id);
+				$ret = $gft->retrieveGFusionAll();
 				if (!$ret) goto fail;
 				return Response::json($ret);
 			} else if (Input::get('request') == 'property') {
@@ -171,11 +183,16 @@ class VisualizationController extends \BaseController {
 						"zoom" => $visualization->zoom,
 						"centerLatitude" => $visualization->center_latitude,
 						"centerLongitude" => $visualization->center_longitude];
-				$gfusion_props = GoogleFusionTable::retrieveGFusionProperties($visualization->fusion_table_id);
+				$gfusion_props = $gft->retrieveGFusionProperties();
 				$json["columnList"] = self::prepareColumnListSentToClient($gfusion_props->columns, $visualization->milestone_format);
 				return Response::json($json);
-			} else
+			} else if  (Input::get('request') == 'timeline') {
+				$ret = $gft->retrieveGFusionTimeline();
+				if (!$ret) goto fail;
+				return Response::json($ret);
+			} else {
 				goto fail;
+			}
 		} else {
 			return Response::make('', 401);
 		}
@@ -183,8 +200,18 @@ class VisualizationController extends \BaseController {
 		fail: return Response::make('', 400);
 	}
 	
+	public static function prepareProperDateTime($str) {
+		$ret = $str;
+		$splitted = explode('/', $str);
+		if (count($splitted) == 1)
+			$ret = '1/1/' . $str;
+		else if (count($splitted) == 2)
+			$ret = $splitted[0] . '/1/' . $splitted[1];
+		return $ret;
+	}
+	
 	private static function prepareColumnListSentToGFusion($input_column_list, $input_visualization_type) {
-		$column_list = [['name'=>'Created at', 'type'=>'DATETIME'], ['name'=>'Milestone', 'type'=>'DATETIME'], ['name'=>'Position', 'type'=>'LOCATION']];
+		$column_list = [['name'=>'CreatedAt', 'type'=>'DATETIME'], ['name'=>'MilestoneRep', 'type'=>'DATETIME'], ['name'=>'Milestone', 'type'=>'DATETIME'], ['name'=>'Position', 'type'=>'LOCATION']];
 		
 		foreach ($input_column_list as $input_column) {
 			if ($input_column['caption'] == 'HTMLData' && $input_column['type-caption'] == 'String') {
@@ -205,8 +232,8 @@ class VisualizationController extends \BaseController {
 	
 	private static function prepareColumnListSentToClient($gfusion_column_list, $milestone_format) {
 		$result = [];
-		$result[] = ['caption'=>'Milestone', 'type-caption'=>ucfirst($milestone_format), 'editable'=>true, 'column-id'=>1];
-		$result[] = ['caption'=>'Position', 'type-caption'=>'Location: KML or Lat/Long or String', 'column-id'=>2];
+		$result[] = ['caption'=>'Milestone', 'type-caption'=>ucfirst($milestone_format), 'editable'=>true, 'column-id'=>2];
+		$result[] = ['caption'=>'Position', 'type-caption'=>'Location: KML or Lat/Long or String', 'column-id'=>3];
 		
 		$has_html_data = false; $html_data_col_id;
 		foreach ($gfusion_column_list as $column) {

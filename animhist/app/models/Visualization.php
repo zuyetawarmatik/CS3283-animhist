@@ -31,6 +31,24 @@ class Visualization extends Eloquent {
 		}
 	}
 	
+	public function getMilestoneFormatString() {
+		$format_str = 'd M Y';
+		switch ($this->milestone_format) {
+			case 'day':
+				$format_str = 'd M Y';
+				break;
+			case 'month':
+				$format_str = 'M Y';
+				break;
+			case 'year':
+				$format_str = 'Y';
+				break;
+			default:
+				break;
+		}
+		return $format_str;
+	}
+	
 	public function user() {
 		return $this->belongsTo('User');
 	}

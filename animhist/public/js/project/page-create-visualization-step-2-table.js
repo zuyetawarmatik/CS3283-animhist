@@ -54,7 +54,7 @@ function parseRetrievedData() {
 	gridColumns[0]["headerCssClass"] = "table-header";
 	gridColumns[0]["cssClass"] = "table-cell-checkbox";
 	
-	for (var i = 1; i < gfusionProps["columns"].length; i++) { // Omit Created at column
+	for (var i = 2; i < gfusionProps["columns"].length; i++) { // Omit CreatedAt and MilestoneRep column
 		var columnItem = {id: gfusionProps["columns"][i]["columnId"],
 						name: gfusionProps["columns"][i]["name"],
 						field: gfusionProps["columns"][i]["name"],
@@ -87,7 +87,7 @@ function parseRetrievedData() {
 	for (var i = 0; i < gfusionData["rows"].length; i++) {
 		var rowItem = {};
 		rowItem["ROWID"] = gfusionRowsID["rows"][i][0];
-		for (var j = 1; j < gfusionData["columns"].length; j++) { // Omit Created at column
+		for (var j = 1; j < gfusionData["columns"].length; j++) { // Omit CreatedAt column only, keep MilestoneRep column
 			rowItem[gfusionData["columns"][j]] = gfusionData["rows"][i][j];
 		}
 		gridData.push(rowItem);
@@ -234,11 +234,6 @@ function slickGrid_cellChange(e, args) {
 function slickGrid_addNewRow(e, args) {
 	var rowItem = args["item"];
 	var col = args["col"];
-	
-	if (!rowItem["Milestone"]) {
-		var date = new Date(2000, 0, 1);
-		rowItem["Milestone"] = date.format("mm/dd/yyyy");
-	}
 	
 	var pairs = {};
 	$.each(rowItem, function(key, val) {
