@@ -112,7 +112,7 @@ class VisualizationController extends \BaseController {
 			switch (Input::json('type')) {
 				case 'row-update':
 					if (isset($col_val_pairs['Milestone'])) {
-						$datetime = new DateTime(self::prepareProperDateTime($col_val_pairs['Milestone']));
+						$datetime = new DateTime($col_val_pairs['Milestone']);
 						$col_val_pairs['MilestoneRep'] = $datetime->format($datetime_format_str);
 					}
 					$result = $gft->updateRow($row_id, $col_val_pairs);
@@ -121,7 +121,7 @@ class VisualizationController extends \BaseController {
 					$col_val_pairs['CreatedAt'] = date('Y/m/d H:i:s');
 					if (!isset($col_val_pairs['Milestone']))
 						$col_val_pairs['Milestone'] = '1/1/2000';
-					$datetime = new DateTime(self::prepareProperDateTime($col_val_pairs['Milestone']));
+					$datetime = new DateTime($col_val_pairs['Milestone']);
 					$col_val_pairs['MilestoneRep'] = $datetime->format($datetime_format_str);
 					$result = $gft->insertRow($col_val_pairs);
 					break;
@@ -145,8 +145,19 @@ class VisualizationController extends \BaseController {
 					break;
 			}
 			if (!$result) goto fail;
-			// TODO: return response depending on type of request, switch
-			return Response::make('', 200);
+			
+			switch (Input::json('type')) {
+				case 'row-update':
+					return Response::json($gft->getRow($row_id));
+				case 'row-insert':
+					$new_row_id = $result->rows[0][0];
+					$result = $gft->getRow($new_row_id);
+					$result->columns[] = 'ROWID';
+					$result->rows[0][] = $new_row_id;
+					return Response::json($result);
+				default:
+					return Response::make('', 200);
+			}
 		} else {
 			return Response::make('', 401);
 		}
@@ -198,16 +209,6 @@ class VisualizationController extends \BaseController {
 		}
 		
 		fail: return Response::make('', 400);
-	}
-	
-	public static function prepareProperDateTime($str) {
-		$ret = $str;
-		$splitted = explode('/', $str);
-		if (count($splitted) == 1)
-			$ret = '1/1/' . $str;
-		else if (count($splitted) == 2)
-			$ret = $splitted[0] . '/1/' . $splitted[1];
-		return $ret;
 	}
 	
 	private static function prepareColumnListSentToGFusion($input_column_list, $input_visualization_type) {

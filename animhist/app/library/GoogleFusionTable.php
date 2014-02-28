@@ -49,17 +49,30 @@ class GoogleFusionTable {
 	}
 	
 	public function retrieveGFusionData() {
-		$sql = 'SELECT * FROM '.$this->gf_table_id." ORDER BY 'CreatedAt'";
+		$sql = 'SELECT * FROM '.$this->gf_table_id." ORDER BY CreatedAt";
 		return self::sendSQLToGFusion($sql, 'get');
 	}
 	
 	public function retrieveGFusionRowsID() {
-		$sql = "SELECT ROWID, 'CreatedAt' FROM ".$this->gf_table_id." ORDER BY 'CreatedAt'";
+		$sql = "SELECT ROWID, CreatedAt FROM ".$this->gf_table_id." ORDER BY CreatedAt";
 		return self::sendSQLToGFusion($sql, 'get');
 	}
 	
 	public function retrieveGFusionTimeline() {
 		$sql = "SELECT MilestoneRep, Count() FROM ".$this->gf_table_id." GROUP BY MilestoneRep";
+		$retGF = self::sendSQLToGFusion($sql, 'get');
+		if (!$retGF) return false;
+		
+		$ret = [];
+		foreach ($retGF->rows as $row) {
+			$ret[] = $row[0];
+		}
+		
+		return $ret;
+	}
+	
+	public function getRow($row_id) {
+		$sql = 'SELECT * FROM '.$this->gf_table_id." WHERE ROWID = '".$row_id."'";
 		return self::sendSQLToGFusion($sql, 'get');
 	}
 	
@@ -120,7 +133,7 @@ class GoogleFusionTable {
 	
 		for ($i = 0; $i < count($rowsID); $i++) {
 			$milestone = $rowsData[$i][$milestone_col_id];
-			$datetime = new DateTime(VisualizationController::prepareProperDateTime($milestone));
+			$datetime = new DateTime($milestone);
 			$new_milestone_rep = $datetime->format($datetime_format_str);
 				
 			$this->updateRow($rowsID[$i][0], ['MilestoneRep'=>$new_milestone_rep]);

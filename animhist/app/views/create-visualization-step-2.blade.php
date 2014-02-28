@@ -20,7 +20,7 @@
 	{{ HTML::script('js/slickgrid/slick.grid.js'); }}
 	{{ HTML::script('js/slickgrid/plugins/slick.rowselectionmodel.js'); }}
 	{{ HTML::script('js/slickgrid/plugins/slick.checkboxselectcolumn.js'); }}
-	{{ HTML::script('js/date-format.js'); }}
+	{{ HTML::script('js/moment.min.js'); }}
 	{{ HTML::script('js/project/page-create-visualization-step-2.js'); }}
 	{{ HTML::script('js/project/page-create-visualization-step-2-property.js'); }}
 	{{ HTML::script('js/project/page-create-visualization-step-2-table.js'); }}

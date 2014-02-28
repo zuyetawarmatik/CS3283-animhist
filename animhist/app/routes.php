@@ -15,7 +15,8 @@
 
 Route::get('/', function()
 {
-	
+	$datetime = new DateTime();
+	return $datetime->format('M Y');
 });
 
 Route::get('play', function()

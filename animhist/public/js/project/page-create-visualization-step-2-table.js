@@ -21,11 +21,10 @@ var dateFormatter = function(row, cell, value, columnDef, dataContext) {
 	if (res.length == 1) value = "1/1/" + value;
 	else if (res.length == 2) value = res[0] + "/1/" + res[1]; 
 	
-	date = new Date(value);
 	switch (viProps["milestoneFormat"]) {
-	case "day": return date.format("d mmm yyyy");
-	case "month": return date.format("mmm yyyy");
-	case "year": return date.format("yyyy");
+	case "day": return moment(value, "M/D/YYYY").format("D MMM YYYY");
+	case "month": return moment(value, "M/D/YYYY").format("MMM YYYY");
+	case "year": return moment(value, "M/D/YYYY").format("YYYY");
 	}
 };
 
@@ -135,6 +134,19 @@ function retrieveFusionData() {
 	});
 }
 
+function retrieveTimeline() {
+	$.ajax({
+		processData: false,
+	    contentType: false,
+		url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/info?request=timeline",
+		type: "GET",
+		headers: {'X-CSRF-Token': $("[name='hidden-form'] [type='hidden']").val()},
+		success: function(responseData) {
+			
+		}
+	});	
+}
+
 $(function() {
 	ajaxTemplate = {
 		processData: false,
@@ -177,6 +189,7 @@ $(function() {
 		maxVisible: 1
 	};
 	
+	retrieveTimeline();
 	retrieveFusionData();
 	
 	$(window).resize(function() {
@@ -199,6 +212,7 @@ function slickGrid_undo() {
 }
 
 function slickGrid_cellChange(e, args) {
+	var activeRow = args["row"];
     var activeCol = args["cell"];
     var activeColField = gridColumns[activeCol]["field"];
     var activeRowItem = args["item"]; // the whole row data
@@ -207,6 +221,9 @@ function slickGrid_cellChange(e, args) {
     var pairs = {};
     pairs[activeColField] = cellValue;
 
+    if (pairs["Milestone"])
+    	pairs["Milestone"] = prepareProperDateTime(pairs["Milestone"]);
+    
     var ajaxVar = $.extend({}, ajaxTemplate, {
     	data: JSON.stringify({
 			type: "row-update",
@@ -224,7 +241,17 @@ function slickGrid_cellChange(e, args) {
 			noty(notyErrorVar);
 		},
 		success: function(responseData) {
-			var notySuccessVar = $.extend({}, notySuccessTemplate);
+			var notySuccessVar = $.extend({}, notySuccessTemplate, {
+				callback: {
+					onShow: function(){
+						var responseRow = responseData["rows"][0];
+						for (var i = 1; i < responseRow.length; i++) {
+							gridData[activeRow][responseData["columns"][i]] = responseRow[i];
+						}
+						slickGrid.invalidate();
+					}
+				}
+			});
 			noty(notySuccessVar);
 		}
     });
@@ -240,6 +267,9 @@ function slickGrid_addNewRow(e, args) {
 		if (val) pairs[key] = val;
 	});
 	
+	if (pairs["Milestone"])
+		pairs["Milestone"] = prepareProperDateTime(pairs["Milestone"]);
+	
 	var ajaxVar = $.extend({}, ajaxTemplate, {
 		data: JSON.stringify({
 			type: "row-insert",
@@ -251,10 +281,16 @@ function slickGrid_addNewRow(e, args) {
 		},
 		success: function(responseData) {
 			var notySuccessVar = $.extend({}, notySuccessTemplate, {
-				text: "New row added, refreshing page...",
+				text: "New row added",
 				callback: {
-					afterShow: function() {
-						window.location.reload();
+					onShow: function(){
+						var responseRow = responseData["rows"][0];
+						var newRow = {};
+						for (var i = 1; i < responseRow.length; i++) {
+							newRow[responseData["columns"][i]] = responseRow[i];
+						}
+						gridData.push(newRow);
+						slickGrid.invalidate();
 					}
 				}
 			});
@@ -289,11 +325,15 @@ $(function() {
 			},
 			success: function(responseData) {
 				var notySuccessVar = $.extend({}, notySuccessTemplate, {
-					text: "Rows removed, refreshing page...",
+					text: "Rows removed",
 					callback: {
-						afterShow: function() {
-							$("#delete-row-btn").attr("disabled", true);
-							window.location.reload();
+						onShow: function(){
+							rows.sort();
+							for (var i = 0; i < rows.length; i++) {
+								gridData.splice(rows[i] - i, 1);
+							}
+							slickGrid.setSelectedRows([]);
+							slickGrid.invalidate();
 						}
 					}
 				});
@@ -308,4 +348,16 @@ function getCellValue(rowItem, col) {
 	var colField = gridColumns[col]["field"];
 	if (!rowItem) return false;
 	return rowItem[colField];
+}
+
+function prepareProperDateTime(str) {
+	var ret = str;
+	var splitted = str.split('/');
+	if (splitted.length == 1)
+		ret = '1/1/' + str;
+	else if (splitted.length == 2)
+		ret = splitted[0] + '/1/' + splitted[1];
+	
+	ret = moment(ret, "M/D/YYYY").format("M/D/YYYY");
+	return ret;
 }

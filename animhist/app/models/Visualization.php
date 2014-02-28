@@ -33,7 +33,7 @@ class Visualization extends Eloquent {
 	
 	public function getMilestoneFormatString() {
 		$format_str = 'd M Y';
-		switch ($this->milestone_format) {
+		switch (strtolower($this->milestone_format)) {
 			case 'day':
 				$format_str = 'd M Y';
 				break;
