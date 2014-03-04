@@ -15,7 +15,7 @@
 		
 		<!-- Script -->
 		{{ HTML::script('js/less-1.4.2.min.js'); }}
-		{{ HTML::script('js/jquery-2.0.3.min.js'); }}
+		{{ HTML::script('js/jquery-2.1.0.min.js'); }}
 		{{ HTML::script('js/jquery-ui-1.10.3/ui/jquery-ui.js'); }}
 		{{ HTML::script('js/noty-2.2.2/js/noty/packaged/jquery.noty.packaged.min.js'); }}
 		{{ HTML::script('js/project/main-shared.js'); }}

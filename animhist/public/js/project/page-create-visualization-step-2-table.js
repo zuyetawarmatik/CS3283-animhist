@@ -1,6 +1,6 @@
 var gfusionProps, gfusionData, gfusionRowsID;
 var gridColumns, gridData, gridTimeline;
-var slickGrid;
+var dataView, slickGrid;
 var checkboxSelector;
 var commandQueue = [];
 var ajaxTemplate, notyErrorTemplate, notySuccessTemplate;
@@ -12,6 +12,7 @@ var gridOptions = {
 	enableAddRow: true,
 	enableCellNavigation: true,
 	enableColumnReorder: false,
+	explicitInitialization: true,
 	forceFitColumns: true
 };
 
@@ -40,6 +41,13 @@ var numberValidator = function(value) {
 			msg : null
 		};
 	}
+}
+
+var milestoneFilter = function(item) {
+	var filter = $("#filter-list").attr("data-filter");
+	if (filter != "All" && item["MilestoneRep"] != filter)
+		return false;
+	return true;
 }
 
 function parseRetrievedData() {
@@ -86,6 +94,7 @@ function parseRetrievedData() {
 	for (var i = 0; i < gfusionData["rows"].length; i++) {
 		var rowItem = {};
 		rowItem["ROWID"] = gfusionRowsID["rows"][i][0];
+		rowItem["id"] = rowItem["ROWID"];
 		for (var j = 1; j < gfusionData["columns"].length; j++) { // Omit CreatedAt column only, keep MilestoneRep column
 			rowItem[gfusionData["columns"][j]] = gfusionData["rows"][i][j];
 		}
@@ -124,25 +133,54 @@ function retrieveFusionData() {
 			gfusionRowsID = responseData["gfusionRowsID"];
 			parseRetrievedData();
 			
-			slickGrid = new Slick.Grid("#edit-area-table #table", gridData, gridColumns, gridOptions);
+			dataView = new Slick.Data.DataView();
+			slickGrid = new Slick.Grid("#edit-area-table #table", dataView, gridColumns, gridOptions);
+			
+			dataView.onRowCountChanged.subscribe(function(e, args) {
+				slickGrid.updateRowCount();
+				slickGrid.render();
+			});
+			dataView.onRowsChanged.subscribe(function(e, args) {
+				slickGrid.invalidateRows(args.rows);
+				slickGrid.render();
+			});
+			dataView.beginUpdate();
+		    dataView.setItems(gridData);
+		    dataView.setFilter(milestoneFilter);
+		    dataView.endUpdate();
+		    
 			slickGrid.setSelectionModel(new Slick.RowSelectionModel({selectActiveRow: false}));
 			slickGrid.registerPlugin(checkboxSelector);
 			slickGrid.onCellChange.subscribe(slickGrid_cellChange);
 			slickGrid.onAddNewRow.subscribe(slickGrid_addNewRow);
 			slickGrid.onSelectedRowsChanged.subscribe(slickGrid_selectedRowsChanged);
+			slickGrid.init();
 		}
 	});
 }
 
-function retrieveTimeline() {
+function retrieveTimeline(focused) {
 	$.ajax({
 		processData: false,
 	    contentType: false,
 		url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/info?request=timeline",
 		type: "GET",
+		global: false,
 		headers: {'X-CSRF-Token': $("[name='hidden-form'] [type='hidden']").val()},
 		success: function(responseData) {
+			$("#filter-list").empty();
+			$("<li class='filter-item'>All</li>").appendTo("#filter-list");
+			
 			gridTimeline = responseData;
+			gridTimeline.unshift("All");
+			
+			for (var i = 1; i < gridTimeline.length; i++) {
+				var li = $("<li class='filter-item'>" + gridTimeline[i] + "</li>");
+				li.appendTo("#filter-list");
+			}
+			
+			if (!$("#filter-list").attr("data-filter") || !focused)	focused = "All";
+			$("#filter-list").attr("data-filter", focused);
 		}
 	});	
 }
@@ -198,6 +236,30 @@ $(function() {
 	});
 });
 
+$(function() {
+	/* Filtering attribute change */
+	$("#filter-list").attrchange({
+		trackValues: true, 
+		callback: function (event) {
+			if (event.attributeName == "data-filter") {
+				$(".filter-item.focused").removeClass("focused");
+				var filterIndex = $.inArray(event.newValue, gridTimeline);
+				$(".filter-item:nth-child(" + (filterIndex + 1) + ")").addClass("focused");
+				if (dataView)
+					dataView.refresh();
+			}
+		}
+	});
+});
+
+$(function() {
+	$("#filter-list").on("click", ".filter-item", function() {
+		if (!$(this).hasClass("focused")) {
+			$("#filter-list").attr("data-filter", $(this).html());
+		}
+	});
+});
+
 function slickGrid_queueAndExecuteCommand(item, column, editCommand) {
 	commandQueue.push(editCommand);
 	editCommand.execute();
@@ -248,7 +310,17 @@ function slickGrid_cellChange(e, args) {
 						for (var i = 1; i < responseRow.length; i++) {
 							gridData[activeRow][responseData["columns"][i]] = responseRow[i];
 						}
-						slickGrid.invalidate();
+						
+						// Update timeline
+						var mr = gridData[activeRow]["MilestoneRep"];
+						var indexOfMilestone = $.inArray(mr, gridTimeline);
+						if (indexOfMilestone < 0) {
+							var toFocus = $("#filter-list").attr("data-filter");
+							if (toFocus != "All") toFocus = mr; 
+							retrieveTimeline(toFocus);
+						} else {
+							dataView.refresh();
+						}
 					}
 				}
 			});
@@ -289,8 +361,19 @@ function slickGrid_addNewRow(e, args) {
 						for (var i = 1; i < responseRow.length; i++) {
 							newRow[responseData["columns"][i]] = responseRow[i];
 						}
+						newRow["id"] = newRow["ROWID"];
 						gridData.push(newRow);
-						slickGrid.invalidate();
+						
+						// Update timeline
+						var mr = newRow["MilestoneRep"];
+						var indexOfMilestone = $.inArray(mr, gridTimeline);
+						if (indexOfMilestone < 0) {
+							var toFocus = $("#filter-list").attr("data-filter");
+							if (toFocus != "All") toFocus = mr; 
+							retrieveTimeline(toFocus);
+						} else {
+							dataView.refresh();
+						}
 					}
 				}
 			});
@@ -333,7 +416,7 @@ $(function() {
 								gridData.splice(rows[i] - i, 1);
 							}
 							slickGrid.setSelectedRows([]);
-							slickGrid.invalidate();
+							retrieveTimeline();
 						}
 					}
 				});

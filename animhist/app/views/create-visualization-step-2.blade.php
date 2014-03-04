@@ -9,6 +9,7 @@
 @stop
 
 @section('js')
+	{{ HTML::script('js/attrchange/attrchange.js'); }}
 	{{ HTML::script('js/vex-2.0.1/js/vex.combined.min.js'); }}
 	{{ HTML::script('js/jquery.event.drag-2.2/jquery.event.drag-2.2.js'); }}
 	{{ HTML::script('js/jquery.event.drag-2.2/jquery.event.drag.live-2.2.js'); }}
@@ -17,6 +18,7 @@
 	{{ HTML::script('js/slickgrid/slick.core.js'); }}
 	{{ HTML::script('js/slickgrid/slick.formatters.js'); }}
 	{{ HTML::script('js/slickgrid/slick.editors.js'); }}
+	{{ HTML::script('js/slickgrid/slick.dataview.js'); }}
 	{{ HTML::script('js/slickgrid/slick.grid.js'); }}
 	{{ HTML::script('js/slickgrid/plugins/slick.rowselectionmodel.js'); }}
 	{{ HTML::script('js/slickgrid/plugins/slick.checkboxselectcolumn.js'); }}
@@ -41,6 +43,8 @@
 	<div id="edit-area-table" class="current">
 		<div id="toolbar">	
 			<button id="delete-row-btn" title="Delete Row(s)" disabled><i>&#57597;</i></button>
+			<ul id="filter-list">
+			</ul>
 		</div>
 		<div id="table"></div>
 	</div>
