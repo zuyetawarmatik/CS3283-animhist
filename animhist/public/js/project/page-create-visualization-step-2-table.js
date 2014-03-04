@@ -169,18 +169,23 @@ function retrieveTimeline(focused) {
 		headers: {'X-CSRF-Token': $("[name='hidden-form'] [type='hidden']").val()},
 		success: function(responseData) {
 			$("#filter-list").empty();
-			$("<li class='filter-item'>All</li>").appendTo("#filter-list");
+			$("#timeline-list").empty();
 			
 			gridTimeline = responseData;
 			gridTimeline.unshift("All");
 			
-			for (var i = 1; i < gridTimeline.length; i++) {
-				var li = $("<li class='filter-item'>" + gridTimeline[i] + "</li>");
-				li.appendTo("#filter-list");
+			for (var i = 0; i < gridTimeline.length; i++) {
+				$("<li class='filter-item'>" + gridTimeline[i] + "</li>").appendTo("#filter-list");
+				
+				if (i > 0)
+					$("<li class='timeline-item'>" + gridTimeline[i] + "</li>").appendTo("#timeline-list");
 			}
 			
 			if (!$("#filter-list").attr("data-filter") || !focused)	focused = "All";
 			$("#filter-list").attr("data-filter", focused);
+			
+			if (gridTimeline.length > 1)
+				$("#timeline-list").attr("data-milestone", gridTimeline[1]);
 		}
 	});	
 }

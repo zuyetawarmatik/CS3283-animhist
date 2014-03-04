@@ -26,6 +26,7 @@
 	{{ HTML::script('js/project/page-create-visualization-step-2.js'); }}
 	{{ HTML::script('js/project/page-create-visualization-step-2-property.js'); }}
 	{{ HTML::script('js/project/page-create-visualization-step-2-table.js'); }}
+	{{ HTML::script('js/project/page-create-visualization-step-2-visualization.js'); }}
 	<script>vex.defaultOptions.className = 'vex-theme-wireframe';</script>
 @stop
 
@@ -39,6 +40,11 @@
 		<li><a href="#">Style</a></li>
 	</ul>
 	<div id="edit-area-visualization">
+		<div id="seekbar">	
+			<button id="play-btn" title="Play"><i>&#57610;</i></button>
+			<ul id="timeline-list">
+			</ul>
+		</div>
 	</div>
 	<div id="edit-area-table" class="current">
 		<div id="toolbar">	

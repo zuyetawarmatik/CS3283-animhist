@@ -40,6 +40,50 @@
 		}
 	}
 	
+	#edit-area-visualization {
+		#seekbar {
+			height: 5rem;
+			background: @color-back-top-bar; 
+			
+			button {
+				float: left;
+				width: 5rem;
+				height: 100%;
+				border: none;
+				i {
+					margin: 0;
+				}
+			}
+			
+			#timeline-list {
+				height: 100%;
+				margin-left: 5rem;
+				padding-left: 1rem;
+				overflow-x: auto;
+				overflow-y: hidden;
+				white-space: nowrap;
+				
+				.timeline-item {
+					display: inline-block;
+					text-align: center;
+					padding: 1.5rem 1rem;
+					height: 2rem;
+					cursor: pointer;
+					
+					&.focused {
+						font-weight: 700;
+						color: @color-type-link;	
+					}
+					
+					&:hover {
+						background: darken(@color-back-right-area, 20%);
+					}
+				}
+			}
+		}
+		
+	}
+	
 	#edit-area-table {
 		#toolbar {
 			height: 5rem;
