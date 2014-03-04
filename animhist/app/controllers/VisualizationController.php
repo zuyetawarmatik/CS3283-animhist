@@ -199,7 +199,7 @@ class VisualizationController extends \BaseController {
 				return Response::json($json);
 			} else if  (Input::get('request') == 'timeline') {
 				$ret = $gft->retrieveGFusionTimeline();
-				if (!$ret) goto fail;
+				if (!is_array($ret)) goto fail;
 				return Response::json($ret);
 			} else {
 				goto fail;

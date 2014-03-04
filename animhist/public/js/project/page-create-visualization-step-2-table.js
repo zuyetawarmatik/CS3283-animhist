@@ -1,5 +1,5 @@
 var gfusionProps, gfusionData, gfusionRowsID;
-var gridColumns, gridData;
+var gridColumns, gridData, gridTimeline;
 var slickGrid;
 var checkboxSelector;
 var commandQueue = [];
@@ -142,7 +142,7 @@ function retrieveTimeline() {
 		type: "GET",
 		headers: {'X-CSRF-Token': $("[name='hidden-form'] [type='hidden']").val()},
 		success: function(responseData) {
-			
+			gridTimeline = responseData;
 		}
 	});	
 }

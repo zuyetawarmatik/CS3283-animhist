@@ -64,9 +64,10 @@ class GoogleFusionTable {
 		if (!$retGF) return false;
 		
 		$ret = [];
-		foreach ($retGF->rows as $row) {
-			$ret[] = $row[0];
-		}
+		if (property_exists($retGF, 'rows'))	
+			foreach ($retGF->rows as $row) {
+				$ret[] = $row[0];
+			}
 		
 		return $ret;
 	}
