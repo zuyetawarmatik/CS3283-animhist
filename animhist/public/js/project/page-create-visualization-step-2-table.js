@@ -250,8 +250,8 @@ $(function() {
 				$(".filter-item.focused").removeClass("focused");
 				var filterIndex = $.inArray(event.newValue, gridTimeline);
 				$(".filter-item:nth-child(" + (filterIndex + 1) + ")").addClass("focused");
-				if (dataView)
-					dataView.refresh();
+				if (slickGrid) slickGrid.setSelectedRows([]);
+				if (dataView) dataView.refresh();
 			}
 		}
 	});
@@ -279,14 +279,12 @@ function slickGrid_undo() {
 }
 
 function slickGrid_cellChange(e, args) {
-	var activeRow = args["row"];
     var activeCol = args["cell"];
     var activeColField = gridColumns[activeCol]["field"];
     var activeRowItem = args["item"]; // the whole row data
-    var activeRowID = activeRowItem["ROWID"];
-    var cellValue = getCellValue(activeRowItem, activeCol);
+    var activeRowID = activeRowItem["id"];
     var pairs = {};
-    pairs[activeColField] = cellValue;
+    pairs[activeColField] = activeRowItem[activeColField];
 
     if (pairs["Milestone"])
     	pairs["Milestone"] = prepareProperDateTime(pairs["Milestone"]);
@@ -313,11 +311,13 @@ function slickGrid_cellChange(e, args) {
 					onShow: function(){
 						var responseRow = responseData["rows"][0];
 						for (var i = 1; i < responseRow.length; i++) {
-							gridData[activeRow][responseData["columns"][i]] = responseRow[i];
+							activeRowItem[responseData["columns"][i]] = responseRow[i];
 						}
 						
+						dataView.updateItem(activeRowID, activeRowItem);
+						
 						// Update timeline
-						var mr = gridData[activeRow]["MilestoneRep"];
+						var mr = activeRowItem["MilestoneRep"];
 						var indexOfMilestone = $.inArray(mr, gridTimeline);
 						if (indexOfMilestone < 0) {
 							var toFocus = $("#filter-list").attr("data-filter");
@@ -367,7 +367,7 @@ function slickGrid_addNewRow(e, args) {
 							newRow[responseData["columns"][i]] = responseRow[i];
 						}
 						newRow["id"] = newRow["ROWID"];
-						gridData.push(newRow);
+						dataView.addItem(newRow);
 						
 						// Update timeline
 						var mr = newRow["MilestoneRep"];
@@ -396,12 +396,7 @@ function slickGrid_selectedRowsChanged(e, args) {
 
 $(function() {
 	$("#delete-row-btn").click(function() {
-		var rows = slickGrid.getSelectedRows();
-		var rowsID = [];
-		$.each(rows, function(i, val) {
-			rowsID.push(gridData[val]["ROWID"]);
-		});
-		
+		var rowsID = dataView.mapRowsToIds(slickGrid.getSelectedRows());
 		var ajaxVar = $.extend({}, ajaxTemplate, {
 			data: JSON.stringify({
 				type: "row-delete",
@@ -416,10 +411,9 @@ $(function() {
 					text: "Rows removed",
 					callback: {
 						onShow: function(){
-							rows.sort();
-							for (var i = 0; i < rows.length; i++) {
-								gridData.splice(rows[i] - i, 1);
-							}
+							$.each(rowsID, function(i, val) {
+								dataView.deleteItem(val);
+							});
 							slickGrid.setSelectedRows([]);
 							retrieveTimeline();
 						}
@@ -431,12 +425,6 @@ $(function() {
 		$.ajax(ajaxVar);
 	});
 });
-
-function getCellValue(rowItem, col) {
-	var colField = gridColumns[col]["field"];
-	if (!rowItem) return false;
-	return rowItem[colField];
-}
 
 function prepareProperDateTime(str) {
 	var ret = str;
