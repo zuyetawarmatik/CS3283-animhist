@@ -11,21 +11,21 @@ class GoogleFusionTable {
 	}
 	
 	public function retrieveGFusionAll() {
-		$returnArr = [];
+		$return_arr = [];
 	
-		$gfusionProps = $this->retrieveGFusionProperties();
-		if (!$gfusionProps) return false;
-		$returnArr["gfusionProps"] = $gfusionProps;
+		$gfusion_props = $this->retrieveGFusionProperties();
+		if (!$gfusion_props) return false;
+		$return_arr["gfusionProps"] = $gfusion_props;
 	
-		$gfusionData = $this->retrieveGFusionData();
-		if (!$gfusionData) return false;
-		$returnArr["gfusionData"] = $gfusionData;
+		$gfusion_data = $this->retrieveGFusionData();
+		if (!$gfusion_data) return false;
+		$return_arr["gfusionData"] = $gfusion_data;
 	
-		$gfusionRowsID = $this->retrieveGFusionRowsID();
-		if (!$gfusionRowsID) return false;
-		$returnArr["gfusionRowsID"] = $gfusionRowsID;
+		$gfusion_rows_ID = $this->retrieveGFusionRowsID();
+		if (!$gfusion_rows_ID) return false;
+		$return_arr["gfusionRowsID"] = $gfusion_rows_ID;
 	
-		return $returnArr;
+		return $return_arr;
 	}
 	
 	public function retrieveGFusionProperties() {
@@ -60,12 +60,12 @@ class GoogleFusionTable {
 	
 	public function retrieveGFusionTimeline() {
 		$sql = "SELECT MilestoneRep, Count() FROM ".$this->gf_table_id." GROUP BY MilestoneRep";
-		$retGF = self::sendSQLToGFusion($sql, 'get');
-		if (!$retGF) return false;
+		$ret_gf = self::sendSQLToGFusion($sql, 'get');
+		if (!$ret_gf) return false;
 		
 		$ret = [];
-		if (property_exists($retGF, 'rows'))	
-			foreach ($retGF->rows as $row) {
+		if (property_exists($ret_gf, 'rows'))	
+			foreach ($ret_gf->rows as $row) {
 				$ret[] = $row[0];
 			}
 		
@@ -80,38 +80,38 @@ class GoogleFusionTable {
 	public function updateRow($row_id, $arr) {
 		if (count($arr) == 0) return true;
 	
-		$setStr = ' SET ';
+		$set_str = ' SET ';
 		foreach ($arr as $key=>$val) {
 			$str = "'".$key."' = '".$val."',";
-			$setStr .= $str;
+			$set_str .= $str;
 		}
-		$setStr = substr($setStr, 0, -1);
+		$set_str = substr($set_str, 0, -1);
 	
-		$sql = 'UPDATE '.$this->gf_table_id . $setStr." WHERE ROWID = '".$row_id."'";
+		$sql = 'UPDATE '.$this->gf_table_id . $set_str." WHERE ROWID = '".$row_id."'";
 		return self::sendSQLToGFusion($sql, 'post');
 	}
 	
 	public function insertRow($arr) {
 		if (count($arr) == 0) return true;
 	
-		$colStr = '('; $valStr = '(';
+		$col_str = '('; $val_str = '(';
 		foreach ($arr as $key=>$val) {
-			$colStr .= "'".$key."',";
-			$valStr .= "'".$val."',";
+			$col_str .= "'".$key."',";
+			$val_str .= "'".$val."',";
 		}
-		$colStr = substr($colStr, 0, -1); $valStr = substr($valStr, 0, -1);
-		$colStr .= ')'; $valStr .= ')';
+		$col_str = substr($col_str, 0, -1); $val_str = substr($val_str, 0, -1);
+		$col_str .= ')'; $val_str .= ')';
 	
-		$sql = 'INSERT INTO '.$this->gf_table_id.' '.$colStr.' VALUES '.$valStr;
+		$sql = 'INSERT INTO '.$this->gf_table_id.' '.$col_str.' VALUES '.$val_str;
 		return self::sendSQLToGFusion($sql, 'post');
 	}
 	
 	public function deleteRows($rows_arr) {
 		if (count($rows_arr) == 0) return true;
 	
-		$rowsID = $this->retrieveGFusionRowsID();
-		$rowsCount = count($rowsID->rows);
-		if (count($rows_arr) == $rowsCount) {
+		$rows_ID = $this->retrieveGFusionRowsID();
+		$rows_count = count($rows_ID->rows);
+		if (count($rows_arr) == $rows_count) {
 			$sql = "DELETE FROM ".$this->gf_table_id;
 			self::sendSQLToGFusion($sql, 'post');
 		} else {
@@ -124,20 +124,20 @@ class GoogleFusionTable {
 	}
 	
 	public function updateAllRowsMilestoneRep($datetime_format_str) {
-		$rowsIDObj = $this->retrieveGFusionRowsID();
-		$rowsID = $rowsIDObj->rows;
+		$rows_ID_obj = $this->retrieveGFusionRowsID();
+		$rows_ID = $rows_ID_obj->rows;
 	
-		$rowsDataObj = $this->retrieveGFusionData();
-		$rowsData = $rowsDataObj->rows;
+		$rows_data_obj = $this->retrieveGFusionData();
+		$rows_data = $rows_data_obj->rows;
 	
 		$milestone_col_id = 2;
 	
-		for ($i = 0; $i < count($rowsID); $i++) {
-			$milestone = $rowsData[$i][$milestone_col_id];
+		for ($i = 0; $i < count($rows_ID); $i++) {
+			$milestone = $rows_data[$i][$milestone_col_id];
 			$datetime = new DateTime($milestone);
 			$new_milestone_rep = $datetime->format($datetime_format_str);
 				
-			$this->updateRow($rowsID[$i][0], ['MilestoneRep'=>$new_milestone_rep]);
+			$this->updateRow($rows_ID[$i][0], ['MilestoneRep'=>$new_milestone_rep]);
 		}
 		return true;
 	}
