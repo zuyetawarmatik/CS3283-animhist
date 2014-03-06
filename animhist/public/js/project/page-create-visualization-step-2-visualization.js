@@ -19,11 +19,10 @@ function mapInitialize() {
 	});
 
 	gfusionLayer = new google.maps.FusionTablesLayer();
-	updateLayerQuery("Jan 2000");
 	gfusionLayer.setMap(map);
 }
 
-function updateLayerQuery(milestone, valuable) {
+function updateLayerQuery(milestone) {
 	var where = "MilestoneRep = '" + milestone + "'";
 	gfusionLayer.setOptions({
 		query: {
@@ -42,6 +41,7 @@ $(function() {
 				$(".timeline-item.focused").removeClass("focused");
 				var milestoneIndex = $.inArray(event.newValue, gridTimeline);
 				$(".timeline-item:nth-child(" + milestoneIndex + ")").addClass("focused");
+				updateLayerQuery(event.newValue);
 			}
 		}
 	});

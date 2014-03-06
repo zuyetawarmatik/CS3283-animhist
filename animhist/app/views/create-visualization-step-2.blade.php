@@ -63,7 +63,9 @@
 @stop
 
 @section('right-area')
-	<div id="column-list-area">
+	<div id="description-area">
+	</div>
+	<div id="column-list-area" class="current">
 		<h1>{{ $visualization->display_name }}</h1>
 		<span class="h2">List of Columns</span>
 		<ul id="column-list">

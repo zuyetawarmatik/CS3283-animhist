@@ -6,4 +6,8 @@
 
 #right-area {
 	z-index: 500;
+	
+	>:not(.current) {
+		display: none;
+	}
 }
