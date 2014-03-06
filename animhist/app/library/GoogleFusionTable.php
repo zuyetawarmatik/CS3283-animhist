@@ -10,7 +10,7 @@ class GoogleFusionTable {
 		$this->gf_table_id = $gf_table_id;
 	}
 	
-	public function retrieveGFusionAll() {
+	public function retrieveGFusionAllData() {
 		$return_arr = [];
 	
 		$gfusion_props = $this->retrieveGFusionProperties();
@@ -70,6 +70,10 @@ class GoogleFusionTable {
 			}
 		
 		return $ret;
+	}
+
+	public function retrieveGFusionStyle() {
+		
 	}
 	
 	public function getRow($row_id) {

@@ -1,9 +1,3 @@
-var map;
-
-function mapResizeTrigger() {
-	google.maps.event.trigger(map, 'resize');
-}
-
 function getUrlParameters(parameter, staticURL, decode) {
 	var currLocation = (staticURL.length) ? staticURL : window.location.search;
 	var parArr;
@@ -40,13 +34,14 @@ $(function() {
 	$("#right-area-showhide-btn").click(function() {
 		var rightAreaWidth = rightSidebar.width();
 		var rightAreaTabWidth = $("#right-area-tab").length ? $("#right-area-tab").width() : 0;
+		var callback = typeof mapResizeTrigger != "undefined" ? mapResizeTrigger : null;
 		if (rightSidebar.hasClass("hidden")) {
 			rightSidebar.stop(true).animate({right: "0"}, 400, "easeOutQuad");
-			mainArea.stop(true).animate({right: rightAreaWidth + "px"}, 400, "easeOutQuad", mapResizeTrigger);
+			mainArea.stop(true).animate({right: rightAreaWidth + "px"}, 400, "easeOutQuad", callback);
 			$(this).html("&#57477;");
 		} else {
 			rightSidebar.stop(true).animate({right: (-rightAreaWidth - rightAreaTabWidth) + "px"}, 400, "easeOutQuad");
-			mainArea.stop(true).animate({right: -rightAreaTabWidth + "px"}, 400, "easeOutQuad", mapResizeTrigger);
+			mainArea.stop(true).animate({right: -rightAreaTabWidth + "px"}, 400, "easeOutQuad", callback);
 			$(this).html("&#57528;");
 		}
 		rightSidebar.toggleClass("hidden");

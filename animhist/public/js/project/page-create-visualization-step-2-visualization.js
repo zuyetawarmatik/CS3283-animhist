@@ -1,3 +1,39 @@
+var gfusionTableID;
+var map, gfusionLayer;
+
+function mapResizeTrigger() {
+	google.maps.event.trigger(map, 'resize');
+}
+
+google.maps.event.addDomListener(window, 'load', mapInitialize);
+
+function mapInitialize() {
+	map = new google.maps.Map(document.getElementById('map'), {
+		// TODO: use visualization property
+		center: new google.maps.LatLng(0, 0),
+		zoom: 3,
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		zoomControlOptions: {
+			style: google.maps.ZoomControlStyle.SMALL
+		},
+	});
+
+	gfusionLayer = new google.maps.FusionTablesLayer();
+	updateLayerQuery("Jan 2000");
+	gfusionLayer.setMap(map);
+}
+
+function updateLayerQuery(milestone, valuable) {
+	var where = "MilestoneRep = '" + milestone + "'";
+	gfusionLayer.setOptions({
+		query: {
+			select: 'Position',
+			from: gfusionTableID,
+			where: where 
+		}
+	});
+}
+
 $(function() {
 	$("#timeline-list").attrchange({
 		trackValues: true, 
@@ -17,4 +53,5 @@ $(function() {
 			$("#timeline-list").attr("data-milestone", $(this).html());
 		}
 	});
+	gfusionTableID = $("#map").data("fusion-table");
 });

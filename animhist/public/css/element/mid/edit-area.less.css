@@ -41,7 +41,17 @@
 	}
 	
 	#edit-area-visualization {
+		#map {
+			position: absolute;
+			width: 100%;
+			top: 5rem;
+			bottom: 5rem;
+		}
+		
 		#seekbar {
+			position: absolute;
+			width: 100%;
+			bottom: 0;
 			height: 5rem;
 			background: @color-back-top-bar; 
 			

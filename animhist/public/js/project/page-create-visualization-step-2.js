@@ -6,6 +6,12 @@ $(function() {
 			
 			$("a", "#tab li:nth-child(" + (newCurrent + 1) + ")").addClass("current");
 			$("#edit-area>div:nth-child(" + (newCurrent + 3) + ")").addClass("current");
+			
+			if (newCurrent == 0) {
+				google.maps.event.trigger(map, 'resize');
+			} else if (newCurrent == 1) {
+				slickGrid.resizeCanvas();
+			}
 		}
 	});
 });

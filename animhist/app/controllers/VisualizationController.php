@@ -56,7 +56,7 @@ class VisualizationController extends \BaseController {
 				}
 			}
 			
-			$visualization->zoom = 1.0;
+			$visualization->zoom = 3.0;
 			$visualization->center_latitude = 0.0;
 			$visualization->center_longitude = 0.0;
 			
@@ -178,7 +178,7 @@ class VisualizationController extends \BaseController {
 			$gft = new GoogleFusionTable($visualization->fusion_table_id);
 			
 			if (Input::get('request') == 'data') {
-				$ret = $gft->retrieveGFusionAll();
+				$ret = $gft->retrieveGFusionAllData();
 				if (!$ret) goto fail;
 				return Response::json($ret);
 			} else if (Input::get('request') == 'property') {
