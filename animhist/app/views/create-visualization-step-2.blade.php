@@ -25,7 +25,7 @@
 	{{ HTML::script('js/slickgrid/plugins/slick.checkboxselectcolumn.js'); }}
 	{{ HTML::script('js/moment.min.js'); }}
 	{{ HTML::script('js/project/page-create-visualization-step-2.js'); }}
-	{{ HTML::script('js/project/page-create-visualization-step-2-property.js'); }}
+	{{ HTML::script('js/project/page-create-visualization-step-2-column.js'); }}
 	{{ HTML::script('js/project/page-create-visualization-step-2-table.js'); }}
 	{{ HTML::script('js/project/page-create-visualization-step-2-visualization.js'); }}
 	<script>vex.defaultOptions.className = 'vex-theme-wireframe';</script>
@@ -64,6 +64,19 @@
 
 @section('right-area')
 	<div id="description-area">
+		<h1 class="editable">{{ $visualization->display_name }}</h1>
+		<p><br><span class="h2">Author: </span>{{ $visualization->user->display_name }}</p>
+		<p><span class="h2">Created at: </span>{{ $visualization->getFormattedCreatedDate() }}</p>
+		<p><span class="h2">Type: </span>{{ ucfirst($visualization->type) }}</p>
+		<p class="editable"><span class="h2">Category: </span>{{ $visualization->category }}</p>
+		<p class="editable"><br><span class="h2">Brief Description:</span></p>
+		<p>
+			@if ($visualization->description)
+				{{ $visualization->description }}
+			@else
+				(The visualization does not have any description yet.)
+			@endif
+		</p>
 	</div>
 	<div id="column-list-area" class="current">
 		<h1>{{ $visualization->display_name }}</h1>
