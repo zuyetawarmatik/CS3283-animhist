@@ -9,7 +9,7 @@ $(function(){
 	    contentType: "application/json; charset=utf-8",
 	    url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/updatetable",
 		type: "POST",
-		headers: {'X-CSRF-Token': $("[name='hidden-form'] [name='_token']").val()},
+		headers: {'X-CSRF-Token': getCSRFToken()},
 		global: false,
 		beforeSend: function() {
 			noty({
@@ -58,7 +58,7 @@ function retrieveVisualizationProperty() {
 	    contentType: false,
 		url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/info?request=property",
 		type: "GET",
-		headers: {'X-CSRF-Token': $("[name='hidden-form'] [name='_token']").val()},
+		headers: {'X-CSRF-Token': getCSRFToken()},
 		global: false,
 		success: function(responseData) {
 			viProps = responseData;

@@ -37,31 +37,31 @@ $(function() {
 	
 	$("[name='changepwd-btn']").click(function() {
 		var vexContent = "<table>" + 
-								"<tr>" +
-									"<td>" +
-										"<label for='oldpassword'>Old Password:</label>" +
-									"</td>" +
-									"<td>" +
-										"<input name='oldpassword' type='password'/>" +
-									"</td>" +
-								"</tr>" +
-								"<tr>" +
-									"<td>" +
-										"<label for='newpassword'>New Password:</label>" +
-									"</td>" +
-									"<td>" +
-										"<input name='newpassword' type='password'/>" +
-									"</td>" +
-								"</tr>" +
-								"<tr>" +
-									"<td>" +
-										"<label for='retypepassword'>Re-type New Password:</label>" +
-									"</td>" +
-									"<td>" +
-										"<input name='retypepassword' type='password'/>" +
-									"</td>" +
-								"</tr>" +
-							"</table>";
+							"<tr>" +
+								"<td>" +
+									"<label for='oldpassword'>Old Password:</label>" +
+								"</td>" +
+								"<td>" +
+									"<input name='oldpassword' type='password'/>" +
+								"</td>" +
+							"</tr>" +
+							"<tr>" +
+								"<td>" +
+									"<label for='newpassword'>New Password:</label>" +
+								"</td>" +
+								"<td>" +
+									"<input name='newpassword' type='password'/>" +
+								"</td>" +
+							"</tr>" +
+							"<tr>" +
+								"<td>" +
+									"<label for='retypepassword'>Re-type New Password:</label>" +
+								"</td>" +
+								"<td>" +
+									"<input name='retypepassword' type='password'/>" +
+								"</td>" +
+							"</tr>" +
+						"</table>";
 		vex.dialog.open({
 			message: "Change Password",
 			input: vexContent,
