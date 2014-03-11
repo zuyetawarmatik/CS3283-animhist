@@ -30,7 +30,7 @@
 					color: #fff;
 				}
 				
-				input[type="text"] {
+				input[type="text"], input[type="password"] {
 					padding: 1rem 2rem !important;
 					background: @color-back-top-bar!important;
 					border: none!important;

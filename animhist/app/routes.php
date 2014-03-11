@@ -73,6 +73,9 @@ Route::group(['before' => 'auth', 'prefix' => '{username}'], function(){
 	// /{username}
 	Route::put('/', ['before' => 'csrf', 'as' => 'user.update', 'uses' => 'UserController@update']);
 	
+	// /{username}/updatepassword
+	Route::post('/updatepassword', ['as' => 'user.updatePassword', 'uses' => 'UserController@updatePassword']);
+	
 	// /{username}/follow
 	Route::post('follow', ['before' => 'csrf', 'as' => 'user.follow', 'uses' => 'UserController@followUser']);
 	
