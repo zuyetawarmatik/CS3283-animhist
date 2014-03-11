@@ -7,13 +7,13 @@
 @stop
 
 @section('js')
-	{{ HTML::script('js/project/page-settings.js'); }}
 	{{ HTML::script('js/vex-2.0.1/js/vex.combined.min.js'); }}
+	{{ HTML::script('js/project/page-settings.js'); }}
 	<script>vex.defaultOptions.className = 'vex-theme-wireframe';</script>
 @stop
 
 @section('left-area')
-	{{ Form::open(array('name'=>'settings-form', 'url'=>URL::route('user.update', Auth::user()->username), 'method'=>'put')) }}
+	{{ Form::open(array('name'=>'settings-form', 'url'=>URL::route('user.update', Auth::user()->username), 'method'=>'put', 'data-user-id'=>Auth::user()->username)) }}
 		<table>
 			<tr>
 				<td>{{ Form::label('display-name', 'Display Name:') }}</td>

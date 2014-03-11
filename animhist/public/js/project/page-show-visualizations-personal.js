@@ -9,7 +9,7 @@ $(function() {
 			url: link,
 			type: "POST",
 			global: false,
-			headers: {'X-CSRF-Token': $("[name='hidden-form'] [type='hidden']").val()},
+			headers: {'X-CSRF-Token': $("[name='hidden-form'] [name='_token']").val()},
 			error: function(responseData) {
 				var alertSt = "";
 				$.each(responseData["responseJSON"]["error"], function(key, val) {

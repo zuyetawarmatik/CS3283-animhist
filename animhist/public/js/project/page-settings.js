@@ -35,7 +35,7 @@ $(function() {
 		});
 	});
 	
-	$("[name='changepwd-btn'").click(function() {
+	$("[name='changepwd-btn']").click(function() {
 		var vexContent = "<table>" + 
 								"<tr>" +
 									"<td>" +
@@ -65,49 +65,46 @@ $(function() {
 			vex.dialog.open({
 				message: "Change Password",
 				input: vexContent,
-			
 				callback: function(data){
-					var ajaxVar = {
+					var formData = new FormData();
+					formData.append("password-old", data.oldpassword);
+					formData.append("password-new", data.newpassword);
+					formData.append("password-retype", data.retypepassword);
+					$.ajax({
 						processData: false,
 						contentType: false,
-					    url: "/" + 'user1' + "/updatepassword",
+					    url: "/" + $("[name='settings-form']").data("user-id") + "/updatepassword",
 						type: "POST",
-						headers: {'X-CSRF-Token': $("[name='hidden-form'] [type='hidden']").val()},
+						headers: {'X-CSRF-Token': $("[name='settings-form'] [name='_token']").val()},
 						global: false,
-						beforeSend: function() {
+						data: formData,
+						error: function(responseData) {
+							var alertSt = "";
+							$.each(responseData["responseJSON"]["error"], function(key, val) {
+								$.each(val, function(index, tx) {
+									alertSt += tx + "<br/>";
+								});
+							});
 							noty({
 								layout: 'bottomCenter',
-								text: '.................',
-								type: 'information',
-								animation: {
-									open: {height: 'toggle'},
-									close: {height: 'toggle'},
-									easing: 'swing',
-								    speed: 300
-								},
+								text: alertSt,
+								type: 'error',
+								killer: true,
+								timeout: 1000,
 								maxVisible: 1
 							});
 						},
-						error: function(responseData) {
+						success: function(responseData) {
 							noty({
 								layout: 'bottomCenter',
-								text: "Updating data error, rolling back...",
-								type: 'error',
+								text: "Password changed",
+								type: 'success',
 								killer: true,
 								timeout: 500,
 								maxVisible: 1
 							});
-						},
-						data: new FormData(this),
-						success: function(responseData) {
-							var notySuccessVar = $.extend({}, notySuccessTemplate2, {
-								text: "Password changed, refreshing page..."
-							});
-							noty(notySuccessVar);
 						}
-						
-					};
-					$.ajax(ajaxVar);
+					});
 				}
 			});
 

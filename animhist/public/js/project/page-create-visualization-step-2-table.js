@@ -108,7 +108,7 @@ function retrieveFusionData() {
 	    contentType: false,
 		url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/info?request=data",
 		type: "GET",
-		headers: {'X-CSRF-Token': $("[name='hidden-form'] [type='hidden']").val()},
+		headers: {'X-CSRF-Token': $("[name='hidden-form'] [name='_token']").val()},
 		error: function(responseData) {
 			noty({
 				layout: 'bottomCenter',
@@ -166,7 +166,7 @@ function retrieveTimeline(focused) {
 		url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/info?request=timeline",
 		type: "GET",
 		global: false,
-		headers: {'X-CSRF-Token': $("[name='hidden-form'] [type='hidden']").val()},
+		headers: {'X-CSRF-Token': $("[name='hidden-form'] [name='_token']").val()},
 		success: function(responseData) {
 			$("#filter-list").empty();
 			$("#timeline-list").empty();
@@ -196,7 +196,7 @@ $(function() {
 	    contentType: "application/json; charset=utf-8",
 		url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/updatetable",
 		type: "POST",
-		headers: {'X-CSRF-Token': $("[name='hidden-form'] [type='hidden']").val()},
+		headers: {'X-CSRF-Token': $("[name='hidden-form'] [name='_token']").val()},
 		global: false,
 		beforeSend: function() {
 			noty({

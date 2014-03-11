@@ -134,17 +134,15 @@ class UserController extends \BaseController {
 	public function updatePassword($username)
 	{
 		if (Auth::user()->username == $username) {
-			$rules = ['oldpassword' => 'required', 
-				  	  'newpassword' => 'required|min:5',
-					  'retypepassword' => 'required|same:newpassword' ];
+			$rules = ['password-old' => 'required', 
+				  	  'password-new' => 'required|min:5',
+					  'password-retype' => 'required|same:password-new'];
 			$validator = Validator::make(Input::all(), $rules);
 			if ($validator->fails())
 				return JSONResponseUtility::ValidationError($validator->getMessageBag()->toArray());
 				
 			$user = Auth::user();
-	
-			$user->password = Input::get('newpassword');
-
+			$user->password = Input::get('password-new');
 			$user->save();
 		} else {
 			return Response::make('', 401);
