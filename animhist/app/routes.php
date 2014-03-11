@@ -15,8 +15,10 @@
 
 Route::get('/', function()
 {
-	$datetime = new DateTime();
-	return $datetime->format('M Y');
+	$gft = new GoogleFusionTable('1bvHTXTlPgCNfmuK_rXnWqWSM5g8TpcS5ZE1LTRI');
+	//return $gft->createColumnDefaultStyle('point', 'New Valuable');
+	return Response::JSON($gft->getColumnStyle('point', 'New Valuable'));
+	//return Response::JSON($gft->retrieveGFusionStyles());
 });
 
 Route::get('play', function()

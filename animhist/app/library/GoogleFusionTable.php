@@ -71,10 +71,6 @@ class GoogleFusionTable {
 		
 		return $ret;
 	}
-
-	public function retrieveGFusionStyle() {
-		
-	}
 	
 	public function getRow($row_id) {
 		$sql = 'SELECT * FROM '.$this->gf_table_id." WHERE ROWID = '".$row_id."'";
@@ -222,6 +218,111 @@ class GoogleFusionTable {
 			return true;
 	
 		return false;
+	}
+	
+	// TODO : private
+	public function retrieveGFusionStyles() {
+		$access_token = self::getGFusionOAuthAccessToken();
+		
+		$response = Request::get('https://www.googleapis.com/fusiontables/v1/tables/'.$this->gf_table_id.'/styles')
+		->addHeaders(['Authorization'=>'Bearer '.$access_token])
+		->send();
+		
+		if ($response->code == 401) {
+			$access_token = self::refreshGFusionOAuthAccessToken();
+			$response = Request::put('https://www.googleapis.com/fusiontables/v1/tables/'.$this->gf_table_id.'/styles')
+			->addHeaders(['Authorization'=>'Bearer '.$access_token])
+			->send();
+		}
+		
+		if ($response->code == 200)
+			return $response->body;
+	
+		return false;
+	}
+	
+	public function getColumnStyle($visualization_type, $col_name) {
+		$styles = $this->retrieveGFusionStyles();
+		
+		for ($i = 0; $i < $styles->totalItems; $i++) {
+			$style_item = $styles->items[$i]; 
+			
+			if ($visualization_type == 'point') {
+				if ($style_item->markerOptions->iconStyler->columnName == $col_name)
+					return $style_item;
+			} else if ($visualization_type == 'polygon') {
+				if ($style_item->polygonOptions->strokeColorStyler->columnName == $col_name ||
+					$style_item->polygonOptions->strokeWeightStyler->columnName == $col_name ||
+					$style_item->polygonOptions->fillColorStyler->columnName == $col_name)
+					return $style_item;
+			}
+		}
+		
+		return false;
+	}
+	
+	
+	// Only for NUMBER column
+	// Only use bucket styling
+	public function createColumnDefaultStyle($visualization_type, $col_name) {
+		$style = [];
+		
+		$colors = ['#75d6ff', '#008abd', '#0a719c', '#004a69', '#001721'];
+		
+		if ($visualization_type == 'point') {
+			$style['markerOptions']['iconStyler']['columnName'] = $col_name;
+			
+			$icons = ['measle_brown', 'small_red', 'small_purple', 'small_yellow', 'small_green'];
+			
+			$style['markerOptions']['iconStyler']['buckets'] = [];
+			for ($i = 0; $i < 5; $i++) {
+				$style['markerOptions']['iconStyler']['buckets'][$i]['icon'] = $icons[$i];
+				$style['markerOptions']['iconStyler']['buckets'][$i]['color'] = $colors[$i];
+				$style['markerOptions']['iconStyler']['buckets'][$i]['min'] = $i * 10;
+				$style['markerOptions']['iconStyler']['buckets'][$i]['max'] = ($i + 1) * 10;
+			}
+			
+		} else if ($visualization_type == 'polygon') {
+			$style['polygonOptions']['fillColorStyler']['columnName'] = $col_name;
+			
+			$style['polygonOptions']['fillColorStyler']['buckets'] = [];
+			for ($i = 0; $i < 5; $i++) {
+				$style['polygonOptions']['fillColorStyler']['buckets'][$i]['color'] = $colors[$i];
+				$style['polygonOptions']['fillColorStyler']['buckets'][$i]['min'] = $i * 10;
+				$style['polygonOptions']['fillColorStyler']['buckets'][$i]['max'] = ($i + 1) * 10;
+				$style['polygonOptions']['fillColorStyler']['buckets'][$i]['opacity'] = 0.5;
+			}
+		}
+		
+		$access_token = self::getGFusionOAuthAccessToken();
+		
+		$response = Request::post('https://www.googleapis.com/fusiontables/v1/tables/'.$this->gf_table_id.'/styles')
+		->addHeaders(['Authorization'=>'Bearer '.$access_token])
+		->sendsJson()
+		->body(json_encode($style))
+		->send();
+
+		if ($response->code == 401) {
+			$access_token = self::refreshGFusionOAuthAccessToken();
+			$response = Request::post('https://www.googleapis.com/fusiontables/v1/tables/'.$this->gf_table_id.'/styles')
+			->addHeaders(['Authorization'=>'Bearer '.$access_token])
+			->sendsJson()
+			->body(json_encode($style))
+			->send();
+		}
+		
+		if ($response->code == 200)
+			return Response::JSON($response->body);
+		
+		return false;
+	}
+	
+	public function updateColumnStyle($col_name, $style_id, $style) {
+		
+	}
+	
+	public function deleteColumnStyle($col_name, $style_id) {
+		
 	}
 	
 	private static function sendSQLToGFusion($sql, $method) {
