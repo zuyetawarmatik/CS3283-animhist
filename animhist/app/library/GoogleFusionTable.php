@@ -230,7 +230,7 @@ class GoogleFusionTable {
 		
 		if ($response->code == 401) {
 			$access_token = self::refreshGFusionOAuthAccessToken();
-			$response = Request::put('https://www.googleapis.com/fusiontables/v1/tables/'.$this->gf_table_id.'/styles')
+			$response = Request::get('https://www.googleapis.com/fusiontables/v1/tables/'.$this->gf_table_id.'/styles')
 			->addHeaders(['Authorization'=>'Bearer '.$access_token])
 			->send();
 		}
@@ -248,20 +248,21 @@ class GoogleFusionTable {
 			$style_item = $styles->items[$i]; 
 			
 			if ($visualization_type == 'point') {
-				if ($style_item->markerOptions->iconStyler->columnName == $col_name)
-					return $style_item;
+				if (property_exists($style_item, 'markerOptions'))
+					if (property_exists($style_item->markerOptions, 'iconStyler') && $style_item->markerOptions->iconStyler->columnName == $col_name)
+						return $style_item;
 			} else if ($visualization_type == 'polygon') {
-				if ($style_item->polygonOptions->strokeColorStyler->columnName == $col_name ||
-					$style_item->polygonOptions->strokeWeightStyler->columnName == $col_name ||
-					$style_item->polygonOptions->fillColorStyler->columnName == $col_name)
-					return $style_item;
+				if (property_exists($style_item, 'polygonOptions'))
+					if (property_exists($style_item->polygonOptions, 'fillColorStyler') && $style_item->polygonOptions->fillColorStyler->columnName == $col_name ||
+						property_exists($style_item->polygonOptions, 'strokeColorStyler') && $style_item->polygonOptions->strokeColorStyler->columnName == $col_name ||
+						property_exists($style_item->polygonOptions, 'strokeWeightStyler') && $style_item->polygonOptions->strokeWeightStyler->columnName == $col_name)
+						return $style_item;
 			}
 		}
 		
 		return false;
 	}
-	
-	
+
 	// Only for NUMBER column
 	// Only use bucket styling
 	public function createColumnDefaultStyle($visualization_type, $col_name) {
@@ -277,7 +278,7 @@ class GoogleFusionTable {
 			$style['markerOptions']['iconStyler']['buckets'] = [];
 			for ($i = 0; $i < 5; $i++) {
 				$style['markerOptions']['iconStyler']['buckets'][$i]['icon'] = $icons[$i];
-				$style['markerOptions']['iconStyler']['buckets'][$i]['color'] = $colors[$i];
+				//$style['markerOptions']['iconStyler']['buckets'][$i]['color'] = $colors[$i];
 				$style['markerOptions']['iconStyler']['buckets'][$i]['min'] = $i * 10;
 				$style['markerOptions']['iconStyler']['buckets'][$i]['max'] = ($i + 1) * 10;
 			}
@@ -312,17 +313,64 @@ class GoogleFusionTable {
 		}
 		
 		if ($response->code == 200)
-			return Response::JSON($response->body);
+			return $response->body;
 		
 		return false;
 	}
 	
-	public function updateColumnStyle($col_name, $style_id, $style) {
+	public function updateColumnStyle($visualization_type, $col_name, $style) {
+		$old_style = $this->getColumnStyle($visualization_type, $col_name);
 		
+		if ($old_style) {
+			$style_id = $old_style->styleId;
+				
+			$access_token = self::getGFusionOAuthAccessToken();
+			
+			$response = Request::put('https://www.googleapis.com/fusiontables/v1/tables/'.$this->gf_table_id.'/styles/'.$style_id)
+			->addHeaders(['Authorization'=>'Bearer '.$access_token])
+			->sendsJson()
+			->body(json_encode($style))
+			->send();
+			
+			if ($response->code == 401) {
+				$access_token = self::refreshGFusionOAuthAccessToken();
+				$response = Request::put('https://www.googleapis.com/fusiontables/v1/tables/'.$this->gf_table_id.'/styles/'.$style_id)
+				->addHeaders(['Authorization'=>'Bearer '.$access_token])
+				->sendsJson()
+				->body(json_encode($style))
+				->send();
+			}
+			
+			if ($response->code == 200)
+				return $response->body;
+		}
+		
+		return false;
 	}
 	
-	public function deleteColumnStyle($col_name, $style_id) {
+	public function deleteColumnStyle($visualization_type, $col_name) {
+		$style = $this->getColumnStyle($visualization_type, $col_name);
+		if ($style) {
+			$style_id = $style->styleId;
+			
+			$access_token = self::getGFusionOAuthAccessToken();
+			
+			$response = Request::delete('https://www.googleapis.com/fusiontables/v1/tables/'.$this->gf_table_id.'/styles/'.$style_id)
+			->addHeaders(['Authorization'=>'Bearer '.$access_token])
+			->send();
+			
+			if ($response->code == 401) {
+				$access_token = self::refreshGFusionOAuthAccessToken();
+				$response = Request::delete('https://www.googleapis.com/fusiontables/v1/tables/'.$this->gf_table_id.'/styles/'.$style_id)
+				->addHeaders(['Authorization'=>'Bearer '.$access_token])
+				->send();
+			}
+			
+			if ($response->code == 204)
+				return true;
+		} 
 		
+		return false;
 	}
 	
 	private static function sendSQLToGFusion($sql, $method) {
