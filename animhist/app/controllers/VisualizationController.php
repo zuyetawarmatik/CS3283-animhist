@@ -61,11 +61,19 @@ class VisualizationController extends \BaseController {
 			$visualization->center_longitude = 0.0;
 			
 			$visualization_name = $username.'_'.$visualization->display_name;
-			$fusion_table_id = GoogleFusionTable::create($visualization_name, self::prepareColumnListSentToGFusion($column_list, Input::get('type')));
+			$gf_column_list = self::prepareColumnListSentToGFusion($column_list, Input::get('type'));
+			$fusion_table_id = GoogleFusionTable::create($visualization_name, $gf_column_list);
 			
 			if ($fusion_table_id) {
 				$visualization->fusion_table_id = $fusion_table_id;
 				$visualization->save();
+				
+				// Create default style for every NUMBER column
+				$gft = new GoogleFusionTable($fusion_table_id, Input::get('type'));
+				foreach ($gf_column_list as $gf_column) {
+					if ($gf_column['type'] == 'NUMBER')
+						$gft->createColumnDefaultStyle($gf_column['name']);
+				}
 				
 				return JSONResponseUtility::Redirect(URL::route('visualization.showCreate', [$username]).'?step=2&vi_id='.$visualization->id, false);
 			} else
@@ -98,7 +106,7 @@ class VisualizationController extends \BaseController {
 			
 			$visualization = Visualization::find($id);
 			if (!$visualization || $visualization->user != Auth::user()) goto fail;
-			$gft = new GoogleFusionTable($visualization->fusion_table_id);
+			$gft = new GoogleFusionTable($visualization->fusion_table_id, $visualization->type);
 			
 			$datetime_format_str = $visualization->getMilestoneFormatString();
 			
@@ -195,7 +203,7 @@ class VisualizationController extends \BaseController {
 			
 			$visualization = Visualization::find($id);
 			if (!$visualization || $visualization->user != Auth::user()) goto fail;
-			$gft = new GoogleFusionTable($visualization->fusion_table_id);
+			$gft = new GoogleFusionTable($visualization->fusion_table_id, $visualization->type);
 			
 			if (Input::get('request') == 'data') {
 				$ret = $gft->retrieveGFusionAllData();

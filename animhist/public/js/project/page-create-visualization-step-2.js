@@ -11,6 +11,7 @@ $(function() {
 			
 			if (newCurrent == 0) {
 				google.maps.event.trigger(map, 'resize');
+				updateLayerQuery($("#timeline-list").attr("data-milestone"));
 			} else if (newCurrent == 1) {
 				slickGrid.resizeCanvas();
 			}

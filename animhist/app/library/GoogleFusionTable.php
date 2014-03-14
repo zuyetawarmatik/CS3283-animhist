@@ -4,10 +4,11 @@ use Httpful\Request;
 
 class GoogleFusionTable {
 	
-	protected $gf_table_id;
+	protected $gf_table_id, $visualization_type;
 	
-	public function __construct($gf_table_id) {
+	public function __construct($gf_table_id, $visualization_type) {
 		$this->gf_table_id = $gf_table_id;
+		$this->visualization_type = $visualization_type;
 	}
 	
 	public function retrieveGFusionAllData() {
@@ -241,17 +242,17 @@ class GoogleFusionTable {
 		return false;
 	}
 	
-	public function getColumnStyle($visualization_type, $col_name) {
+	public function getColumnStyle($col_name) {
 		$styles = $this->retrieveGFusionStyles();
 		
 		for ($i = 0; $i < $styles->totalItems; $i++) {
 			$style_item = $styles->items[$i]; 
 			
-			if ($visualization_type == 'point') {
+			if ($this->visualization_type == 'point') {
 				if (property_exists($style_item, 'markerOptions'))
 					if (property_exists($style_item->markerOptions, 'iconStyler') && $style_item->markerOptions->iconStyler->columnName == $col_name)
 						return $style_item;
-			} else if ($visualization_type == 'polygon') {
+			} else if ($this->visualization_type == 'polygon') {
 				if (property_exists($style_item, 'polygonOptions'))
 					if (property_exists($style_item->polygonOptions, 'fillColorStyler') && $style_item->polygonOptions->fillColorStyler->columnName == $col_name ||
 						property_exists($style_item->polygonOptions, 'strokeColorStyler') && $style_item->polygonOptions->strokeColorStyler->columnName == $col_name ||
@@ -265,12 +266,12 @@ class GoogleFusionTable {
 
 	// Only for NUMBER column
 	// Only use bucket styling
-	public function createColumnDefaultStyle($visualization_type, $col_name) {
+	public function createColumnDefaultStyle($col_name) {
 		$style = [];
 		
 		$colors = ['#75d6ff', '#008abd', '#0a719c', '#004a69', '#001721'];
 		
-		if ($visualization_type == 'point') {
+		if ($this->visualization_type == 'point') {
 			$style['markerOptions']['iconStyler']['columnName'] = $col_name;
 			
 			$icons = ['measle_brown', 'small_red', 'small_purple', 'small_yellow', 'small_green'];
@@ -283,7 +284,7 @@ class GoogleFusionTable {
 				$style['markerOptions']['iconStyler']['buckets'][$i]['max'] = ($i + 1) * 10;
 			}
 			
-		} else if ($visualization_type == 'polygon') {
+		} else if ($this->visualization_type == 'polygon') {
 			$style['polygonOptions']['fillColorStyler']['columnName'] = $col_name;
 			
 			$style['polygonOptions']['fillColorStyler']['buckets'] = [];
@@ -318,12 +319,12 @@ class GoogleFusionTable {
 		return false;
 	}
 	
-	public function updateColumnStyle($visualization_type, $col_name, $style) {
-		$old_style = $this->getColumnStyle($visualization_type, $col_name);
+	public function updateColumnStyle($col_name, $style) {
+		$old_style = $this->getColumnStyle($col_name);
 		
 		if ($old_style) {
 			$style_id = $old_style->styleId;
-				
+			
 			$access_token = self::getGFusionOAuthAccessToken();
 			
 			$response = Request::put('https://www.googleapis.com/fusiontables/v1/tables/'.$this->gf_table_id.'/styles/'.$style_id)
@@ -348,8 +349,8 @@ class GoogleFusionTable {
 		return false;
 	}
 	
-	public function deleteColumnStyle($visualization_type, $col_name) {
-		$style = $this->getColumnStyle($visualization_type, $col_name);
+	public function deleteColumnStyle($col_name) {
+		$style = $this->getColumnStyle($col_name);
 		if ($style) {
 			$style_id = $style->styleId;
 			
