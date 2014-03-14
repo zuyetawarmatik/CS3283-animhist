@@ -184,6 +184,7 @@ function retrieveTimeline(focused) {
 			if (!$("#filter-list").attr("data-filter") || !focused)	focused = "All";
 			$("#filter-list").attr("data-filter", focused);
 			
+			// Have one or more milestones (rather than 'All')
 			if (gridTimeline.length > 1)
 				$("#timeline-list").attr("data-milestone", gridTimeline[1]);
 		}
