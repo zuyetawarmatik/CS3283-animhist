@@ -101,17 +101,10 @@ $(function() {
 			callback: function(data) {
 				if (!data.columnname) return;
 				var columnName = data.columnname.trim();
-				if (columnName.toLowerCase() == "createdat" || columnName.toLowerCase() == "milestonerep") return;
-				if (columnName != "" && columnName.match(/^[a-z0-9\-\s]+$/i)) {
-					var exit = false;
-					$.each(columnList, function(i, obj) {
-						if (columnName.toLowerCase() == obj["caption"].toLowerCase()) exit = true;
-					});
-					if (exit) return;
-					columnList.push({"caption":columnName, "type-caption":data.columntype, "editable":true, "deletable":true});
-					
-					addColumnListButtons();
-				}
+				if (!checkColumnName(columnName, columnList)) return;
+				
+				columnList.push({"caption":columnName, "type-caption":data.columntype, "editable":true, "deletable":true});
+				addColumnListButtons();
 			}
 		});
 	});
@@ -147,19 +140,12 @@ $(function() {
 			callback: function(data) {
 				if (columnName != "Milestone" && !data.columnname) return;
 				var newColumnName = columnName == "Milestone" ? "Milestone" : data.columnname.trim();
-				if (newColumnName.toLowerCase() == "createdat" || newColumnName.toLowerCase() == "milestonerep") return;
-				if (newColumnName != "" && newColumnName.match(/^[a-z0-9\-\s]+$/i)) {
-					var exit = false;
-					$.each(columnList, function(i, obj) {
-						if (newColumnName.toLowerCase() == obj["caption"].toLowerCase() && i != index) exit = true;
-					});
-					if (exit) return;
-					
-					columnList[index]["caption"] = newColumnName;
-					columnList[index]["type-caption"] = data.columntype;
-					
-					addColumnListButtons();
-				}
+				if (!checkColumnName(newColumnName, columnList, index)) return;
+				
+				columnList[index]["caption"] = newColumnName;
+				columnList[index]["type-caption"] = data.columntype;
+				
+				addColumnListButtons();
 			}
 		});
 	});

@@ -191,30 +191,23 @@ $(function() {
 			callback: function(data) {
 				if (!data.columnname) return;
 				var columnName = data.columnname.trim();
-				if (columnName.toLowerCase() == "createdat" || columnName.toLowerCase() == "milestonerep") return;
-				if (columnName != "" && columnName.match(/^[a-z0-9\-\s]+$/i)) {
-					var exit = false;
-					$.each(columnList, function(i, obj) {
-						if (columnName.toLowerCase() == obj["caption"].toLowerCase()) exit = true;
-					});
-					if (exit) return;
+				if (!checkColumnName(columnName, columnList)) return;
 					
-					var ajaxVar = $.extend({}, ajaxTemplate2, {
-						data: JSON.stringify({
-							type: "column-insert",
-							colName: columnName,
-							colType: data.columntype.toUpperCase()
-						}),
-						success: function(responseData) {
-							var notySuccessVar = $.extend({}, notySuccessTemplate2, {
-								text: "Column added, refreshing page..."
-							});
-							noty(notySuccessVar);
-						}
-					});
-					
-					$.ajax(ajaxVar);
-				}
+				var ajaxVar = $.extend({}, ajaxTemplate2, {
+					data: JSON.stringify({
+						type: "column-insert",
+						colName: columnName,
+						colType: data.columntype.toUpperCase()
+					}),
+					success: function(responseData) {
+						var notySuccessVar = $.extend({}, notySuccessTemplate2, {
+							text: "Column added, refreshing page..."
+						});
+						noty(notySuccessVar);
+					}
+				});
+				
+				$.ajax(ajaxVar);
 			}
 		});
 	});
@@ -250,31 +243,24 @@ $(function() {
 			callback: function(data) {
 				if (columnName != "Milestone" && !data.columnname) return;
 				var newColumnName = columnName == "Milestone" ? "Milestone" : data.columnname.trim();
-				if (newColumnName.toLowerCase() == "createdat" || newColumnName.toLowerCase() == "milestonerep") return;
-				if (newColumnName != "" && newColumnName.match(/^[a-z0-9\-\s]+$/i)) {
-					var exit = false;
-					$.each(columnList, function(i, obj) {
-						if (newColumnName.toLowerCase() == obj["caption"].toLowerCase() && i != index) exit = true;
-					});
-					if (exit) return;
-					
-					var ajaxVar = $.extend({}, ajaxTemplate2, {
-						data: JSON.stringify({
-							type: "column-update",
-							col: columnList[index]["column-id"],
-							colName: newColumnName,
-							colType: data.columntype.toUpperCase()
-						}),
-						success: function(responseData) {
-							var notySuccessVar = $.extend({}, notySuccessTemplate2, {
-								text: "Column updated, refreshing page..."
-							});
-							noty(notySuccessVar);
-						}
-					});
-					
-					$.ajax(ajaxVar);
-				}
+				if (!checkColumnName(newColumnName, columnList, index)) return;
+				
+				var ajaxVar = $.extend({}, ajaxTemplate2, {
+					data: JSON.stringify({
+						type: "column-update",
+						col: columnList[index]["column-id"],
+						colName: newColumnName,
+						colType: data.columntype.toUpperCase()
+					}),
+					success: function(responseData) {
+						var notySuccessVar = $.extend({}, notySuccessTemplate2, {
+							text: "Column updated, refreshing page..."
+						});
+						noty(notySuccessVar);
+					}
+				});
+				
+				$.ajax(ajaxVar);
 			}
 		});
 	});

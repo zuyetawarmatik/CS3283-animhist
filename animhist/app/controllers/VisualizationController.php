@@ -111,18 +111,38 @@ class VisualizationController extends \BaseController {
 			$result;
 			switch (Input::json('type')) {
 				case 'row-update':
+					/* Determine Milestone and MilestoneRep */
 					if (isset($col_val_pairs['Milestone'])) {
 						$datetime = new DateTime($col_val_pairs['Milestone']);
 						$col_val_pairs['MilestoneRep'] = $datetime->format($datetime_format_str);
 					}
+					
+					/* Determine Geocode */
+					if (isset($col_val_pairs['Position'])) {
+						if (strtolower($visualization->type) == 'point') {
+							$geocode = GoogleGeocoding::getLatLongForString($col_val_pairs['Position']);
+							if ($geocode) $col_val_pairs['Geocode'] = $geocode;
+						}
+					}
+					
 					$result = $gft->updateRow($row_id, $col_val_pairs);
 					break;
 				case 'row-insert':
+					/* Determine Milestone and MilestoneRep */
 					$col_val_pairs['CreatedAt'] = date('Y/m/d H:i:s');
 					if (!isset($col_val_pairs['Milestone']))
 						$col_val_pairs['Milestone'] = '1/1/2000';
 					$datetime = new DateTime($col_val_pairs['Milestone']);
 					$col_val_pairs['MilestoneRep'] = $datetime->format($datetime_format_str);
+					
+					/* Determine Geocode */
+					if (isset($col_val_pairs['Position'])) {
+						if (strtolower($visualization->type) == 'point') {
+							$geocode = GoogleGeocoding::getLatLongForString($col_val_pairs['Position']);
+							if ($geocode) $col_val_pairs['Geocode'] = $geocode;
+						}
+					}
+						
 					$result = $gft->insertRow($col_val_pairs);
 					break;
 				case 'row-delete':
@@ -212,7 +232,7 @@ class VisualizationController extends \BaseController {
 	}
 	
 	private static function prepareColumnListSentToGFusion($input_column_list, $input_visualization_type) {
-		$column_list = [['name'=>'CreatedAt', 'type'=>'DATETIME'], ['name'=>'MilestoneRep', 'type'=>'DATETIME'], ['name'=>'Milestone', 'type'=>'DATETIME'], ['name'=>'Position', 'type'=>'LOCATION']];
+		$column_list = [['name'=>'CreatedAt', 'type'=>'DATETIME'], ['name'=>'MilestoneRep', 'type'=>'DATETIME'], ['name'=>'Geocode', 'type'=>'LOCATION'], ['name'=>'Milestone', 'type'=>'DATETIME'], ['name'=>'Position', 'type'=>'LOCATION']];
 		
 		foreach ($input_column_list as $input_column) {
 			if ($input_column['caption'] == 'HTMLData' && $input_column['type-caption'] == 'String') {
@@ -233,8 +253,8 @@ class VisualizationController extends \BaseController {
 	
 	private static function prepareColumnListSentToClient($gfusion_column_list, $milestone_format) {
 		$result = [];
-		$result[] = ['caption'=>'Milestone', 'type-caption'=>ucfirst($milestone_format), 'editable'=>true, 'column-id'=>2];
-		$result[] = ['caption'=>'Position', 'type-caption'=>'Location: KML or Lat/Long or String', 'column-id'=>3];
+		$result[] = ['caption'=>'Milestone', 'type-caption'=>ucfirst($milestone_format), 'editable'=>true, 'column-id'=>3];
+		$result[] = ['caption'=>'Position', 'type-caption'=>'Location: KML or Lat/Long or String', 'column-id'=>4];
 		
 		$has_html_data = false; $html_data_col_id;
 		foreach ($gfusion_column_list as $column) {

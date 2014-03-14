@@ -26,7 +26,7 @@ function updateLayerQuery(milestone) {
 	var where = "MilestoneRep = '" + milestone + "'";
 	gfusionLayer.setOptions({
 		query: {
-			select: 'Position',
+			select: 'Position, Geocode',
 			from: gfusionTableID,
 			where: where 
 		}

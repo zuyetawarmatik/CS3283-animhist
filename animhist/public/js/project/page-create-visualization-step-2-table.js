@@ -61,7 +61,7 @@ function parseRetrievedData() {
 	gridColumns[0]["headerCssClass"] = "table-header";
 	gridColumns[0]["cssClass"] = "table-cell-checkbox";
 	
-	for (var i = 2; i < gfusionProps["columns"].length; i++) { // Omit CreatedAt and MilestoneRep column
+	for (var i = 3; i < gfusionProps["columns"].length; i++) { // Omit CreatedAt, MilestoneRep, Geocode column
 		var columnItem = {id: gfusionProps["columns"][i]["columnId"],
 						name: gfusionProps["columns"][i]["name"],
 						field: gfusionProps["columns"][i]["name"],
@@ -95,7 +95,7 @@ function parseRetrievedData() {
 		var rowItem = {};
 		rowItem["ROWID"] = gfusionRowsID["rows"][i][0];
 		rowItem["id"] = rowItem["ROWID"];
-		for (var j = 1; j < gfusionData["columns"].length; j++) { // Omit CreatedAt column only, keep MilestoneRep column
+		for (var j = 1; j < gfusionData["columns"].length; j++) { // Omit CreatedAt column only, keep MilestoneRep and Geocode column
 			rowItem[gfusionData["columns"][j]] = gfusionData["rows"][i][j];
 		}
 		gridData.push(rowItem);
