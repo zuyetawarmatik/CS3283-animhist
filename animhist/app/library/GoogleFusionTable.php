@@ -143,6 +143,16 @@ class GoogleFusionTable {
 		return true;
 	}
 	
+	public function getColumn($col_id) {
+		$columns = $this->retrieveGFusionProperties()->columns;
+		foreach ($columns as $column) {
+			if ($column->columnId == $col_id) {
+				return $column;
+			}
+		}	
+		return false;
+	}
+	
 	public function insertColumn($col_name, $col_type) {
 		if (empty($col_name)) return true;
 		if (empty($col_type)) $col_type = 'STRING';
@@ -166,8 +176,11 @@ class GoogleFusionTable {
 			->send();
 		}
 	
-		if ($response->code == 200)
+		if ($response->code == 200) {
+			if ($col_type == 'NUMBER')
+				$this->createColumnDefaultStyle($col_name);
 			return true;
+		}
 	
 		return false;
 	}
@@ -175,7 +188,7 @@ class GoogleFusionTable {
 	public function updateColumn($col_id, $col_name, $col_type) {
 		if (empty($col_name)) return true;
 		if (empty($col_type)) $col_type = 'STRING';
-	
+		
 		$access_token = self::getGFusionOAuthAccessToken();
 	
 		$data = ['name'=>$col_name, 'type'=>$col_type];
@@ -195,9 +208,17 @@ class GoogleFusionTable {
 			->send();
 		}
 	
-		if ($response->code == 200)
+		if ($response->code == 200) {
+			if ($col_type == 'STRING') {				
+				$this->deleteColumnStyle($col_name);
+			} else { // Changed to NUMBER type
+				$style = $this->getColumnStyle($col_name);
+				if (!$style)
+					$this->createColumnDefaultStyle($col_name);
+			}
 			return true;
-	
+		}
+		
 		return false;
 	}
 	
@@ -214,9 +235,11 @@ class GoogleFusionTable {
 			->addHeaders(['Authorization'=>'Bearer '.$access_token])
 			->send();
 		}
-	
-		if ($response->code == 204)
+		
+		if ($response->code == 204) {
+			$this->deleteColumnStyle('#INVALID_COLUMN');
 			return true;
+		}
 	
 		return false;
 	}
@@ -439,7 +462,7 @@ class GoogleFusionTable {
 		return '1/zuRSQC5Q12yBoJ1idPljEw4xlolOWXrp4hyoKSC1C2o';
 	}
 	
-	public static function create($name, $column_list) {	
+	public static function create($name, $type, $column_list) {	
 		$data = ['name'=>$name, 'columns'=>$column_list, 'isExportable'=>true];
 		$response = Request::post('https://www.googleapis.com/fusiontables/v1/tables')
 					->sendsJson()
@@ -459,6 +482,14 @@ class GoogleFusionTable {
 		
 		if ($response->code == 200) {
 			GoogleDrive::setPublicPermissionForFusionTable(GoogleDrive::getFileIDForFusionTable($name));
+			
+			// Create default style for every NUMBER column
+			$gft = new GoogleFusionTable($response->body->tableId, $type);
+			foreach ($column_list as $column) {
+				if ($column['type'] == 'NUMBER')
+					$gft->createColumnDefaultStyle($column['name']);
+			}
+			
 			return $response->body->tableId;
 		}
 		

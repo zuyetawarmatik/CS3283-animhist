@@ -12,14 +12,16 @@
 */
 
 // Testing Routes
-
+	
 Route::get('/', function()
 {
-	$gft = new GoogleFusionTable('1Jf0F78kuYxkxUpFs7-9C82Z1oM9moavk4Lwi5L-k', 'point');
+	$gft = new GoogleFusionTable('1042A70ta-r5mcbhPPYjQ8WMTa3Zzhw8arueSeH13', 'point');
+	//$columns = $gft->retrieveGFusionProperties()->columns;
+	//return Response::json($gft->deleteColumn(8));
 	return Response::json($gft->retrieveGFusionStyles());
 	//return Response::JSON($gft->createColumnDefaultStyle('point', 'New Valuable'));
 	//return Response::JSON($gft->getColumnStyle('point', 'New Valuable'));
-	//return Response::JSON($gft->deleteColumnStyle('polygon', 'New Valuable'));
+	//return Response::JSON($gft->deleteColumnStyle('#INVALID_COLUMN'));
 });
 
 Route::get('play', function()

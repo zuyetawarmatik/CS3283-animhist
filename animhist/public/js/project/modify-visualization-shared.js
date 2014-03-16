@@ -12,7 +12,7 @@ function checkColumnName(str, columnList, curIndex) {
 	for (var i = 0; i < columnList.length; i++) {
 		if (str.toLowerCase() == columnList[i]["caption"].toLowerCase()) {
 			if (curIndex !== undefined) {
-				if (i == curIndex) return false;
+				if (i != curIndex) return false;
 			} else return false;
 		}
 	}
