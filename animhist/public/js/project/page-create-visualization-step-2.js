@@ -10,8 +10,12 @@ $(function() {
 			$("#right-area>div:nth-child(" + (newCurrent + 1) + ")").addClass("current");
 			
 			if (newCurrent == 0) {
-				google.maps.event.trigger(map, 'resize');
-				updateLayerQuery($("#timeline-list").attr("data-milestone"));
+				if (map !== undefined) {
+					var curCenter = map.getCenter();
+					google.maps.event.trigger(map, 'resize');
+					map.setCenter(curCenter);
+					updateLayerQuery($("#timeline-list").attr("data-milestone"));
+				}
 			} else if (newCurrent == 1) {
 				slickGrid.resizeCanvas();
 			}
