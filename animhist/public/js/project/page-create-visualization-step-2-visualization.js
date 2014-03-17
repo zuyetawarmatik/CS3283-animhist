@@ -5,14 +5,15 @@ function mapResizeTrigger() {
 	google.maps.event.trigger(map, 'resize');
 }
 
-google.maps.event.addDomListener(window, 'load', mapInitialize);
+$(window).on('vi_property_loaded', function() {
+	mapInitialize();
+});
 
 function mapInitialize() {
 	map = new google.maps.Map(document.getElementById('map'), {
-		// TODO: use visualization property
-		center: new google.maps.LatLng(0, 0),
-		zoom: 3,
-		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		center: new google.maps.LatLng(viProps['centerLatitude'], viProps['centerLongitude']),
+		zoom: parseFloat(viProps['zoom']),
+		mapTypeId: google.maps.MapTypeId.TERRAIN,
 		zoomControlOptions: {
 			style: google.maps.ZoomControlStyle.SMALL
 		},
@@ -23,10 +24,13 @@ function mapInitialize() {
 }
 
 function updateLayerQuery(milestone) {
+	var select = 'Position, Gecode';
+	if (viProps['defaultColumn']) select += ', ' + viProps['defaultColumn']; 
 	var where = "MilestoneRep = '" + milestone + "'";
+	
 	gfusionLayer.setOptions({
 		query: {
-			select: 'Position, Geocode',
+			select: select,
 			from: gfusionTableID,
 			where: where 
 		}

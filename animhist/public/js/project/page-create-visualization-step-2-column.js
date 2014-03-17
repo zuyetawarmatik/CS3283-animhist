@@ -62,6 +62,7 @@ function retrieveVisualizationProperty() {
 		global: false,
 		success: function(responseData) {
 			viProps = responseData;
+			$(window).trigger("vi_property_loaded");
 			columnList = responseData["columnList"];
 			addColumnListButtons();
 		}

@@ -66,8 +66,15 @@ class VisualizationController extends \BaseController {
 			
 			if ($fusion_table_id) {
 				$visualization->fusion_table_id = $fusion_table_id;
+				foreach ($gf_column_list as $gf_column) {
+					if ($gf_column['type'] == 'NUMBER') {
+						$visualization->default_column = $gf_column['name'];
+						break;
+					}
+				}
+				
 				$visualization->save();
-
+				
 				return JSONResponseUtility::Redirect(URL::route('visualization.showCreate', [$username]).'?step=2&vi_id='.$visualization->id, false);
 			} else
 				return Response::make('', 400);
