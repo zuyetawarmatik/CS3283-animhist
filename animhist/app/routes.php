@@ -15,7 +15,7 @@
 	
 Route::get('/', function()
 {
-	$gft = new GoogleFusionTable('1042A70ta-r5mcbhPPYjQ8WMTa3Zzhw8arueSeH13', 'point');
+	$gft = new GoogleFusionTable('134V4nXSsuxE3HLekv4Q3cci2-mI_bEXMTCPp3vDO', 'point');
 	//$columns = $gft->retrieveGFusionProperties()->columns;
 	//return Response::json($gft->deleteColumn(8));
 	return Response::json($gft->retrieveGFusionStyles());

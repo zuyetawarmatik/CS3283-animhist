@@ -49,6 +49,10 @@ class GoogleFusionTable {
 		return false;
 	}
 	
+	public function retrieveGFusionColumns() {
+		return $this->retrieveGFusionProperties()->columns;
+	}
+	
 	public function retrieveGFusionData() {
 		$sql = 'SELECT * FROM '.$this->gf_table_id." ORDER BY CreatedAt";
 		return self::sendSQLToGFusion($sql, 'get');
@@ -131,13 +135,11 @@ class GoogleFusionTable {
 		$rows_data_obj = $this->retrieveGFusionData();
 		$rows_data = $rows_data_obj->rows;
 	
-		$milestone_col_id = 2;
-	
 		for ($i = 0; $i < count($rows_ID); $i++) {
-			$milestone = $rows_data[$i][$milestone_col_id];
+			$milestone = $rows_data[$i][Constant::COL_ID_MILESTONE];
 			$datetime = new DateTime($milestone);
 			$new_milestone_rep = $datetime->format($datetime_format_str);
-				
+			
 			$this->updateRow($rows_ID[$i][0], ['MilestoneRep'=>$new_milestone_rep]);
 		}
 		return true;

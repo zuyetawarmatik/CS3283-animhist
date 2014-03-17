@@ -12,4 +12,10 @@ class Constant {
 	const SIDEBAR_GUEST_FEATURED = 2;
 	const SIDEBAR_GUEST_SEARCH = 3;
 	const SIDEBAR_GUEST_USERVISUALIZATION = 4;
+	
+	const COL_ID_CREATEDAT = 0;
+	const COL_ID_MILESTONEREP = 1;
+	const COL_ID_GEOCODE = 2;
+	const COL_ID_MILESTONE = 3;
+	const COL_ID_POSITION = 4;
 }

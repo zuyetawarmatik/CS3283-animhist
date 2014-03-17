@@ -1,4 +1,4 @@
-var RESERVED_COLUMN = ["rowid", "createdat", "milestonerep", "milestone", "geocode", "position", "htmldata"];
+var RESERVED_COLUMN = ["rowid", "createdat", "milestonerep", "geocode", "position", "htmldata"];
 
 function checkInReservedColumn(str) {
 	var i = RESERVED_COLUMN.indexOf(str.toLowerCase());

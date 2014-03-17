@@ -116,6 +116,8 @@ class VisualizationController extends \BaseController {
 			$col_type = Input::json('colType');
 			$col_val_pairs = Input::json('colvalPairs');
 			
+			$cur_col;
+			
 			$result;
 			switch (Input::json('type')) {
 				case 'row-update':
@@ -162,6 +164,7 @@ class VisualizationController extends \BaseController {
 						$visualization->save();
 						$result = $gft->updateAllRowsMilestoneRep($visualization->getMilestoneFormatString());
 					} else {
+						$cur_col = $gft->getColumn($col_id);
 						$result = $gft->updateColumn($col_id, $col_name, $col_type);
 					}
 					break;
@@ -169,6 +172,7 @@ class VisualizationController extends \BaseController {
 					$result = $gft->insertColumn($col_name, $col_type);
 					break;
 				case 'column-delete':
+					$cur_col = $gft->getColumn($col_id);
 					$result = $gft->deleteColumn($col_id);
 					break;
 			}
@@ -183,6 +187,47 @@ class VisualizationController extends \BaseController {
 					$result->columns[] = 'ROWID';
 					$result->rows[0][] = $new_row_id;
 					return Response::json($result);
+				case 'column-update':
+					// If default column is null and this column is NUMBER
+					// If the current default column changed name but kept NUMBER type
+					if ($col_type == 'NUMBER'
+							&& (empty($visualization->default_column) || $visualization->default_column == $cur_col->name)) {
+						$visualization->default_column = $col_name;
+					}
+					// If the current default column changed type to STRING
+					else if ($col_type == 'STRING') {
+						$cur_columns = $gft->retrieveGFusionColumns(); // Refresh column list
+						$visualization->default_column = null;
+						foreach ($cur_columns as $column) {
+							if ($column->type == 'NUMBER') {
+								$visualization->default_column = $column->name;
+								break;
+							}
+						}
+					}
+					$visualization->save();
+					return Response::make('', 200);
+				case 'column-insert':
+					// If default column is null and this new column is NUMBER
+					if (empty($visualization->default_column) && $col_type == 'NUMBER') {
+						$visualization->default_column = $col_name;
+						$visualization->save();
+					}
+					return Response::make('', 200);
+				case 'column-delete':
+					// Change default_column if the current default column is deleted
+					if ($visualization->default_column == $cur_col->name) {
+						$cur_columns = $gft->retrieveGFusionColumns(); // Refresh column list
+						$visualization->default_column = null;
+						foreach ($cur_columns as $column) {
+							if ($column->type == 'NUMBER') {
+								$visualization->default_column = $column->name;
+								break;
+							}
+						}
+						$visualization->save();
+					}
+					return Response::make('', 200);
 				default:
 					return Response::make('', 200);
 			}
@@ -261,8 +306,8 @@ class VisualizationController extends \BaseController {
 	
 	private static function prepareColumnListSentToClient($gfusion_column_list, $milestone_format) {
 		$result = [];
-		$result[] = ['caption'=>'Milestone', 'type-caption'=>ucfirst($milestone_format), 'editable'=>true, 'column-id'=>3];
-		$result[] = ['caption'=>'Position', 'type-caption'=>'Location: KML or Lat/Long or String', 'column-id'=>4];
+		$result[] = ['caption'=>'Milestone', 'type-caption'=>ucfirst($milestone_format), 'editable'=>true, 'column-id'=>Constant::COL_ID_MILESTONE];
+		$result[] = ['caption'=>'Position', 'type-caption'=>'Location: KML or Lat/Long or String', 'column-id'=>Constant::COL_ID_POSITION];
 		
 		$has_html_data = false; $html_data_col_id;
 		foreach ($gfusion_column_list as $column) {
@@ -285,6 +330,4 @@ class VisualizationController extends \BaseController {
 		
 		return $result;
 	}
-	
-	
 }

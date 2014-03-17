@@ -24,10 +24,8 @@ function mapInitialize() {
 }
 
 function updateLayerQuery(milestone) {
-	var select = 'Position, Gecode';
-	if (viProps['defaultColumn']) select += ', ' + viProps['defaultColumn']; 
+	var select = 'Position, Geocode'; 
 	var where = "MilestoneRep = '" + milestone + "'";
-	
 	gfusionLayer.setOptions({
 		query: {
 			select: select,
