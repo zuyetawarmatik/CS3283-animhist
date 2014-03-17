@@ -21,6 +21,13 @@ function mapInitialize() {
 
 	gfusionLayer = new google.maps.FusionTablesLayer();
 	gfusionLayer.setMap(map);
+	
+	if (viProps['htmlData']) {
+		google.maps.event.addListener(gfusionLayer, 'click', function(e) {
+			// Change the content of the InfoWindow by using HTMLData
+			e.infoWindowHtml = e.row['HTMLData'].value;
+		});
+	}
 }
 
 function updateLayerQuery(milestone) {

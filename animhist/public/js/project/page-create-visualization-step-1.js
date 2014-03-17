@@ -140,7 +140,7 @@ $(function() {
 			callback: function(data) {
 				if (columnName != "Milestone" && !data.columnname) return;
 				var newColumnName = columnName == "Milestone" ? "Milestone" : data.columnname.trim();
-				if (!checkColumnName(newColumnName, columnList, index)) return;
+				if (newColumnName != "Milestone" && !checkColumnName(newColumnName, columnList, index)) return;
 				
 				columnList[index]["caption"] = newColumnName;
 				columnList[index]["type-caption"] = data.columntype;

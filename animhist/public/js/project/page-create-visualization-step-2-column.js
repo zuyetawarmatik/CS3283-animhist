@@ -244,7 +244,7 @@ $(function() {
 			callback: function(data) {
 				if (columnName != "Milestone" && !data.columnname) return;
 				var newColumnName = columnName == "Milestone" ? "Milestone" : data.columnname.trim();
-				if (!checkColumnName(newColumnName, columnList, index)) return;
+				if (newColumnName != "Milestone" && !checkColumnName(newColumnName, columnList, index)) return;
 				
 				var ajaxVar = $.extend({}, ajaxTemplate2, {
 					data: JSON.stringify({

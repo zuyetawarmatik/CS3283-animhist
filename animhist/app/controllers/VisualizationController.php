@@ -268,6 +268,12 @@ class VisualizationController extends \BaseController {
 						"centerLatitude" => $visualization->center_latitude,
 						"centerLongitude" => $visualization->center_longitude];
 				$gfusion_props = $gft->retrieveGFusionProperties();
+				$json["htmlData"] = false;
+				foreach ($gfusion_props->columns as $column) {
+					if (strtolower($column->name) == 'htmldata' && $column->type == 'STRING') {
+						$json["htmlData"] = true; break;
+					}
+				}
 				$json["columnList"] = self::prepareColumnListSentToClient($gfusion_props->columns, $visualization->milestone_format);
 				return Response::json($json);
 			} else if  (Input::get('request') == 'timeline') {
