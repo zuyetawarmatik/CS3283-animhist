@@ -195,7 +195,7 @@ class VisualizationController extends \BaseController {
 						$visualization->default_column = $col_name;
 					}
 					// If the current default column changed type to STRING
-					else if ($col_type == 'STRING') {
+					else if ($col_type == 'STRING' && $visualization->default_column == $cur_col->name) {
 						$cur_columns = $gft->retrieveGFusionColumns(); // Refresh column list
 						$visualization->default_column = null;
 						foreach ($cur_columns as $column) {
@@ -279,6 +279,9 @@ class VisualizationController extends \BaseController {
 			} else if  (Input::get('request') == 'timeline') {
 				$ret = $gft->retrieveGFusionTimeline();
 				if (!is_array($ret)) goto fail;
+				return Response::json($ret);
+			} else if  (Input::get('request') == 'style') {
+				$ret = $gft->retrieveGFusionStyles();
 				return Response::json($ret);
 			} else {
 				goto fail;
