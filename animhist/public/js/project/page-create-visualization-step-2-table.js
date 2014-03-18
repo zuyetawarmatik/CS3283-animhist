@@ -106,7 +106,7 @@ function retrieveFusionData() {
 	$.ajax({
 		processData: false,
 	    contentType: false,
-		url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/info?request=data",
+		url: getPOSTURLPrefix() + "/info?request=data",
 		type: "GET",
 		headers: {'X-CSRF-Token': getCSRFToken()},
 		error: function(responseData) {
@@ -163,7 +163,7 @@ function retrieveTimeline(focused) {
 	$.ajax({
 		processData: false,
 	    contentType: false,
-		url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/info?request=timeline",
+		url: getPOSTURLPrefix() + "/info?request=timeline",
 		type: "GET",
 		global: false,
 		headers: {'X-CSRF-Token': getCSRFToken()},
@@ -195,7 +195,7 @@ $(function() {
 	ajaxTemplate = {
 		processData: false,
 	    contentType: "application/json; charset=utf-8",
-		url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/updatetable",
+		url: getPOSTURLPrefix() + "/updatetable",
 		type: "POST",
 		headers: {'X-CSRF-Token': getCSRFToken()},
 		global: false,

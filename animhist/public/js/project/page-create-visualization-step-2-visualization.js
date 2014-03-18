@@ -5,6 +5,16 @@ $(window).on('vi_property_loaded', function() {
 	mapInitialize();
 });
 
+$(window).on('vi_property_changed', function(e) {
+	if (map !== undefined) {
+		var fields = e.fields;
+		if ($.inArray("zoom", fields) >= 0)
+			map.setZoom(parseInt(viProps['zoom']));
+		if ($.inArray("centerLatitude", fields) >= 0 || $.inArray("centerLongitude", fields) >= 0)
+			map.setCenter(new google.maps.LatLng(viProps['centerLatitude'], viProps['centerLongitude']));
+	}
+});
+
 function mapResizeTrigger() {
 	var curCenter = map.getCenter();
 	google.maps.event.trigger(map, 'resize');
@@ -14,7 +24,7 @@ function mapResizeTrigger() {
 function mapInitialize() {
 	map = new google.maps.Map(document.getElementById('map'), {
 		center: new google.maps.LatLng(viProps['centerLatitude'], viProps['centerLongitude']),
-		zoom: parseFloat(viProps['zoom']),
+		zoom: parseInt(viProps['zoom']),
 		mapTypeId: google.maps.MapTypeId.TERRAIN,
 		zoomControlOptions: {
 			style: google.maps.ZoomControlStyle.SMALL

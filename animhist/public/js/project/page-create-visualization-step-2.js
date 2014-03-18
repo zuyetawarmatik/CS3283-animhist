@@ -24,9 +24,22 @@ $(function() {
 });
 
 $(function() {
-	$("#description-area .editable").append("<a class='edit-a'>&#57350;</a>");
+	$("#description-area p.editable").append("<a class='edit-a'>&#57350;</a>");
+	$("#description-area h1.editable").prepend("<a class='edit-a'>&#57350;</a>");
 });
 
 function getCSRFToken() {
 	return $("[name='hidden-form'] [name='_token']").val();
+}
+
+function getUserID() {
+	return $("#edit-area").data("user-id");
+}
+
+function getVisualizationID() {
+	return $("#edit-area").data("vi-id");
+}
+
+function getPOSTURLPrefix() {
+	return "/" + getUserID() + "/visualization/" + getVisualizationID();
 }

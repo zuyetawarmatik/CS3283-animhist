@@ -56,9 +56,9 @@ class VisualizationController extends \BaseController {
 				}
 			}
 			
-			$visualization->zoom = 3.0;
-			$visualization->center_latitude = 0.0;
-			$visualization->center_longitude = 0.0;
+			$visualization->zoom = 3;
+			$visualization->center_latitude = 0.00;
+			$visualization->center_longitude = 0.00;
 			
 			$visualization_name = $username.'_'.$visualization->display_name;
 			$gf_column_list = self::prepareColumnListSentToGFusion($column_list, Input::get('type'));
@@ -99,6 +99,15 @@ class VisualizationController extends \BaseController {
 			$rules = [];
 			if (Input::has('display-name'))
 				$rules['display-name'] = 'required|unique:visualizations,display_name,NULL,id,user_id,'.Auth::user()->id;
+			if (Input::has('zoom'))
+				$rules['zoom'] = 'required|numeric';
+			if (Input::has('center-latitude'))
+				$rules['center-latitude'] = 'required|numeric';
+			if (Input::has('center-longitude'))
+				$rules['center-longitude'] = 'required|numeric';
+			if (Input::has('category'))
+				$rules['category'] = 'required';
+				
 			$validator = Validator::make(Input::all(), $rules);
 			if ($validator->fails())
 				return JSONResponseUtility::ValidationError($validator->getMessageBag()->toArray());
@@ -106,15 +115,43 @@ class VisualizationController extends \BaseController {
 			$visualization = Visualization::find($id);
 			if (!$visualization || $visualization->user != Auth::user()) goto fail;
 			
-			if (Input::has('description'))
-				$visualization->description = Input::get('description');
+			if (Input::has('description')) {
+				$desc = Input::get('description') == 'NUL' ? null : Input::get('description'); 
+				$visualization->description = $desc;
+			}
 			if (Input::has('default-column'))
 				$visualization->default_column = Input::get('default-column');
-			
+			if (Input::has('display-name'))
+				$visualization->display_name = Input::get('display-name');
+			if (Input::has('category'))
+				$visualization->category = Input::get('category');
+			if (Input::has('zoom'))
+				$visualization->zoom = number_format(Input::get('zoom'));
+			if (Input::has('center-latitude'))
+				$visualization->center_latitude = number_format(Input::get('center-latitude'), 2);
+			if (Input::has('center-longitude'))
+				$visualization->center_longitude = number_format(Input::get('center-longitude'), 2);
+				
 			$visualization->save();
 			
-			return Response::make('', 200);
-			// TODO: if changed zoom, return zoom, ...
+			$json = [];
+			
+			if (Input::has('description'))
+				$json['description'] = $visualization->description;
+			if (Input::has('default-column'))
+				$json['defaultColumn'] = $visualization->default_column;
+			if (Input::has('display-name'))
+				$json['displayName'] = $visualization->display_name;
+			if (Input::has('category'))
+				$json['category'] = $visualization->category;
+			if (Input::has('zoom'))
+				$json['zoom'] = number_format($visualization->zoom);
+			if (Input::has('center-latitude'))
+				$json['centerLatitude'] = number_format($visualization->center_latitude, 2);
+			if (Input::has('center-longitude'))
+				$json['centerLongitude'] = number_format($visualization->center_longitude, 2);
+			
+			return Response::JSON($json);
 		} else {
 			return Response::make('', 401);
 		}
@@ -288,9 +325,9 @@ class VisualizationController extends \BaseController {
 						"milestoneFormat" => $visualization->milestone_format,
 						"milestones" => $visualization->milestones,
 						"defaultColumn" => $visualization->default_column,
-						"zoom" => $visualization->zoom,
-						"centerLatitude" => $visualization->center_latitude,
-						"centerLongitude" => $visualization->center_longitude];
+						"zoom" => number_format($visualization->zoom),
+						"centerLatitude" => number_format($visualization->center_latitude, 2),
+						"centerLongitude" => number_format($visualization->center_longitude, 2)];
 				$gfusion_props = $gft->retrieveGFusionProperties();
 				$json["htmlData"] = false;
 				foreach ($gfusion_props->columns as $column) {

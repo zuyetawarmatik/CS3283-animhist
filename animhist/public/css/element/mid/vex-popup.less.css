@@ -20,6 +20,7 @@
 				
 				td {
 					padding-bottom: 1rem;
+					vertical-align: middle;
 					
 					&:first-child {
 						width: 15rem;
@@ -28,6 +29,10 @@
 				
 				label, input, textarea {
 					color: #fff;
+				}
+				
+				textarea {
+					height: 10rem;
 				}
 				
 				input[type="text"], input[type="password"], textarea {

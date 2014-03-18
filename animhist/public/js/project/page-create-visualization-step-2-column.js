@@ -4,7 +4,7 @@ $(function(){
 	ajaxTemplate2 = {
 		processData: false,
 	    contentType: "application/json; charset=utf-8",
-	    url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/updatetable",
+	    url: getPOSTURLPrefix() + "/updatetable",
 		type: "POST",
 		headers: {'X-CSRF-Token': getCSRFToken()},
 		global: false,
@@ -264,14 +264,17 @@ $(function() {
 			$.ajax({
 				processData: false,
 			    contentType: false,
-				url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/updateproperty",
+				url: getPOSTURLPrefix() + "/updateproperty",
 				type: "POST",
 				headers: {'X-CSRF-Token': getCSRFToken()},
 				global: false,
 				data: formData,
 				success: function(response) {
 					viProps["defaultColumn"] = val;
-					$(window).trigger("vi_property_loaded");
+					$(window).trigger({
+						type: "vi_property_changed",
+						fields: ["defaultColumn"]
+					});
 				}
 			});
 		}

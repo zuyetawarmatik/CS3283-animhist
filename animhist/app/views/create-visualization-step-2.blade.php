@@ -67,13 +67,13 @@
 
 @section('right-area')
 	<div id="description-area">
-		<h1 class="editable">{{ $visualization->display_name }}</h1>
+		<h1 class="editable" id="displayname">{{ $visualization->display_name }}</h1>
 		<p><br><span class="h2">Author: </span>{{ $visualization->user->display_name }}</p>
 		<p><span class="h2">Created at: </span>{{ $visualization->getFormattedCreatedDate() }}</p>
 		<p><span class="h2">Type: </span>{{ ucfirst($visualization->type) }}</p>
-		<p class="editable" id="zoom"><span class="h2">Zoom: </span>{{ $visualization->zoom }}</p>
-		<p class="editable" id="center"><span class="h2">Center: </span>{{ $visualization->center_latitude }}, {{ $visualization->center_longitude }}</p>
-		<p class="editable" id="category"><span class="h2">Category: </span>{{ $visualization->category }}</p>
+		<p class="editable" id="zoom"><span class="h2">Zoom: </span><span class="content">{{ number_format($visualization->zoom) }}</span></p>
+		<p class="editable" id="center"><span class="h2">Center: </span><span class="content">{{ number_format($visualization->center_latitude, 2) }}, {{ number_format($visualization->center_longitude, 2) }}</span></p>
+		<p class="editable" id="category"><span class="h2">Category: </span><span class="content">{{ $visualization->category }}</span></p>
 		<p class="editable" id="description"><br><span class="h2">Brief Description:</span></p>
 		<p>
 			@if ($visualization->description)

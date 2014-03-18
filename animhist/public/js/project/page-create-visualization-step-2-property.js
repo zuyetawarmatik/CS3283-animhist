@@ -5,7 +5,7 @@ function retrieveVisualizationProperty() {
 	$.ajax({
 		processData: false,
 	    contentType: false,
-		url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/info?request=property",
+		url: getPOSTURLPrefix() + "/info?request=property",
 		type: "GET",
 		headers: {'X-CSRF-Token': getCSRFToken()},
 		global: false,
@@ -24,7 +24,8 @@ $(function() {
 });
 
 var editFieldRef = 
-	{zoom:
+	{
+	zoom:
 		{
 			title: "Zoom",
 			content: "<table>" +
@@ -41,7 +42,7 @@ var editFieldRef =
 						"</tr>" +
 					"</table>"
 		},
-	 center:
+	center:
 	 	{
 		 	title: "Center",
 		 	content: "<table>" +
@@ -66,9 +67,21 @@ var editFieldRef =
 						"</tr>" +
 					"</table>"
 		},
-	 category:
-	 	{title: "Category"}, 
-	 description:
+	category:
+	 	{
+		 	title: "Category",
+		 	content: "<table>" +
+						"<tr>" +
+							"<td>" +
+								"<label for='category'>Category:</label>" +
+							"</td>" +
+							"<td>" +
+								"<input name='category' type='text'/>" + 
+							"</td>" +
+						"</tr>" +
+					"</table>"
+		}, 
+	description:
 	 	{
 		 	title: "Brief Description",
 		 	content: "<table>" +
@@ -81,14 +94,27 @@ var editFieldRef =
 							"</td>" +
 						"</tr>" +
 					"</table>"
+		},
+	displayname:
+		{
+		 	title: "Display Name",
+		 	content: "<table>" +
+						"<tr>" +
+							"<td>" +
+								"<label for='displayname'>Display Name:</label>" +
+							"</td>" +
+							"<td>" +
+								"<input name='displayname' type='text'/>" + 
+							"</td>" +
+						"</tr>" +
+					"</table>"
 		}
-	 
 	};
 
 $(function() {
 	$("#description-area .editable .edit-a").on("click", function() {
 		var field = $(this).parent().attr("id");
-		var message = "Edit " + editFieldRef[field].title + " Field";
+		var message = "Edit '" + editFieldRef[field].title + "' Field";
 		
 		vex.dialog.open({
 			message: message,
@@ -102,15 +128,119 @@ $(function() {
 						$("[name='centerlat']").val(viProps["centerLatitude"]);
 						$("[name='centerlong']").val(viProps["centerLongitude"]);
 						break;
+					case "description":
+						$("[name='description']").val(viProps["description"]);
+						break;
+					case "category":
+						$("[name='category']").val(viProps["category"]);
+						break;
+					case "displayname":
+						$("[name='displayname']").val(viProps["displayName"]);
+						break;
 				}
 			},
+			callback: function(data) {
+				if (data) {
+					var formData = new FormData();
+					
+					switch (field) {
+						case "zoom":
+							if (data.zoom.trim() == '') return;
+							formData.append("zoom", data.zoom.trim());
+							break;
+						case "center":
+							if (data.centerlat.trim() == '' || data.centerlong.trim() == '') return;
+							formData.append("center-latitude", data.centerlat.trim());
+							formData.append("center-longitude", data.centerlong.trim());
+							break;
+						case "description":
+							if (data.description.trim() == '')
+								formData.append("description", "NUL");
+							else
+								formData.append("description", data.description.trim());
+							break;
+						case "category":
+							if (data.category.trim() == '') return;
+							formData.append("category", data.category.trim());
+							break;
+						case "displayname":
+							if (data.displayname.trim() == '') return;
+							formData.append("display-name", data.displayname.trim());
+							break;
+					}
+					
+					$.ajax({
+						processData: false,
+						contentType: false,
+					    url: getPOSTURLPrefix() + "/updateproperty",
+						type: "POST",
+						headers: {'X-CSRF-Token': getCSRFToken()},
+						global: false,
+						data: formData,
+						error: function(responseData) {
+							var alertSt = "";
+							$.each(responseData["responseJSON"]["error"], function(key, val) {
+								$.each(val, function(index, tx) {
+									alertSt += tx + "<br/>";
+								});
+							});
+							noty({
+								layout: 'bottomCenter',
+								text: alertSt,
+								type: 'error',
+								killer: true,
+								timeout: 1000,
+								maxVisible: 1
+							});
+						},
+						success: function(responseData) {
+							noty({
+								layout: 'bottomCenter',
+								text: "Property changed",
+								type: 'success',
+								killer: true,
+								timeout: 500,
+								maxVisible: 1
+							});
+							
+							var fields = [];
+							$.each(responseData, function(key, val) {
+								viProps[key] = responseData[key];
+								fields.push(key);
+							});
+							$(window).trigger({
+								type: "vi_property_changed",
+								fields: fields
+							});
+						}
+					});
+				}
+			}
 		});
+	});
+	
+	$(window).on("vi_property_changed", function(e) {
+		var fields = e.fields;
+		if ($.inArray("zoom", fields) >= 0)
+			$("p#zoom span.content").html(viProps["zoom"]);
+		if ($.inArray("centerLatitude", fields) >= 0 || $.inArray("centerLongitude", fields) >= 0)
+			$("p#center span.content").html(viProps["centerLatitude"] + ", " + viProps["centerLongitude"]);
+		if ($.inArray("category", fields) >= 0)
+			$("p#category span.content").html(viProps["category"]);
+		if ($.inArray("description", fields) >= 0) {
+			if (viProps["description"] == null)
+				$("p#description + p").html("(The visualization does not have any description yet.)");
+			else
+				$("p#description + p").html(viProps["description"]);
+		}
+		if ($.inArray("displayName", fields) >= 0)
+			$("h1#displayname").html(viProps["displayName"]);
 	});
 });
 
 function getMapCurrentZoom() {
 	if (map != undefined) {
-		$("[name='zoom']").val(map.getZoom().toFixed(2));
+		$("[name='zoom']").val(map.getZoom());
 	}
 }
 
