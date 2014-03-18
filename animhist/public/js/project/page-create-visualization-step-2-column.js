@@ -64,9 +64,22 @@ function retrieveVisualizationProperty() {
 			viProps = responseData;
 			$(window).trigger("vi_property_loaded");
 			columnList = responseData["columnList"];
+			addDefaultColumnOptions();
 			addColumnListButtons();
 		}
 	});
+}
+
+function addDefaultColumnOptions() {
+	$("#default-column-select").empty();
+	
+	$.each(columnList, function(i, obj) {
+		if (obj["type-caption"] == 'Number') {
+			$("#default-column-select").append("<option value='" +  obj["caption"] + "'>" + obj["caption"] + "</option>");
+		}
+	});
+	
+	$("#default-column-select option[value='" + viProps["defaultColumn"] + "']").attr("selected", "selected");
 }
 
 function addColumnListButtons() {
@@ -268,4 +281,24 @@ $(function() {
 		});
 	});
 	
+	$("#default-column-select").change(function() {
+		var val = $(this).val();
+		if (val != "") {
+			var formData = new FormData();
+			formData.append("default-column", val);
+			$.ajax({
+				processData: false,
+			    contentType: false,
+				url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/updateproperty",
+				type: "POST",
+				headers: {'X-CSRF-Token': getCSRFToken()},
+				global: false,
+				data: formData,
+				success: function(response) {
+					viProps["defaultColumn"] = val;
+					$(window).trigger("vi_property_loaded");
+				}
+			});
+		}
+	});
 });

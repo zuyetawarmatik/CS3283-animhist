@@ -95,7 +95,30 @@ class VisualizationController extends \BaseController {
 
 	public function updateProperty($username, $id)
 	{
+		if (Auth::user()->username == $username) {
+			$rules = [];
+			if (Input::has('display-name'))
+				$rules['display-name'] = 'required|unique:visualizations,display_name,NULL,id,user_id,'.Auth::user()->id;
+			$validator = Validator::make(Input::all(), $rules);
+			if ($validator->fails())
+				return JSONResponseUtility::ValidationError($validator->getMessageBag()->toArray());
 		
+			$visualization = Visualization::find($id);
+			if (!$visualization || $visualization->user != Auth::user()) goto fail;
+			
+			if (Input::has('description'))
+				$visualization->description = Input::get('description');
+			if (Input::has('default-column'))
+				$visualization->default_column = Input::get('default-column');
+			
+			$visualization->save();
+			
+			return Response::make('', 200);
+		} else {
+			return Response::make('', 401);
+		}
+		
+		fail: return Response::make('', 400);
 	}
 	
 	/* Require JSON request */
@@ -281,7 +304,7 @@ class VisualizationController extends \BaseController {
 				if (!is_array($ret)) goto fail;
 				return Response::json($ret);
 			} else if  (Input::get('request') == 'style') {
-				$ret = $gft->retrieveGFusionStyles();
+				$ret = $gft->getColumnStyle(Input::get('column'));
 				return Response::json($ret);
 			} else {
 				goto fail;

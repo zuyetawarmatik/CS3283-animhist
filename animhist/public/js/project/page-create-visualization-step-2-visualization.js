@@ -1,15 +1,15 @@
 var gfusionTableID;
 var map, gfusionLayer;
 
+$(window).on('vi_property_loaded', function() {
+	mapInitialize();
+});
+
 function mapResizeTrigger() {
 	var curCenter = map.getCenter();
 	google.maps.event.trigger(map, 'resize');
 	map.setCenter(curCenter);
 }
-
-$(window).on('vi_property_loaded', function() {
-	mapInitialize();
-});
 
 function mapInitialize() {
 	map = new google.maps.Map(document.getElementById('map'), {

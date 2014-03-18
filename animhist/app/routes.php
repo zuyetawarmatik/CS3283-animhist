@@ -94,4 +94,7 @@ Route::group(['before' => 'auth', 'prefix' => '{username}'], function(){
 	// /{username}/visualization/{id}/updatetable
 	Route::post('visualization/{id}/updatetable', ['before' => 'csrf', 'as'=> 'visualization.updateTable', 'uses' => 'VisualizationController@updateTable']);
 	
+	// /{username}/visualization/{id}/updateproperty
+	Route::post('visualization/{id}/updateproperty', ['before' => 'csrf', 'as'=> 'visualization.updateProperty', 'uses' => 'VisualizationController@updateProperty']);
+	
 });

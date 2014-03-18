@@ -85,7 +85,6 @@
 		<span class="h2">Default Column</span>
 		<span class="styled-select">
 			<select id="default-column-select">
-				<option>A</option>
 			</select>
 		</span>
 		<span class="h2">List of Columns</span>

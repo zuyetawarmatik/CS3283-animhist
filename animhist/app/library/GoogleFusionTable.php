@@ -213,7 +213,7 @@ class GoogleFusionTable {
 		if ($response->code == 200) {
 			if ($col_type == 'STRING') {				
 				$this->deleteColumnStyle($col_name);
-			} else { // Changed to NUMBER type
+			} else { // STRING changed to NUMBER type
 				$style = $this->getColumnStyle($col_name);
 				if (!$style)
 					$this->createColumnDefaultStyle($col_name);
