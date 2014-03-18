@@ -5,6 +5,12 @@
 	left: 3rem;
 	right: 3rem;
 	
+	h1 {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	
 	span.h2 {
 		display: block;
 		

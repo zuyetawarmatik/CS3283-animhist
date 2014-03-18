@@ -1,6 +1,3 @@
-var viProps;
-var columnList;
-
 var ajaxTemplate2, notySuccessTemplate2;
 
 $(function(){
@@ -52,24 +49,6 @@ $(function(){
 	}
 });
 
-function retrieveVisualizationProperty() {
-	$.ajax({
-		processData: false,
-	    contentType: false,
-		url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/info?request=property",
-		type: "GET",
-		headers: {'X-CSRF-Token': getCSRFToken()},
-		global: false,
-		success: function(responseData) {
-			viProps = responseData;
-			$(window).trigger("vi_property_loaded");
-			columnList = responseData["columnList"];
-			addDefaultColumnOptions();
-			addColumnListButtons();
-		}
-	});
-}
-
 function addDefaultColumnOptions() {
 	$("#default-column-select").empty();
 	
@@ -118,10 +97,6 @@ function addColumnListButtons() {
 	
 	$("<li class='btn-group' id='column-add-btn-group'><button class='column-add-btn grey-btn'>&#57602;</button></li>").appendTo("#column-list");
 }
-
-$(function() {
-	retrieveVisualizationProperty();
-});
 
 $(function() {
 	$("#column-list").on("click", ".column-delete-btn", function() {
@@ -181,7 +156,7 @@ $(function() {
 	
 	$("#column-list").on("click", ".column-add-btn", function() {
 		vex.dialog.open({
-			message: "Add a new column",
+			message: "Add a New Column",
 			input: "<table>" +
 						"<tr>" +
 							"<td>" +
@@ -249,7 +224,7 @@ $(function() {
 						"</table>";
 		
 		vex.dialog.open({
-			message: "Edit '" + columnName +  "' column",
+			message: "Edit '" + columnName +  "' Column",
 			input: vexContent,
 			afterOpen: function() {
 				$("[name='columnname']").val(columnName);

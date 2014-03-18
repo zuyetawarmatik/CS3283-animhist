@@ -14,7 +14,7 @@ a {
 	text-decoration: none;
 }
 
-textarea, input[type='text'], input[type='password'] {
+textarea, input[type='text'], input[type='password'], input[type="number"] {
 	background: @color-back-top-bar;
 	resize: none;
 	font-style: italic;

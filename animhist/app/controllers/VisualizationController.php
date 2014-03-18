@@ -114,6 +114,7 @@ class VisualizationController extends \BaseController {
 			$visualization->save();
 			
 			return Response::make('', 200);
+			// TODO: if changed zoom, return zoom, ...
 		} else {
 			return Response::make('', 401);
 		}

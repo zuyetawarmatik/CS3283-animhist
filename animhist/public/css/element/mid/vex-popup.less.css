@@ -26,11 +26,11 @@
 					}
 				}
 				
-				label, input {
+				label, input, textarea {
 					color: #fff;
 				}
 				
-				input[type="text"], input[type="password"] {
+				input[type="text"], input[type="password"], textarea {
 					padding: 1rem 2rem !important;
 					background: @color-back-top-bar!important;
 					border: none!important;
@@ -41,7 +41,7 @@
 				}
 			}
 			
-			.vex-dialog-button {
+			button, .vex-dialog-button {
 				font-size: 100%;
 				font-weight: 700;
 				color: #fff!important;

@@ -24,7 +24,7 @@ $(function() {
 });
 
 $(function() {
-	$("#description-area p.editable").append("<a class='edit-a'>&#57350;</a>");
+	$("#description-area .editable").append("<a class='edit-a'>&#57350;</a>");
 });
 
 function getCSRFToken() {

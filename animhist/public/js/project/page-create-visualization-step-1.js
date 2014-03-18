@@ -77,7 +77,7 @@ $(function() {
 $(function() {
 	$("#column-list").on("click", ".column-add-btn", function() {
 		vex.dialog.open({
-			message: "Add a new column",
+			message: "Add a New Column",
 			input: "<table>" +
 						"<tr>" +
 							"<td>" +
@@ -132,7 +132,7 @@ $(function() {
 						"</table>";
 		
 		vex.dialog.open({
-			message: "Edit '" + columnName +  "' column",
+			message: "Edit '" + columnName +  "' Column",
 			input: vexContent,
 			afterOpen: function() {
 				$("[name='columnname']").val(columnName);
