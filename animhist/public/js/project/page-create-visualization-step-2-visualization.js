@@ -15,6 +15,18 @@ $(window).on('vi_property_changed', function(e) {
 	}
 });
 
+$(function() {
+	$("#description-area .editable .repos-a").on("click", function() {
+		if (map !== undefined) {
+			var field = $(this).parent().attr("id");
+			if (field == "zoom")
+				map.setZoom(parseInt(viProps['zoom']));
+			else if (field == "center")
+				map.setCenter(new google.maps.LatLng(viProps['centerLatitude'], viProps['centerLongitude']));
+		}
+	});
+});
+
 function mapResizeTrigger() {
 	var curCenter = map.getCenter();
 	google.maps.event.trigger(map, 'resize');

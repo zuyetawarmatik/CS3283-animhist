@@ -26,6 +26,9 @@ $(function() {
 $(function() {
 	$("#description-area p.editable").append("<a class='edit-a'>&#57350;</a>");
 	$("#description-area h1.editable").prepend("<a class='edit-a'>&#57350;</a>");
+	
+	$("#description-area #zoom").append("<a class='repos-a'>&#57475;</a>");
+	$("#description-area #center").append("<a class='repos-a'>&#57475;</a>");
 });
 
 function getCSRFToken() {

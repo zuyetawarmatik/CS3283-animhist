@@ -14,7 +14,7 @@
 	}
 	
 	#description-area {
-		.edit-a {
+		.edit-a, .repos-a {
 			font-family: Conv_icomoon;
 			margin: 0 0.5rem;
 			color: #fff;

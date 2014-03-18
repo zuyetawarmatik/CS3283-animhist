@@ -142,7 +142,6 @@ $(function() {
 			callback: function(data) {
 				if (data) {
 					var formData = new FormData();
-					
 					switch (field) {
 						case "zoom":
 							if (data.zoom.trim() == '') return;
