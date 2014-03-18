@@ -190,25 +190,26 @@ $(function() {
 						"</tr>" +
 					"</table>",
 			callback: function(data) {
-				if (!data.columnname) return;
-				var columnName = data.columnname.trim();
-				if (!checkColumnName(columnName, columnList)) return;
+				if (data) {
+					var columnName = data.columnname.trim();
+					if (!checkColumnName(columnName, columnList)) return;
+						
+					var ajaxVar = $.extend({}, ajaxTemplate2, {
+						data: JSON.stringify({
+							type: "column-insert",
+							colName: columnName,
+							colType: data.columntype.toUpperCase()
+						}),
+						success: function(responseData) {
+							var notySuccessVar = $.extend({}, notySuccessTemplate2, {
+								text: "Column added, refreshing page..."
+							});
+							noty(notySuccessVar);
+						}
+					});
 					
-				var ajaxVar = $.extend({}, ajaxTemplate2, {
-					data: JSON.stringify({
-						type: "column-insert",
-						colName: columnName,
-						colType: data.columntype.toUpperCase()
-					}),
-					success: function(responseData) {
-						var notySuccessVar = $.extend({}, notySuccessTemplate2, {
-							text: "Column added, refreshing page..."
-						});
-						noty(notySuccessVar);
-					}
-				});
-				
-				$.ajax(ajaxVar);
+					$.ajax(ajaxVar);
+				}
 			}
 		});
 	});
@@ -220,7 +221,7 @@ $(function() {
 		var typeEditOption = columnName != "Milestone" ?
 								"<option value='String'>String</option><option value='Number'>Number</option>" :
 								"<option value='Hour'>Hour</option><option value='Day'>Day</option><option value='Month'>Month</option><option value='Year'>Year</option><option value='Decade'>Decade</option><option value='Century'>Century</option><option value='Mixed'>Mixed</option>"
-		
+
 		var vexContent = "<table>" + nameEditRow +
 							"<tr>" +
 								"<td>" +
@@ -242,26 +243,27 @@ $(function() {
 				$("option[value='" + columnType + "']").attr("selected", "selected");
 			},
 			callback: function(data) {
-				if (columnName != "Milestone" && !data.columnname) return;
-				var newColumnName = columnName == "Milestone" ? "Milestone" : data.columnname.trim();
-				if (newColumnName != "Milestone" && !checkColumnName(newColumnName, columnList, index)) return;
-				
-				var ajaxVar = $.extend({}, ajaxTemplate2, {
-					data: JSON.stringify({
-						type: "column-update",
-						col: columnList[index]["column-id"],
-						colName: newColumnName,
-						colType: data.columntype.toUpperCase()
-					}),
-					success: function(responseData) {
-						var notySuccessVar = $.extend({}, notySuccessTemplate2, {
-							text: "Column updated, refreshing page..."
-						});
-						noty(notySuccessVar);
-					}
-				});
-				
-				$.ajax(ajaxVar);
+				if (data) {
+					var newColumnName = columnName == "Milestone" ? "Milestone" : data.columnname.trim();
+					if (columnName != "Milestone" && !checkColumnName(newColumnName, columnList, index)) return;
+					
+					var ajaxVar = $.extend({}, ajaxTemplate2, {
+						data: JSON.stringify({
+							type: "column-update",
+							col: columnList[index]["column-id"],
+							colName: newColumnName,
+							colType: data.columntype.toUpperCase()
+						}),
+						success: function(responseData) {
+							var notySuccessVar = $.extend({}, notySuccessTemplate2, {
+								text: "Column updated, refreshing page..."
+							});
+							noty(notySuccessVar);
+						}
+					});
+					
+					$.ajax(ajaxVar);
+				}
 			}
 		});
 	});

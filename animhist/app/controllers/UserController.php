@@ -140,9 +140,12 @@ class UserController extends \BaseController {
 			$validator = Validator::make(Input::all(), $rules);
 			if ($validator->fails())
 				return JSONResponseUtility::ValidationError($validator->getMessageBag()->toArray());
-				
+			
+			if (!Hash::check(Input::get('password-old'), Auth::user()->password))
+				return JSONResponseUtility::ValidationError(['old-password'=>['Wrong old password.']]);
+			
 			$user = Auth::user();
-			$user->password = Input::get('password-new');
+			$user->password = Hash::make(Input::get('password-new'));
 			$user->save();
 		} else {
 			return Response::make('', 401);

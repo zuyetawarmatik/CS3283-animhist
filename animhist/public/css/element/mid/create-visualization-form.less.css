@@ -41,14 +41,12 @@
 						
 						input[type="text"], input[type='password'], textarea {
 							box-sizing: border-box;
-						     -webkit-box-sizing:border-box;
 						     -moz-box-sizing: border-box;
 							width: 100%;
 						}
 						
 						.styled-select select {
 							box-sizing: border-box;
-						     -webkit-box-sizing: border-box;
 						     -moz-box-sizing: border-box;
 							width: 120%;
 						}

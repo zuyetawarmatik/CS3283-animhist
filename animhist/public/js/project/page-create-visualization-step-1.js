@@ -99,12 +99,13 @@ $(function() {
 						"</tr>" +
 					"</table>",
 			callback: function(data) {
-				if (!data.columnname) return;
-				var columnName = data.columnname.trim();
-				if (!checkColumnName(columnName, columnList)) return;
-				
-				columnList.push({"caption":columnName, "type-caption":data.columntype, "editable":true, "deletable":true});
-				addColumnListButtons();
+				if (data) {
+					var columnName = data.columnname.trim();
+					if (!checkColumnName(columnName, columnList)) return;
+					
+					columnList.push({"caption":columnName, "type-caption":data.columntype, "editable":true, "deletable":true});
+					addColumnListButtons();
+				}
 			}
 		});
 	});
@@ -138,14 +139,15 @@ $(function() {
 				$("option[value='" + columnType + "']").attr("selected", "selected");
 			},
 			callback: function(data) {
-				if (columnName != "Milestone" && !data.columnname) return;
-				var newColumnName = columnName == "Milestone" ? "Milestone" : data.columnname.trim();
-				if (newColumnName != "Milestone" && !checkColumnName(newColumnName, columnList, index)) return;
-				
-				columnList[index]["caption"] = newColumnName;
-				columnList[index]["type-caption"] = data.columntype;
-				
-				addColumnListButtons();
+				if (data) {
+					var newColumnName = columnName == "Milestone" ? "Milestone" : data.columnname.trim();
+					if (columnName != "Milestone" && !checkColumnName(newColumnName, columnList, index)) return;
+					
+					columnList[index]["caption"] = newColumnName;
+					columnList[index]["type-caption"] = data.columntype;
+					
+					addColumnListButtons();
+				}
 			}
 		});
 	});

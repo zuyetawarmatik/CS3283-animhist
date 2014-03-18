@@ -28,6 +28,7 @@
 	{{ HTML::script('js/project/page-create-visualization-step-2.js'); }}
 	{{ HTML::script('js/project/page-create-visualization-step-2-column.js'); }}
 	{{ HTML::script('js/project/page-create-visualization-step-2-table.js'); }}
+	{{ HTML::script('js/project/page-create-visualization-step-2-style.js'); }}
 	{{ HTML::script('js/project/page-create-visualization-step-2-visualization.js'); }}
 	<script>vex.defaultOptions.className = 'vex-theme-wireframe';</script>
 @stop
@@ -81,6 +82,12 @@
 	</div>
 	<div id="column-list-area" class="current">
 		<h1>{{ $visualization->display_name }}</h1>
+		<span class="h2">Default Column</span>
+		<span class="styled-select">
+			<select id="default-column-select">
+				<option>A</option>
+			</select>
+		</span>
 		<span class="h2">List of Columns</span>
 		<ul id="column-list">
 		</ul>

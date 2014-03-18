@@ -7,13 +7,36 @@
 	
 	span.h2 {
 		display: block;
+		
+		&:nth-child(2) {
+			margin-top: 2rem;
+		}
+		
+		&:nth-child(4) {
+			margin-top: 8rem;
+		}
+	}
+	
+	.styled-select {
+		box-sizing: border-box;
+	    -moz-box-sizing: border-box;
+	    
+		width: 100%;
+		position: absolute;
 		margin-top: 2rem;
+		
+		select {
+			box-sizing: border-box;
+		    -moz-box-sizing: border-box;
+			
+			width: 110%;
+		}
 	}
 	
 	#column-list {
 		position: absolute;
 		width: 100%;
-		top: 9rem;
+		top: 18rem;
 		bottom: 0;
 		overflow-y: auto;
 		overflow-x: hidden;
