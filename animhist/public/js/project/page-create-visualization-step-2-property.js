@@ -9,10 +9,10 @@ function retrieveVisualizationProperty() {
 		type: "GET",
 		headers: {'X-CSRF-Token': getCSRFToken()},
 		global: false,
-		success: function(responseData) {
-			viProps = responseData;
+		success: function(response) {
+			viProps = response;
 			$(window).trigger("vi_property_loaded");
-			columnList = responseData["columnList"];
+			columnList = response["columnList"];
 			addDefaultColumnOptions();
 			addColumnListButtons();
 		}
@@ -176,9 +176,9 @@ $(function() {
 						headers: {'X-CSRF-Token': getCSRFToken()},
 						global: false,
 						data: formData,
-						error: function(responseData) {
+						error: function(response) {
 							var alertSt = "";
-							$.each(responseData["responseJSON"]["error"], function(key, val) {
+							$.each(response["responseJSON"]["error"], function(key, val) {
 								$.each(val, function(index, tx) {
 									alertSt += tx + "<br/>";
 								});
@@ -192,7 +192,7 @@ $(function() {
 								maxVisible: 1
 							});
 						},
-						success: function(responseData) {
+						success: function(response) {
 							noty({
 								layout: 'bottomCenter',
 								text: "Property changed",
@@ -203,8 +203,8 @@ $(function() {
 							});
 							
 							var fields = [];
-							$.each(responseData, function(key, val) {
-								viProps[key] = responseData[key];
+							$.each(response, function(key, val) {
+								viProps[key] = response[key];
 								fields.push(key);
 							});
 							$(window).trigger({
@@ -233,7 +233,41 @@ $(function() {
 				$("p#description + p").html(viProps["description"]);
 		}
 		if ($.inArray("displayName", fields) >= 0)
-			$("h1#displayname").html(viProps["displayName"]);
+			$("h1#displayname span.content").html(viProps["displayName"]);
+	});
+	
+	$("#button-area #delete-btn").on("click", function() {
+		$.ajax({
+			processData: false,
+			contentType: false,
+		    url: getPOSTURLPrefix(),
+			type: "DELETE",
+			headers: {'X-CSRF-Token': getCSRFToken()},
+			global: false,
+			error: function() {
+				noty({
+					layout: 'bottomCenter',
+					text: "Visualization deletion failed",
+					type: 'error',
+					killer: true,
+					timeout: 1000,
+					maxVisible: 1
+				});
+			},
+			success: function(response) {
+				noty({
+					layout: 'center',
+					text: "Visualization deleted",
+					type: 'success',
+					killer: true,
+					timeout: 500,
+					maxVisible: 1,
+					callback: {
+						afterShow: function(){handleJSONRedirectResponse(response, false);}
+					}
+				});
+			}
+		});
 	});
 });
 

@@ -67,7 +67,7 @@
 
 @section('right-area')
 	<div id="description-area">
-		<h1 class="editable" id="displayname">{{ $visualization->display_name }}</h1>
+		<h1 class="editable" id="displayname"><span class="content">{{ $visualization->display_name }}</span></h1>
 		<p><br><span class="h2">Author: </span>{{ $visualization->user->display_name }}</p>
 		<p><span class="h2">Created at: </span>{{ $visualization->getFormattedCreatedDate() }}</p>
 		<p><span class="h2">Type: </span>{{ ucfirst($visualization->type) }}</p>
@@ -93,5 +93,11 @@
 		<span class="h2">List of Columns</span>
 		<ul id="column-list">
 		</ul>
+	</div>
+	<div id="style-list-area">
+	</div>
+	<div id="button-area">
+		<button id="publish-btn"><i>&#57534;</i>Publish The Visualization</button>
+		<button id="delete-btn" class="red-btn"><i>&#57512;</i>Discard The Visualization</button>
 	</div>
 @stop

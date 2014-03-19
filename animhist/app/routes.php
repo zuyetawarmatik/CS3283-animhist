@@ -88,6 +88,9 @@ Route::group(['before' => 'auth', 'prefix' => '{username}'], function(){
 	// /{username}/visualization/create
 	Route::post('visualization/create', ['before' => 'csrf', 'as'=> 'visualization.store', 'uses' => 'VisualizationController@store']);
 	
+	// /{username}/visualization/{id}
+	Route::delete('visualization/{id}', ['before' => 'csrf', 'as'=> 'visualization.destroy', 'uses' => 'VisualizationController@destroy']);
+	
 	// /{username}/visualization/{id}/info
 	Route::get('visualization/{id}/info', ['before' => 'csrf', 'as'=> 'visualization.info', 'uses' => 'VisualizationController@info']);
 	

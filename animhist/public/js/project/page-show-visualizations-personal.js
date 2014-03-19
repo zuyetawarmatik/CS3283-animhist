@@ -10,9 +10,9 @@ $(function() {
 			type: "POST",
 			global: false,
 			headers: {'X-CSRF-Token': $("[name='hidden-form'] [name='_token']").val()},
-			error: function(responseData) {
+			error: function(response) {
 				var alertSt = "";
-				$.each(responseData["responseJSON"]["error"], function(key, val) {
+				$.each(response["responseJSON"]["error"], function(key, val) {
 					$.each(val, function(index, tx) {
 						alertSt += tx + "<br/>";
 					});
@@ -26,9 +26,9 @@ $(function() {
 					maxVisible: 1
 				});
 			},
-			success: function(responseData) {
-				if (responseData["redirect"]) {
-					handleJSONRedirectResponse(responseData, true);
+			success: function(response) {
+				if (response["redirect"]) {
+					handleJSONRedirectResponse(response, true);
 					return;
 				}
 				
@@ -40,7 +40,7 @@ $(function() {
 					$('#follow-btn').data('url', link.replace("/unfollow", "/follow"));
 				}
 				
-				$("#num-followers").html(responseData["followers"]);
+				$("#num-followers").html(response["followers"]);
 			}
 		});
 	});

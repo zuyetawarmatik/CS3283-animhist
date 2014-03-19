@@ -18,9 +18,9 @@ $(function() {
 			url: this.action,
 			type: this.method,
 			data: formData,
-			error: function(responseData) {
+			error: function(response) {
 				var alertSt = "";
-				$.each(responseData["responseJSON"]["error"], function(key, val) {
+				$.each(response["responseJSON"]["error"], function(key, val) {
 					$.each(val, function(index, tx) {
 						alertSt += tx + "<br/>";
 					});
@@ -35,8 +35,8 @@ $(function() {
 				});
 			},
 		
-			success: function(responseData) {
-				handleJSONRedirectResponse(responseData, false);
+			success: function(response) {
+				handleJSONRedirectResponse(response, false);
 			}
 		});
 	});

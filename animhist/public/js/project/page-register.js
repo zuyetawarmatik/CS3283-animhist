@@ -11,9 +11,9 @@ $(function() {
 			url: this.action,
 			type: this.method,
 			data: formData,
-			error: function(responseData) {
+			error: function(response) {
 				var alertSt = "";
-				$.each(responseData["responseJSON"]["error"], function(key, val) {
+				$.each(response["responseJSON"]["error"], function(key, val) {
 					$.each(val, function(index, tx) {
 						alertSt += tx + "<br/>";
 					});
@@ -27,15 +27,15 @@ $(function() {
 					maxVisible: 1
 				});
 			},
-			success: function(responseData) {
+			success: function(response) {
 				noty({
 					layout: 'center',
 					text: "Register successfully!<br/>Redirecting to your personal page...",
 					type: 'success',
 					killer: true,
-					timeout: 1000,
+					timeout: 500,
 					callback: {
-						afterShow: function(){handleJSONRedirectResponse(responseData, false);}
+						afterShow: function(){handleJSONRedirectResponse(response, false);}
 					}
 				});
 			}

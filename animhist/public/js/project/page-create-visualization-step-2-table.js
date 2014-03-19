@@ -109,7 +109,7 @@ function retrieveFusionData() {
 		url: getPOSTURLPrefix() + "/info?request=data",
 		type: "GET",
 		headers: {'X-CSRF-Token': getCSRFToken()},
-		error: function(responseData) {
+		error: function() {
 			noty({
 				layout: 'bottomCenter',
 				text: "Loading data error, refresh to try again",
@@ -119,7 +119,7 @@ function retrieveFusionData() {
 				maxVisible: 1
 			});
 		},
-		success: function(responseData) {
+		success: function(response) {
 			noty({
 				layout: 'bottomCenter',
 				text: "Loading data finished",
@@ -128,9 +128,9 @@ function retrieveFusionData() {
 				timeout: 500,
 				maxVisible: 1
 			});
-			gfusionProps = responseData["gfusionProps"];
-			gfusionData = responseData["gfusionData"];
-			gfusionRowsID = responseData["gfusionRowsID"];
+			gfusionProps = response["gfusionProps"];
+			gfusionData = response["gfusionData"];
+			gfusionRowsID = response["gfusionRowsID"];
 			parseRetrievedData();
 			
 			dataView = new Slick.Data.DataView();
@@ -167,11 +167,11 @@ function retrieveTimeline(focused) {
 		type: "GET",
 		global: false,
 		headers: {'X-CSRF-Token': getCSRFToken()},
-		success: function(responseData) {
+		success: function(response) {
 			$("#filter-list").empty();
 			$("#timeline-list").empty();
 			
-			gridTimeline = responseData;
+			gridTimeline = response;
 			gridTimeline.unshift("All");
 			
 			for (var i = 0; i < gridTimeline.length; i++) {
@@ -296,7 +296,7 @@ function slickGrid_cellChange(e, args) {
 			row: activeRowID,
 			colvalPairs: pairs
 		}),
-		error: function(responseData) {
+		error: function() {
 			var notyErrorVar = $.extend({}, notyErrorTemplate, {
 				callback: {
 					onShow: function(){
@@ -306,13 +306,13 @@ function slickGrid_cellChange(e, args) {
 			});
 			noty(notyErrorVar);
 		},
-		success: function(responseData) {
+		success: function(response) {
 			var notySuccessVar = $.extend({}, notySuccessTemplate, {
 				callback: {
 					onShow: function(){
-						var responseRow = responseData["rows"][0];
+						var responseRow = response["rows"][0];
 						for (var i = 1; i < responseRow.length; i++) {
-							activeRowItem[responseData["columns"][i]] = responseRow[i];
+							activeRowItem[response["columns"][i]] = responseRow[i];
 						}
 						
 						dataView.updateItem(activeRowID, activeRowItem);
@@ -353,19 +353,19 @@ function slickGrid_addNewRow(e, args) {
 			type: "row-insert",
 			colvalPairs: pairs
 		}),
-		error: function(responseData) {
+		error: function() {
 			var notyErrorVar = $.extend({}, notyErrorTemplate);
 			noty(notyErrorVar);
 		},
-		success: function(responseData) {
+		success: function(response) {
 			var notySuccessVar = $.extend({}, notySuccessTemplate, {
 				text: "New row added",
 				callback: {
 					onShow: function(){
-						var responseRow = responseData["rows"][0];
+						var responseRow = response["rows"][0];
 						var newRow = {};
 						for (var i = 1; i < responseRow.length; i++) {
-							newRow[responseData["columns"][i]] = responseRow[i];
+							newRow[response["columns"][i]] = responseRow[i];
 						}
 						newRow["id"] = newRow["ROWID"];
 						dataView.addItem(newRow);
@@ -403,11 +403,11 @@ $(function() {
 				type: "row-delete",
 				row: rowsID
 			}),
-			error: function(responseData) {
+			error: function() {
 				var notyErrorVar = $.extend({}, notyErrorTemplate);
 				noty(notyErrorVar);
 			},
-			success: function(responseData) {
+			success: function() {
 				var notySuccessVar = $.extend({}, notySuccessTemplate, {
 					text: "Rows removed",
 					callback: {

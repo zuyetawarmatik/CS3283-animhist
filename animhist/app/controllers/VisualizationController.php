@@ -354,6 +354,21 @@ class VisualizationController extends \BaseController {
 		fail: return Response::make('', 400);
 	}
 	
+	public function destroy($username, $id) {
+		if (Auth::user()->username == $username) {
+			$visualization = Visualization::find($id);
+			if (!$visualization || $visualization->user != Auth::user()) goto fail;
+			
+			$visualization->delete();
+			
+			return JSONResponseUtility::Redirect(URL::route('user.show', [$username]), false);
+		} else {
+			return Response::make('', 401);
+		}
+		
+		fail: return Response::make('', 400);
+	}
+	
 	private static function prepareColumnListSentToGFusion($input_column_list, $input_visualization_type) {
 		$column_list = [['name'=>'CreatedAt', 'type'=>'DATETIME'], ['name'=>'MilestoneRep', 'type'=>'DATETIME'], ['name'=>'Geocode', 'type'=>'LOCATION'], ['name'=>'Milestone', 'type'=>'DATETIME'], ['name'=>'Position', 'type'=>'LOCATION']];
 		

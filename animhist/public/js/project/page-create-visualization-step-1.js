@@ -167,9 +167,9 @@ $(function() {
 			url: this.action,
 			type: this.method,
 			data: formData,
-			error: function(responseData) {
+			error: function(response) {
 				var alertSt = "";
-				$.each(responseData["responseJSON"]["error"], function(key, val) {
+				$.each(response["responseJSON"]["error"], function(key, val) {
 					$.each(val, function(index, tx) {
 						alertSt += tx + "<br/>";
 					});
@@ -184,15 +184,15 @@ $(function() {
 				});
 			},
 		
-			success: function(responseData) {
+			success: function(response) {
 				noty({
 					layout: 'center',
 					text: "Create visualization successfully!<br/>Redirecting to step 2...",
 					type: 'success',
 					killer: true,
-					timeout: 1000,
+					timeout: 500,
 					callback: {
-						afterShow: function(){handleJSONRedirectResponse(responseData, false);}
+						afterShow: function(){handleJSONRedirectResponse(response, false);}
 					}
 				});
 			}

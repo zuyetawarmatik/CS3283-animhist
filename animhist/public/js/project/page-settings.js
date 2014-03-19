@@ -6,9 +6,9 @@ $(function() {
 			url: this.action,
 			type: 'PUT',
 			data: $(this).serialize(),
-			error: function(responseData) {
+			error: function(response) {
 				var alertSt = "";
-				$.each(responseData["responseJSON"]["error"], function(key, val) {
+				$.each(response["responseJSON"]["error"], function(key, val) {
 					$.each(val, function(index, tx) {
 						alertSt += tx + "<br/>";
 					});
@@ -23,7 +23,7 @@ $(function() {
 				});
 			},
 		
-			success: function(responseData) {
+			success: function() {
 				noty({
 					layout: 'center',
 					text: "Update information successfully!",
@@ -79,9 +79,9 @@ $(function() {
 						headers: {'X-CSRF-Token': getCSRFToken()},
 						global: false,
 						data: formData,
-						error: function(responseData) {
+						error: function(response) {
 							var alertSt = "";
-							$.each(responseData["responseJSON"]["error"], function(key, val) {
+							$.each(response["responseJSON"]["error"], function(key, val) {
 								$.each(val, function(index, tx) {
 									alertSt += tx + "<br/>";
 								});
@@ -95,7 +95,7 @@ $(function() {
 								maxVisible: 1
 							});
 						},
-						success: function(responseData) {
+						success: function() {
 							noty({
 								layout: 'bottomCenter',
 								text: "Password changed",

@@ -16,8 +16,13 @@ $(function() {
 					map.setCenter(curCenter);
 					updateLayerQuery($("#timeline-list").attr("data-milestone"));
 				}
+				
+				$("#button-area").addClass("current");
 			} else if (newCurrent == 1) {
 				slickGrid.resizeCanvas();
+				$("#button-area").removeClass("current");
+			} else if (newCurrent == 2) {
+				$("#button-area").removeClass("current");
 			}
 		}
 	});

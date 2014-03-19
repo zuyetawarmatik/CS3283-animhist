@@ -22,7 +22,7 @@ $(function(){
 				maxVisible: 1
 			});
 		},
-		error: function(responseData) {
+		error: function() {
 			noty({
 				layout: 'bottomCenter',
 				text: "Updating data error, rolling back...",
@@ -35,7 +35,7 @@ $(function(){
 	};
 	
 	notySuccessTemplate2 = {
-		layout: 'bottomCenter',
+		layout: 'center',
 		text: "Column removed, refreshing page...",
 		type: 'success',
 		killer: true,
@@ -106,7 +106,7 @@ $(function() {
 				type: "column-delete",
 				col: columnList[index]["column-id"]
 			}),
-			success: function(responseData) {
+			success: function() {
 				var notySuccessVar = $.extend({}, notySuccessTemplate2);
 				noty(notySuccessVar);
 			}
@@ -123,7 +123,7 @@ $(function() {
 					type: "column-delete",
 					col: columnList[index]["column-id"]
 				}),
-				success: function(responseData) {
+				success: function() {
 					var notySuccessVar = $.extend({}, notySuccessTemplate2);
 					noty(notySuccessVar);
 				}
@@ -142,7 +142,7 @@ $(function() {
 					colName: "HTMLData",
 					colType: "STRING"
 				}),
-				success: function(responseData) {
+				success: function() {
 					var notySuccessVar = $.extend({}, notySuccessTemplate2, {
 						text: "Column added, refreshing page..."
 					});
@@ -188,7 +188,7 @@ $(function() {
 							colName: columnName,
 							colType: data.columntype.toUpperCase()
 						}),
-						success: function(responseData) {
+						success: function() {
 							var notySuccessVar = $.extend({}, notySuccessTemplate2, {
 								text: "Column added, refreshing page..."
 							});
@@ -242,7 +242,7 @@ $(function() {
 							colName: newColumnName,
 							colType: data.columntype.toUpperCase()
 						}),
-						success: function(responseData) {
+						success: function() {
 							var notySuccessVar = $.extend({}, notySuccessTemplate2, {
 								text: "Column updated, refreshing page..."
 							});

@@ -6,7 +6,7 @@ function retrieveStyle(column) {
 		type: "GET",
 		global: false,
 		headers: {'X-CSRF-Token': getCSRFToken()},
-		success: function(responseData) {
+		success: function(response) {
 			
 		}
 	});	
