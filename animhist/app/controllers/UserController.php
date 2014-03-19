@@ -71,12 +71,12 @@ class UserController extends \BaseController {
 		if ($user) {
 			if (Input::get('ajax')) {
 				$title = '';
-				if (Auth::user() == $user) $title = 'My Visualizations';
+				if ($user->isAuthUser()) $title = 'My Visualizations';
 				else $title = $user->display_name.'&#39;s Visualizations';
 				
 				return ViewResponseUtility::makeSubView('show-visualizations-personal', $title, ['user'=>$user], true);
 			} else {
-				if (Auth::user() == $user)
+				if ($user->isAuthUser())
 					return ViewResponseUtility::makeBaseView(URL::route('user.show', ['username'=>$username]), Constant::SIDEBAR_MYVISUALIZATION);
 				else {
 					$highlight_id = Auth::check() ? Constant::SIDEBAR_USERVISUALIZATION : Constant::SIDEBAR_GUEST_USERVISUALIZATION;

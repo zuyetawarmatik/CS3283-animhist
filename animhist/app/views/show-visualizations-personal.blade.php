@@ -10,7 +10,7 @@
 
 @section('top-bar')
 	@parent
-	@if (Auth::user() == $user)
+	@if ($user->isAuthUser())
 		<button id="create-visualization-btn" class="blue-btn" data-url="{{URL::route('visualization.showCreate', $user->username)}}"><i>&#57380;</i>Create New Visualization</button>
 	@endif
 @stop
@@ -24,7 +24,7 @@
 	<article id="description-area">
 		<h1>{{ $user->display_name.'&#39;s Profile' }}</h1>
 		<p style="font-style:italic"><span id="num-followers">{{ count($user->followers) }}</span> people following</p>
-		@if (Auth::user() != $user)	<img style="float:left; margin-top:25px; margin-right:10px; background:#666" width="60" height="60" src="{{ $user->avatar->url('thumb') }}" /> @endif
+		@if (!$user->isAuthUser())	<img style="float:left; margin-top:25px; margin-right:10px; background:#666" width="60" height="60" src="{{ $user->avatar->url('thumb') }}" /> @endif
 		<p><br><span class="h2">Username: </span>{{ '@'.$user->username }}</p>
 		<p><span class="h2">Joined from: </span>{{ $user->getFormattedCreatedDate() }}</p>
 		<p><span class="h2">Visualizations: </span></p>
@@ -33,7 +33,7 @@
 			@if ($user->description)
 				{{ $user->description }}
 			@else
-				@if (Auth::user() == $user)
+				@if ($user->isAuthUser())
 					(You do 
 				@else
 					(The user does 
@@ -45,7 +45,7 @@
 	<div id="button-area">
 	{{ Form::open(array('name'=>'hidden-form', 'url'=>'#')) }}
 	{{ Form::close() }}
-	@if (Auth::user() != $user)
+	@if (!$user->isAuthUser())
 		@if (Auth::check() && DB::table('follows')->where('user_id', Auth::user()->id)->where('following_id', $user->id)->first())
 		<button id="follow-btn" data-url="{{ URL::route('user.unfollow', $user->username) }}"><i>&#57551;</i>Unfollow The Author</button>
 		@else
@@ -57,17 +57,17 @@
 	</div>
 @stop
 
-@section('visualization')
+@section('visualizations')
 	@foreach ($user->visualizations as $visualization)
-		@if ($user == Auth::user() || ($user != Auth::user() && $visualization->published))
+		@if ($user->isAuthUser() || (!$user->isAuthUser() && $visualization->published))
 			<li class="visualization-item">
-				<a href="" class="visualization-link"><img class="visualization-img" src="images/visualization.png"/></a>
+				<a href="" class="visualization-link"><img class="visualization-img" src="http://maps.googleapis.com/maps/api/staticmap?center={{$visualization->center_latitude}},{{$visualization->center_longitude}}&zoom={{number_format($visualization->zoom)}}&size=340x200&sensor=false"/></a>
 				<div class="avatar-wrapper">
 					<a href="#"><img class="avatar" src="{{ $user->avatar->url('thumb') }}" /></a>
 				</div>
 				<div class="visualization-main">
-					<p class="visualization-title">$visualization->display_name</p>
-					<p class="visualization-author"><a href="{{ URL::route('user.show', [$username]) }}" class="username">$user->display_name</a></p>
+					<p class="visualization-title">{{$visualization->display_name}}</p>
+					<p class="visualization-author"><a href="{{ URL::route('user.show', [$user->username]).'?ajax=1' }}" class="username">{{$user->display_name}}</a></p>
 				</div>
 			</li>
 		@endif

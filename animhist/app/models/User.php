@@ -86,4 +86,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	{
 		return $this->belongsToMany('User', 'follows', 'following_id', 'user_id');
 	}
+	
+	public function isAuthUser() {
+		return (Auth::check() && Auth::user()->id == $this->id);
+	}
 }
