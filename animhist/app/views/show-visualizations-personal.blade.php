@@ -56,3 +56,20 @@
 	@endif
 	</div>
 @stop
+
+@section('visualization')
+	@foreach ($user->visualizations as $visualization)
+		@if ($user == Auth::user() || ($user != Auth::user() && $visualization->published))
+			<li class="visualization-item">
+				<a href="" class="visualization-link"><img class="visualization-img" src="images/visualization.png"/></a>
+				<div class="avatar-wrapper">
+					<a href="#"><img class="avatar" src="{{ $user->avatar->url('thumb') }}" /></a>
+				</div>
+				<div class="visualization-main">
+					<p class="visualization-title">$visualization->display_name</p>
+					<p class="visualization-author"><a href="{{ URL::route('user.show', [$username]) }}" class="username">$user->display_name</a></p>
+				</div>
+			</li>
+		@endif
+	@endforeach
+@stop
