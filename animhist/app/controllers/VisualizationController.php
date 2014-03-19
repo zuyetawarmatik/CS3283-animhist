@@ -359,9 +359,12 @@ class VisualizationController extends \BaseController {
 			$visualization = Visualization::find($id);
 			if (!$visualization || $visualization->user != Auth::user()) goto fail;
 			
-			$visualization->delete();
+			$gft = new GoogleFusionTable($visualization->fusion_table_id, $visualization->visualization_type);
 			
-			return JSONResponseUtility::Redirect(URL::route('user.show', [$username]), false);
+			if ($gft->deleteTable()) {
+				$visualization->delete();
+				return JSONResponseUtility::Redirect(URL::route('user.show', [$username]), false);
+			}
 		} else {
 			return Response::make('', 401);
 		}

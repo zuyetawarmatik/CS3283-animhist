@@ -399,6 +399,26 @@ class GoogleFusionTable {
 		return false;
 	}
 	
+	public function deleteTable() {
+		$access_token = self::getGFusionOAuthAccessToken();
+		
+		$response = Request::delete('https://www.googleapis.com/fusiontables/v1/tables/'.$this->gf_table_id)
+						->addHeaders(['Authorization'=>'Bearer '.$access_token])
+						->send();
+		
+		if ($response->code == 401) {
+			$access_token = self::refreshGFusionOAuthAccessToken();
+			$response = Request::delete('https://www.googleapis.com/fusiontables/v1/tables/'.$this->gf_table_id)
+						->addHeaders(['Authorization'=>'Bearer '.$access_token])
+						->send();
+		}
+		
+		if ($response->code == 204)
+			return true;
+		
+		return false;
+	}
+	
 	private static function sendSQLToGFusion($sql, $method) {
 		$access_token = self::getGFusionOAuthAccessToken();
 		$encoded_sql = urlencode($sql);
