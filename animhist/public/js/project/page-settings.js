@@ -67,16 +67,15 @@ $(function() {
 			input: vexContent,
 			callback: function(data){
 				if (data) {
-					var formData = new FormData();
-					formData.append("password-old", data.oldpassword);
-					formData.append("password-new", data.newpassword);
-					formData.append("password-retype", data.retypepassword);
+					var formData = {
+						"password-old": data.oldpassword,
+						"password-new": data.newpassword,
+						"password-retype": data.retypepassword
+					};
 					$.ajax({
-						processData: false,
-					    contentType: false,
-						url: "/" + $("#edit-area").data("user-id") + "/visualization/" + $("#edit-area").data("vi-id") + "/updateproperty",
+						url: "/" + $("[name='settings-form']").data("user-id") + "/updatepassword",
 						type: "POST",
-						headers: {'X-CSRF-Token': getCSRFToken()},
+						headers: {'X-CSRF-Token': $("[name='_token']").val()},
 						global: false,
 						data: formData,
 						error: function(response) {

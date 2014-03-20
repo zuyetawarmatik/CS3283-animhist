@@ -1,7 +1,5 @@
 function retrieveStyle(column) {
 	$.ajax({
-		processData: false,
-	    contentType: false,
 		url: getPOSTURLPrefix() + "/info?request=style&column=" + column,
 		type: "GET",
 		global: false,

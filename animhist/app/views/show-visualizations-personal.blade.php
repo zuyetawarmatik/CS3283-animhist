@@ -52,7 +52,7 @@
 		<button id="follow-btn" data-url="{{ URL::route('user.follow', $user->username) }}"><i>&#57552;</i>Follow The Author</button>
 		@endif
 	@else
-		<button id="edit-profile-btn"><i>&#57350;</i>Edit My Profile</button>
+		<button id="edit-profile-btn" data-url="{{ URL::route('user.showEdit', [$user->username]).'?ajax=1' }}"><i>&#57350;</i>Edit My Profile</button>
 	@endif
 	</div>
 @stop
@@ -61,9 +61,9 @@
 	@foreach ($user->visualizations as $visualization)
 		@if ($user->isAuthUser() || (!$user->isAuthUser() && $visualization->published))
 			<li class="visualization-item">
-				<a href="" class="visualization-link"><img class="visualization-img" src="http://maps.googleapis.com/maps/api/staticmap?center={{$visualization->center_latitude}},{{$visualization->center_longitude}}&zoom={{number_format($visualization->zoom)}}&size=340x200&sensor=false"/></a>
+				<a href="" class="visualization-link"><img class="visualization-img" src="http://maps.googleapis.com/maps/api/staticmap?center={{$visualization->center_latitude}},{{$visualization->center_longitude}}&zoom={{max(number_format($visualization->zoom)-1,1)}}&size=340x200&sensor=false"/></a>
 				<div class="avatar-wrapper">
-					<a href="#"><img class="avatar" src="{{ $user->avatar->url('thumb') }}" /></a>
+					<a href="{{ URL::route('user.show', [$user->username]).'?ajax=1' }}"><img class="avatar" src="{{ $user->avatar->url('thumb') }}" /></a>
 				</div>
 				<div class="visualization-main">
 					<p class="visualization-title">{{$visualization->display_name}}</p>

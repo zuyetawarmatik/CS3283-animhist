@@ -3,8 +3,6 @@ var columnList;
 
 function retrieveVisualizationProperty() {
 	$.ajax({
-		processData: false,
-	    contentType: false,
 		url: getPOSTURLPrefix() + "/info?request=property",
 		type: "GET",
 		headers: {'X-CSRF-Token': getCSRFToken()},
@@ -238,9 +236,7 @@ $(function() {
 	
 	$("#button-area #delete-btn").on("click", function() {
 		$.ajax({
-			processData: false,
-			contentType: false,
-		    url: getPOSTURLPrefix(),
+			url: getPOSTURLPrefix(),
 			type: "DELETE",
 			headers: {'X-CSRF-Token': getCSRFToken()},
 			global: false,
@@ -264,6 +260,39 @@ $(function() {
 					maxVisible: 1,
 					callback: {
 						afterShow: function(){handleJSONRedirectResponse(response, false);}
+					}
+				});
+			}
+		});
+	});
+	
+	$("#button-area #publish-btn").on("click", function() {
+		$.ajax({
+		    url: getPOSTURLPrefix() + "/updateproperty",
+			type: "POST",
+			headers: {'X-CSRF-Token': getCSRFToken()},
+			global: false,
+			data: {"published": true},
+			error: function() {
+				noty({
+					layout: 'bottomCenter',
+					text: "Visualization publishment failed",
+					type: 'error',
+					killer: true,
+					timeout: 1000,
+					maxVisible: 1
+				});
+			},
+			success: function(response) {
+				noty({
+					layout: 'center',
+					text: "Visualization published",
+					type: 'success',
+					killer: true,
+					timeout: 500,
+					maxVisible: 1,
+					callback: {
+						//afterShow: function(){handleJSONRedirectResponse(response, false);}
 					}
 				});
 			}

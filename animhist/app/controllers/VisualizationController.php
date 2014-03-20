@@ -107,6 +107,8 @@ class VisualizationController extends \BaseController {
 				$rules['center-longitude'] = 'required|numeric';
 			if (Input::has('category'))
 				$rules['category'] = 'required';
+			if (Input::has('published'))
+				$rules['published'] = 'in:true,false';
 				
 			$validator = Validator::make(Input::all(), $rules);
 			if ($validator->fails())
@@ -131,7 +133,9 @@ class VisualizationController extends \BaseController {
 				$visualization->center_latitude = number_format(Input::get('center-latitude'), 2);
 			if (Input::has('center-longitude'))
 				$visualization->center_longitude = number_format(Input::get('center-longitude'), 2);
-				
+			if (Input::has('published'))
+				$visualization->published = Input::get('published');
+			
 			$visualization->save();
 			
 			$json = [];
@@ -150,6 +154,9 @@ class VisualizationController extends \BaseController {
 				$json['centerLatitude'] = number_format($visualization->center_latitude, 2);
 			if (Input::has('center-longitude'))
 				$json['centerLongitude'] = number_format($visualization->center_longitude, 2);
+			if (Input::has('published'))
+				$json['published'] = $visualization->published;
+				// TODO: return to view vis page
 			
 			return Response::JSON($json);
 		} else {

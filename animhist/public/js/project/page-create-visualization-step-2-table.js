@@ -104,8 +104,6 @@ function parseRetrievedData() {
 
 function retrieveFusionData() {
 	$.ajax({
-		processData: false,
-	    contentType: false,
 		url: getPOSTURLPrefix() + "/info?request=data",
 		type: "GET",
 		headers: {'X-CSRF-Token': getCSRFToken()},
@@ -161,8 +159,6 @@ function retrieveFusionData() {
 
 function retrieveTimeline(focused) {
 	$.ajax({
-		processData: false,
-	    contentType: false,
 		url: getPOSTURLPrefix() + "/info?request=timeline",
 		type: "GET",
 		global: false,

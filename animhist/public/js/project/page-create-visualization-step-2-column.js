@@ -259,16 +259,12 @@ $(function() {
 	$("#default-column-select").change(function() {
 		var val = $(this).val();
 		if (val != "") {
-			var formData = new FormData();
-			formData.append("default-column", val);
 			$.ajax({
-				processData: false,
-			    contentType: false,
 				url: getPOSTURLPrefix() + "/updateproperty",
 				type: "POST",
 				headers: {'X-CSRF-Token': getCSRFToken()},
 				global: false,
-				data: formData,
+				data: {"default-column": val},
 				success: function(response) {
 					viProps["defaultColumn"] = val;
 					$(window).trigger({
