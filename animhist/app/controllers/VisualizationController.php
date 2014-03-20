@@ -13,19 +13,19 @@ class VisualizationController extends \BaseController {
 					if (Input::get('ajax')) {
 						return ViewResponseUtility::makeSubView('create-visualization-step-2', 'New Visualization: <span style="font-weight:300">Step 2 (Edit And Publish The Visualization)</span>', ['visualization'=>$visualization]);
 					} else {
-						return ViewResponseUtility::makeBaseView(URL::route('visualization.showCreate', [$username]), Constant::SIDEBAR_MYVISUALIZATION, [], ['step'=>2, 'vi_id'=>$vi_id]);
+						return ViewResponseUtility::makeBaseView(URL::route('visualization.showCreate', $username), Constant::SIDEBAR_MYVISUALIZATION, [], ['step'=>2, 'vi_id'=>$vi_id]);
 					}
 				} else goto fail;
 			} else {
 				if (Input::get('ajax')) {
 					return ViewResponseUtility::makeSubView('create-visualization-step-1', 'New Visualization: <span style="font-weight:300">Step 1 (Start A New Visualization)</span>');
 				} else {
-					return ViewResponseUtility::makeBaseView(URL::route('visualization.showCreate', [$username]), Constant::SIDEBAR_MYVISUALIZATION);
+					return ViewResponseUtility::makeBaseView(URL::route('visualization.showCreate', $username), Constant::SIDEBAR_MYVISUALIZATION);
 				}	
 			}
 		}
 		
-		fail: return Redirect::route('user.show', [$username]);
+		fail: return Redirect::route('user.show', $username);
 	}
 
 	public function store($username)
@@ -75,7 +75,7 @@ class VisualizationController extends \BaseController {
 				
 				$visualization->save();
 				
-				return JSONResponseUtility::Redirect(URL::route('visualization.showCreate', [$username]).'?step=2&vi_id='.$visualization->id, false);
+				return JSONResponseUtility::Redirect(URL::route('visualization.showCreate', $username).'?step=2&vi_id='.$visualization->id, false);
 			} else
 				return Response::make('', 400);
 		} else {
@@ -368,7 +368,7 @@ class VisualizationController extends \BaseController {
 			
 			if ($gft->deleteTable()) {
 				$visualization->delete();
-				return JSONResponseUtility::Redirect(URL::route('user.show', [$username]), false);
+				return JSONResponseUtility::Redirect(URL::route('user.show', $username), false);
 			}
 		} else {
 			return Response::make('', 401);

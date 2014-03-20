@@ -47,7 +47,7 @@ Route::filter('auth.truncateURLToUsername', function()
 {
 	if (!Request::is('login/*') || !Request::is('user/*') || !Request::is('visualization/*') )
 	{
-		if (Auth::guest()) return Redirect::route('user.show', [Request::segment(1)]);
+		if (Auth::guest()) return Redirect::route('user.show', Request::segment(1));
 	}
 });
 

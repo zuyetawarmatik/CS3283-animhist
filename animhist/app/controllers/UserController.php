@@ -55,7 +55,7 @@ class UserController extends \BaseController {
 		if (Input::get('referer')) {
 			return JSONResponseUtility::Redirect(URL::to(Input::get('referer')));
 		} else {
-			return JSONResponseUtility::Redirect(URL::route('user.show', [$user->username]));
+			return JSONResponseUtility::Redirect(URL::route('user.show', $user->username));
 		}
 	}
 
@@ -77,10 +77,10 @@ class UserController extends \BaseController {
 				return ViewResponseUtility::makeSubView('show-visualizations-personal', $title, ['user'=>$user], true);
 			} else {
 				if ($user->isAuthUser())
-					return ViewResponseUtility::makeBaseView(URL::route('user.show', ['username'=>$username]), Constant::SIDEBAR_MYVISUALIZATION);
+					return ViewResponseUtility::makeBaseView(URL::route('user.show', $username), Constant::SIDEBAR_MYVISUALIZATION);
 				else {
 					$highlight_id = Auth::check() ? Constant::SIDEBAR_USERVISUALIZATION : Constant::SIDEBAR_GUEST_USERVISUALIZATION;
-					return ViewResponseUtility::makeBaseView(URL::route('user.show', ['username'=>$username]), $highlight_id, ['user'=>$user]);
+					return ViewResponseUtility::makeBaseView(URL::route('user.show', $username), $highlight_id, ['user'=>$user]);
 				}
 			}
 		} else {
@@ -100,10 +100,10 @@ class UserController extends \BaseController {
 			if (Input::get('ajax')) {
 				return ViewResponseUtility::makeSubView('settings', 'User Settings');
 			} else {
-				return ViewResponseUtility::makeBaseView(URL::route('user.showEdit', [$username]), Constant::SIDEBAR_SETTINGS);
+				return ViewResponseUtility::makeBaseView(URL::route('user.showEdit', $username), Constant::SIDEBAR_SETTINGS);
 			}
 		} else
-			return Redirect::route('user.show', [$username]);
+			return Redirect::route('user.show', $username);
 	}
 
 	/**
@@ -173,7 +173,7 @@ class UserController extends \BaseController {
 			if (Input::get('referer')) {
 				$url = URL::to($input['referer']);
 			} else {
-				$url = URL::route('user.show', [$user->username]);
+				$url = URL::route('user.show', $user->username);
 			}
 			return JSONResponseUtility::Redirect($url);
 		} else {

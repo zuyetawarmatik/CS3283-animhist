@@ -55,7 +55,7 @@
 						<span class="nav-caption">Search</span>
 					</li>
 					@if ($highlight_id == Constant::SIDEBAR_USERVISUALIZATION)
-					<li class="nav-item" data-url="{{ URL::route('user.show', [$user->username]) }}">
+					<li class="nav-item" data-url="{{ URL::route('user.show', $user->username) }}">
 						<span class="nav-icon">&#57513;</span>
 						<span class="nav-caption">{{ $user->display_name.'&#39;s Visualizations' }}</span>
 					</li>
@@ -76,7 +76,7 @@
 						<span class="nav-caption">Search</span>
 					</li>
 					@if ($highlight_id == Constant::SIDEBAR_GUEST_USERVISUALIZATION)
-					<li class="nav-item" data-url="{{ URL::route('user.show', [$user->username]) }}">
+					<li class="nav-item" data-url="{{ URL::route('user.show', $user->username) }}">
 						<span class="nav-icon">&#57513;</span>
 						<span class="nav-caption">{{ $user->display_name.'&#39;s Visualizations' }}</span>
 					</li>
