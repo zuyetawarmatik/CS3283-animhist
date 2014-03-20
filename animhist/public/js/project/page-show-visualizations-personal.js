@@ -3,6 +3,10 @@ $(function() {
 		parent.changeIFrameSrc($(this).data('url'), true);
 	});
 	
+	$("#edit-profile-btn").click(function() {
+		parent.changeIFrameSrc($(this).data('url'), true);
+	});
+	
 	$('#follow-btn').click(function() {
 		var link = $(this).data('url');
 		$.ajax({

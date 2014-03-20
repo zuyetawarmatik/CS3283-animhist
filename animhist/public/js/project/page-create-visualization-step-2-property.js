@@ -139,36 +139,34 @@ $(function() {
 			},
 			callback: function(data) {
 				if (data) {
-					var formData = new FormData();
+					var formData = {};
 					switch (field) {
 						case "zoom":
 							if (data.zoom.trim() == '') return;
-							formData.append("zoom", data.zoom.trim());
+							formData["zoom"] = data.zoom.trim();
 							break;
 						case "center":
 							if (data.centerlat.trim() == '' || data.centerlong.trim() == '') return;
-							formData.append("center-latitude", data.centerlat.trim());
-							formData.append("center-longitude", data.centerlong.trim());
+							formData["center-latitude"] = data.centerlat.trim();
+							formData["center-longitude"] = data.centerlong.trim();
 							break;
 						case "description":
 							if (data.description.trim() == '')
-								formData.append("description", "NUL");
+								formData["description"] = "NUL";
 							else
-								formData.append("description", data.description.trim());
+								formData["description"] = data.description.trim();
 							break;
 						case "category":
 							if (data.category.trim() == '') return;
-							formData.append("category", data.category.trim());
+							formData["category"] = data.category.trim();
 							break;
 						case "displayname":
 							if (data.displayname.trim() == '') return;
-							formData.append("display-name", data.displayname.trim());
+							formData["display-name"] = data.displayname.trim();
 							break;
 					}
 					
 					$.ajax({
-						processData: false,
-						contentType: false,
 					    url: getPOSTURLPrefix() + "/updateproperty",
 						type: "POST",
 						headers: {'X-CSRF-Token': getCSRFToken()},

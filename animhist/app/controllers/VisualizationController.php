@@ -107,8 +107,6 @@ class VisualizationController extends \BaseController {
 				$rules['center-longitude'] = 'required|numeric';
 			if (Input::has('category'))
 				$rules['category'] = 'required';
-			if (Input::has('published'))
-				$rules['published'] = 'in:true,false';
 				
 			$validator = Validator::make(Input::all(), $rules);
 			if ($validator->fails())
@@ -134,7 +132,7 @@ class VisualizationController extends \BaseController {
 			if (Input::has('center-longitude'))
 				$visualization->center_longitude = number_format(Input::get('center-longitude'), 2);
 			if (Input::has('published'))
-				$visualization->published = Input::get('published');
+				$visualization->published = Input::get('published') == 'true' ? true : false;
 			
 			$visualization->save();
 			
