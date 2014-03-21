@@ -1,3 +1,4 @@
+var allowedIcons = ["small_red", "small_blue", "small_green", "small_yellow", "small_purple", "measle_brown", "measle_grey", "measle_white", "measle_turquoise"];
 var pointStyleColumns = ["Level", "Icon"];
 var polygonStyleColumns = ["Level", "Color", "Opacity"];
 
@@ -17,6 +18,44 @@ var styleGridOptions = {
 	explicitInitialization: true,
 	forceFitColumns: true
 };
+
+function iconValidator(value) {
+	if (allowedIcons.indexOf(value) < 0) {
+		return {
+			valid : false,
+			msg : "Please input a valid icon"
+		};
+	} else {
+		return {
+			valid : true,
+			msg : null
+		};
+	}
+}
+
+function colorFormatter(row, cell, value, columnDef, dataContext) {
+	if (value == null || value === "")
+		return "";
+
+	var color = value;
+
+	return "<div style='background:" + color
+			+ ";height:100%;width:100%'></div>";
+}
+
+function colorValidator(value) {
+	if (!value.match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)) {
+		return {
+			valid : false,
+			msg : "Please input a valid color"
+		};
+	} else {
+		return {
+			valid : true,
+			msg : null
+		};
+	}
+}
 
 function parseRetrievedStyle() {
 	styleGridColumns = new Array();
@@ -39,8 +78,9 @@ function parseRetrievedStyle() {
 						minWidth: 150};
 		
 		switch (refColumns[i]) {
-		case "Level": case "Opacity": columnItem["validator"] = numberValidator;
-		default: columnItem["editor"] = Slick.Editors.Text; break;
+		case "Icon": columnItem["validator"] = iconValidator; columnItem["editor"] = Slick.Editors.Text; break;
+		case "Color": columnItem["validator"] = colorValidator; columnItem["formatter"] = colorFormatter; columnItem["editor"] = Slick.Editors.Text; break;
+		case "Level": case "Opacity": columnItem["validator"] = numberValidator; columnItem["editor"] = Slick.Editors.Text; break;
 		}
 		styleGridColumns.push(columnItem);
 	}

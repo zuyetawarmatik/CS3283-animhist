@@ -16,7 +16,7 @@ var gridOptions = {
 	forceFitColumns: true
 };
 
-var dateFormatter = function(row, cell, value, columnDef, dataContext) {
+function dateFormatter(row, cell, value, columnDef, dataContext) {
 	/* Fix issue for year before 1000 AD */
 	var res = value.split("/");
 	if (res.length == 1) value = "1/1/" + value;
@@ -29,7 +29,7 @@ var dateFormatter = function(row, cell, value, columnDef, dataContext) {
 	}
 };
 
-var numberValidator = function(value) {
+function numberValidator(value) {
 	if (isNaN(value)) {
 		return {
 			valid : false,
@@ -43,7 +43,7 @@ var numberValidator = function(value) {
 	}
 }
 
-var milestoneFilter = function(item) {
+function milestoneFilter(item) {
 	var filter = $("#filter-list").attr("data-filter");
 	if (filter != "All" && item["MilestoneRep"] != filter)
 		return false;
