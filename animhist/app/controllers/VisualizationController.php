@@ -9,7 +9,7 @@ class VisualizationController extends \BaseController {
 				if (Input::has('vi_id')) {
 					$vi_id = Input::get('vi_id');
 					$visualization = Visualization::find($vi_id);
-					if (!$visualization || $visualization->user != Auth::user() || $visualization->published) goto fail;
+					if (!$visualization || !$visualization->user->isAuthUser() || $visualization->published) goto fail;
 					if (Input::get('ajax')) {
 						return ViewResponseUtility::makeSubView('create-visualization-step-2', 'New Visualization: <span style="font-weight:300">Step 2 (Edit And Publish The Visualization)</span>', ['visualization'=>$visualization]);
 					} else {
@@ -113,7 +113,7 @@ class VisualizationController extends \BaseController {
 				return JSONResponseUtility::ValidationError($validator->getMessageBag()->toArray());
 		
 			$visualization = Visualization::find($id);
-			if (!$visualization || $visualization->user != Auth::user()) goto fail;
+			if (!$visualization || !$visualization->user->isAuthUser()) goto fail;
 			
 			if (Input::has('description')) {
 				$desc = Input::get('description') == 'NUL' ? null : Input::get('description'); 
@@ -171,7 +171,7 @@ class VisualizationController extends \BaseController {
 			if (!Input::isJson()) goto fail;
 			
 			$visualization = Visualization::find($id);
-			if (!$visualization || $visualization->user != Auth::user()) goto fail;
+			if (!$visualization || !$visualization->user->isAuthUser()) goto fail;
 			$gft = new GoogleFusionTable($visualization->fusion_table_id, $visualization->type);
 			
 			$datetime_format_str = $visualization->getMilestoneFormatString();
@@ -313,7 +313,7 @@ class VisualizationController extends \BaseController {
 		if (Auth::user()->username == $username) {
 			
 			$visualization = Visualization::find($id);
-			if (!$visualization || $visualization->user != Auth::user()) goto fail;
+			if (!$visualization || !$visualization->user->isAuthUser()) goto fail;
 			$gft = new GoogleFusionTable($visualization->fusion_table_id, $visualization->type);
 			
 			if (Input::get('request') == 'data') {
@@ -362,7 +362,7 @@ class VisualizationController extends \BaseController {
 	public function destroy($username, $id) {
 		if (Auth::user()->username == $username) {
 			$visualization = Visualization::find($id);
-			if (!$visualization || $visualization->user != Auth::user()) goto fail;
+			if (!$visualization || !$visualization->user->isAuthUser()) goto fail;
 			
 			$gft = new GoogleFusionTable($visualization->fusion_table_id, $visualization->visualization_type);
 			
