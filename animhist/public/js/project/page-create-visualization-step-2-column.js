@@ -1,4 +1,4 @@
-var ajaxTemplate2, notySuccessTemplate2;
+var ajaxTemplate2;
 
 $(function(){
 	ajaxTemplate2 = {
@@ -23,30 +23,12 @@ $(function(){
 			});
 		},
 		error: function() {
-			noty({
-				layout: 'bottomCenter',
+			notyError({
 				text: "Updating data error, rolling back...",
-				type: 'error',
-				killer: true,
-				timeout: 500,
-				maxVisible: 1
+				timeout: 500
 			});
 		}
 	};
-	
-	notySuccessTemplate2 = {
-		layout: 'center',
-		text: "Column removed, refreshing page...",
-		type: 'success',
-		killer: true,
-		timeout: 500,
-		maxVisible: 1,
-		callback: {
-			afterShow: function() {
-				window.location.reload();
-			}
-		}
-	}
 });
 
 function addDefaultColumnOptions() {
@@ -107,8 +89,14 @@ $(function() {
 				col: columnList[index]["column-id"]
 			}),
 			success: function() {
-				var notySuccessVar = $.extend({}, notySuccessTemplate2);
-				noty(notySuccessVar);
+				notySuccess({
+					text: "Column removed, refreshing page...",
+					callback: {
+						afterShow: function() {
+							window.location.reload();
+						}
+					}
+				});
 			}
 		});
 		
@@ -124,8 +112,14 @@ $(function() {
 					col: columnList[index]["column-id"]
 				}),
 				success: function() {
-					var notySuccessVar = $.extend({}, notySuccessTemplate2);
-					noty(notySuccessVar);
+					notySuccess({
+						text: "Column removed, refreshing page...",
+						callback: {
+							afterShow: function() {
+								window.location.reload();
+							}
+						}
+					});
 				}
 			});
 			$.ajax(ajaxVar);
@@ -143,10 +137,14 @@ $(function() {
 					colType: "STRING"
 				}),
 				success: function() {
-					var notySuccessVar = $.extend({}, notySuccessTemplate2, {
-						text: "Column added, refreshing page..."
+					notySuccess({
+						text: "Column added, refreshing page...",
+						callback: {
+							afterShow: function() {
+								window.location.reload();
+							}
+						}
 					});
-					noty(notySuccessVar);
 				}
 			});
 			
@@ -189,10 +187,14 @@ $(function() {
 							colType: data.columntype.toUpperCase()
 						}),
 						success: function() {
-							var notySuccessVar = $.extend({}, notySuccessTemplate2, {
-								text: "Column added, refreshing page..."
+							notySuccess({
+								text: "Column added, refreshing page...",
+								callback: {
+									afterShow: function() {
+										window.location.reload();
+									}
+								}
 							});
-							noty(notySuccessVar);
 						}
 					});
 					
@@ -243,10 +245,14 @@ $(function() {
 							colType: data.columntype.toUpperCase()
 						}),
 						success: function() {
-							var notySuccessVar = $.extend({}, notySuccessTemplate2, {
-								text: "Column updated, refreshing page..."
+							notySuccess({
+								text: "Column updated, refreshing page...",
+								callback: {
+									afterShow: function() {
+										window.location.reload();
+									}
+								}
 							});
-							noty(notySuccessVar);
 						}
 					});
 					
