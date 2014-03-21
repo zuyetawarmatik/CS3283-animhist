@@ -21,13 +21,8 @@ $(function() {
 						alertSt += tx + "<br/>";
 					});
 				});
-				noty({
-					layout: 'bottomCenter',
-					text: alertSt,
-					type: 'error',
-					killer: true,
-					timeout: 2000,
-					maxVisible: 1
+				notyError({
+					text: alertSt
 				});
 			},
 			success: function(response) {

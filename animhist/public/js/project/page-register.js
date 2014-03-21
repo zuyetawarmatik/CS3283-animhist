@@ -18,22 +18,15 @@ $(function() {
 						alertSt += tx + "<br/>";
 					});
 				});
-				noty({
-					layout: 'bottomCenter',
-					text: alertSt,
-					type: 'error',
-					killer: true,
-					timeout: 2000,
-					maxVisible: 1
+				notyError({
+					text: alertSt,					
+					timeout: 2000
 				});
 			},
 			success: function(response) {
-				noty({
+				notySuccess({
 					layout: 'center',
 					text: "Register successfully!<br/>Redirecting to your personal page...",
-					type: 'success',
-					killer: true,
-					timeout: 500,
 					callback: {
 						afterShow: function(){handleJSONRedirectResponse(response, false);}
 					}

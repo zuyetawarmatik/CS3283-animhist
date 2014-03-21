@@ -13,23 +13,15 @@ $(function() {
 						alertSt += tx + "<br/>";
 					});
 				});
-				noty({
-					layout: 'bottomCenter',
+				notyError({
 					text: alertSt,
-					type: 'error',
-					killer: true,
-					timeout: 2000,
-					maxVisible: 1
+					timeout: 2000
 				});
 			},
 		
 			success: function() {
-				noty({
-					layout: 'center',
-					text: "Update information successfully!",
-					type: 'success',
-					killer: true,
-					timeout: 500
+				notySuccess({
+					text: "Update information successfully!"
 				});
 			}
 		});
@@ -85,23 +77,13 @@ $(function() {
 									alertSt += tx + "<br/>";
 								});
 							});
-							noty({
-								layout: 'bottomCenter',
-								text: alertSt,
-								type: 'error',
-								killer: true,
-								timeout: 1000,
-								maxVisible: 1
+							notyError({
+								text: alertSt
 							});
 						},
 						success: function() {
-							noty({
-								layout: 'bottomCenter',
-								text: "Password changed",
-								type: 'success',
-								killer: true,
-								timeout: 500,
-								maxVisible: 1
+							notySuccess({
+								text: "Password changed"
 							});
 						}
 					});
