@@ -3,7 +3,7 @@ var gridColumns, gridData, gridTimeline;
 var dataView, slickGrid;
 var checkboxSelector;
 var commandQueue = [];
-var ajaxTemplate, notyErrorTemplate, notySuccessTemplate;
+var ajaxTemplate;
 
 var gridOptions = {
 	asyncEditorLoading: false,
@@ -108,23 +108,14 @@ function retrieveFusionData() {
 		type: "GET",
 		headers: {'X-CSRF-Token': getCSRFToken()},
 		error: function() {
-			noty({
-				layout: 'bottomCenter',
-				text: "Loading data error, refresh to try again",
-				type: 'error',
-				killer: true,
-				timeout: 2000,
-				maxVisible: 1
+			notyError({
+				text: "Loading data error, refresh to try again"
 			});
 		},
 		success: function(response) {
-			noty({
+			notySuccess({
 				layout: 'bottomCenter',
-				text: "Loading data finished",
-				type: 'success',
-				killer: true,
-				timeout: 500,
-				maxVisible: 1
+				text: "Loading data finished"
 			});
 			gfusionProps = response["gfusionProps"];
 			gfusionData = response["gfusionData"];
@@ -211,24 +202,6 @@ $(function() {
 		}
 	};
 	
-	notyErrorTemplate = {
-		layout: 'bottomCenter',
-		text: "Updating data error, rolling back...",
-		type: 'error',
-		killer: true,
-		timeout: 500,
-		maxVisible: 1
-	};
-	
-	notySuccessTemplate = {
-		layout: 'bottomCenter',
-		text: "All changes saved",
-		type: 'success',
-		killer: true,
-		timeout: 500,
-		maxVisible: 1
-	};
-	
 	retrieveFusionData();
 	
 	$(window).resize(function() {
@@ -292,17 +265,20 @@ function slickGrid_cellChange(e, args) {
 			colvalPairs: pairs
 		}),
 		error: function() {
-			var notyErrorVar = $.extend({}, notyErrorTemplate, {
+			notyError({
+				text: "Updating data error, rolling back...",
+				timeout: 500,
 				callback: {
 					onShow: function(){
 						slickGrid_undo();
 					}
 				}
 			});
-			noty(notyErrorVar);
 		},
 		success: function(response) {
-			var notySuccessVar = $.extend({}, notySuccessTemplate, {
+			notySuccess({
+				layout: 'bottomCenter',
+				text: "All changes saved",
 				callback: {
 					onShow: function(){
 						var responseRow = response["rows"][0];
@@ -325,7 +301,6 @@ function slickGrid_cellChange(e, args) {
 					}
 				}
 			});
-			noty(notySuccessVar);
 		}
     });
     $.ajax(ajaxVar);
@@ -349,11 +324,14 @@ function slickGrid_addNewRow(e, args) {
 			colvalPairs: pairs
 		}),
 		error: function() {
-			var notyErrorVar = $.extend({}, notyErrorTemplate);
-			noty(notyErrorVar);
+			notyError({
+				text: "Updating data error, rolling back...",
+				timeout: 500
+			});
 		},
 		success: function(response) {
-			var notySuccessVar = $.extend({}, notySuccessTemplate, {
+			notySuccess({
+				layout: 'bottomCenter',
 				text: "New row added",
 				callback: {
 					onShow: function(){
@@ -378,7 +356,6 @@ function slickGrid_addNewRow(e, args) {
 					}
 				}
 			});
-			noty(notySuccessVar);
 		}
 	});
 	$.ajax(ajaxVar);
@@ -399,11 +376,14 @@ $(function() {
 				row: rowsID
 			}),
 			error: function() {
-				var notyErrorVar = $.extend({}, notyErrorTemplate);
-				noty(notyErrorVar);
+				notyError({
+					text: "Updating data error, rolling back...",
+					timeout: 500
+				});
 			},
 			success: function() {
-				var notySuccessVar = $.extend({}, notySuccessTemplate, {
+				notySuccess({
+					layout: 'bottomCenter',
 					text: "Rows removed",
 					callback: {
 						onShow: function(){
@@ -415,7 +395,6 @@ $(function() {
 						}
 					}
 				});
-				noty(notySuccessVar);
 			}
 		});
 		$.ajax(ajaxVar);
