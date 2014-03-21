@@ -174,23 +174,15 @@ $(function() {
 						alertSt += tx + "<br/>";
 					});
 				});
-				noty({
-					layout: 'bottomCenter',
+				notyError({
 					text: alertSt,
-					type: 'error',
-					killer: true,
-					timeout: 2000,
-					maxVisible: 1
+					timeout: 2000
 				});
 			},
 		
 			success: function(response) {
-				noty({
-					layout: 'center',
+				notySuccess({
 					text: "Create visualization successfully!<br/>Redirecting to step 2...",
-					type: 'success',
-					killer: true,
-					timeout: 500,
 					callback: {
 						afterShow: function(){handleJSONRedirectResponse(response, false);}
 					}

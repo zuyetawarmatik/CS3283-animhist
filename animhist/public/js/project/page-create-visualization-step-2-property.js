@@ -179,23 +179,14 @@ $(function() {
 									alertSt += tx + "<br/>";
 								});
 							});
-							noty({
-								layout: 'bottomCenter',
-								text: alertSt,
-								type: 'error',
-								killer: true,
-								timeout: 1000,
-								maxVisible: 1
+							notyError({
+								text: alertSt
 							});
 						},
 						success: function(response) {
-							noty({
+							notySuccess({
 								layout: 'bottomCenter',
-								text: "Property changed",
-								type: 'success',
-								killer: true,
-								timeout: 500,
-								maxVisible: 1
+								text: "Property changed"
 							});
 							
 							var fields = [];
@@ -239,23 +230,13 @@ $(function() {
 			headers: {'X-CSRF-Token': getCSRFToken()},
 			global: false,
 			error: function() {
-				noty({
-					layout: 'bottomCenter',
-					text: "Visualization deletion failed",
-					type: 'error',
-					killer: true,
-					timeout: 1000,
-					maxVisible: 1
+				notyError({
+					text: "Visualization deletion failed"
 				});
 			},
 			success: function(response) {
-				noty({
-					layout: 'center',
+				notySuccess({
 					text: "Visualization deleted",
-					type: 'success',
-					killer: true,
-					timeout: 500,
-					maxVisible: 1,
 					callback: {
 						afterShow: function(){handleJSONRedirectResponse(response, false);}
 					}
@@ -272,23 +253,13 @@ $(function() {
 			global: false,
 			data: {"published": true},
 			error: function() {
-				noty({
-					layout: 'bottomCenter',
-					text: "Visualization publishment failed",
-					type: 'error',
-					killer: true,
-					timeout: 1000,
-					maxVisible: 1
+				notyError({
+					text: "Visualization publishment failed"
 				});
 			},
 			success: function(response) {
-				noty({
-					layout: 'center',
+				notySuccess({
 					text: "Visualization published",
-					type: 'success',
-					killer: true,
-					timeout: 500,
-					maxVisible: 1,
 					callback: {
 						//afterShow: function(){handleJSONRedirectResponse(response, false);}
 					}

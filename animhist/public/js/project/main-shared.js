@@ -89,3 +89,35 @@ $(document).ajaxStart(function() {
 		maxVisible: 1
 	});
 });
+
+function notyError(options) {
+	var notyErrTemp = {
+		layout: 'bottomCenter',
+		type: 'error',
+		killer: true,
+		timeout: 1000,
+		maxVisible: 1
+	};
+	
+	$.each(options, function(key, val) {
+		notyErrTemp[key] = val;
+	});
+	
+	noty(notyErrTemp);
+}
+
+function notySuccess(options) {
+	var notySuccTemp = {
+		layout: 'center',
+		type: 'success',
+		killer: true,
+		timeout: 500,
+		maxVisible: 1
+	};
+	
+	$.each(options, function(key, val) {
+		notySuccTemp[key] = val;
+	});
+	
+	noty(notySuccTemp);
+}
