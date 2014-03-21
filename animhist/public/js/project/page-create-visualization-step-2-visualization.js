@@ -1,7 +1,7 @@
 var gfusionTableID;
 var map, gfusionLayer;
 
-$(window).on('vi_property_loaded', function() {
+$(window).on('vi_style_loaded', function() {
 	mapInitialize();
 });
 
