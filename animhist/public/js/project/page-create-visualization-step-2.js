@@ -22,6 +22,7 @@ $(function() {
 				slickGrid.resizeCanvas();
 				$("#button-area").removeClass("current");
 			} else if (newCurrent == 2) {
+				styleSlickGrid.resizeCanvas();
 				$("#button-area").removeClass("current");
 			}
 		}

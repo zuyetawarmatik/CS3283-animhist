@@ -229,7 +229,6 @@ $(function() {
 		maxVisible: 1
 	};
 	
-	retrieveTimeline();
 	retrieveFusionData();
 	
 	$(window).resize(function() {
@@ -387,12 +386,12 @@ function slickGrid_addNewRow(e, args) {
 
 function slickGrid_selectedRowsChanged(e, args) {
 	var selectedRows = args["rows"];
-	if (!selectedRows.length) $("#delete-row-btn").attr("disabled", true);
-	else $("#delete-row-btn").attr("disabled", false);
+	if (!selectedRows.length) $("#edit-area-table #delete-row-btn").attr("disabled", true);
+	else $("#edit-area-table #delete-row-btn").attr("disabled", false);
 }
 
 $(function() {
-	$("#delete-row-btn").click(function() {
+	$("#edit-area-table #delete-row-btn").click(function() {
 		var rowsID = dataView.mapRowsToIds(slickGrid.getSelectedRows());
 		var ajaxVar = $.extend({}, ajaxTemplate, {
 			data: JSON.stringify({

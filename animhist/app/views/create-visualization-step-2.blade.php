@@ -61,6 +61,7 @@
 		<div id="table"></div>
 	</div>
 	<div id="edit-area-style">
+		<div id="table"></div>
 	</div>
 </div>
 @stop

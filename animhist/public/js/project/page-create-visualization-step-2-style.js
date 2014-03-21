@@ -5,6 +5,18 @@ var gfusionStyle;
 var styleGridColumns, styleGridData;
 var styleDataView, styleSlickGrid;
 var styleCheckboxSelector;
+var styleCommandQueue = [];
+
+var styleGridOptions = {
+	asyncEditorLoading: false,
+	editable: true,
+	editCommandHandler: styleSlickGrid_queueAndExecuteCommand,
+	enableAddRow: true,
+	enableCellNavigation: true,
+	enableColumnReorder: false,
+	explicitInitialization: true,
+	forceFitColumns: true
+};
 
 function parseRetrievedStyle() {
 	styleGridColumns = new Array();
@@ -40,7 +52,7 @@ function parseRetrievedStyle() {
 	
 	for (var i = 0; i < styleBuckets.length; i++) {
 		var rowItem = {};
-		
+		rowItem["id"] = i;
 		if (viProps.type == "point") {
 			rowItem["Level"] = styleBuckets[i].min;
 			rowItem["Icon"] = styleBuckets[i].icon;
@@ -52,8 +64,6 @@ function parseRetrievedStyle() {
 		
 		styleGridData.push(rowItem);
 	}
-	
-	console.log(JSON.stringify(styleGridData));
 }
 
 function retrieveStyle(column) {
@@ -66,8 +76,68 @@ function retrieveStyle(column) {
 			gfusionStyle = response;
 			parseRetrievedStyle();
 			$(window).trigger("vi_style_loaded");
+			
+			styleDataView = new Slick.Data.DataView();
+			styleSlickGrid = new Slick.Grid("#edit-area-style #table", styleDataView, styleGridColumns, styleGridOptions);
+			
+			styleDataView.onRowCountChanged.subscribe(function(e, args) {
+				styleSlickGrid.updateRowCount();
+				styleSlickGrid.render();
+			});
+			styleDataView.onRowsChanged.subscribe(function(e, args) {
+				styleSlickGrid.invalidateRows(args.rows);
+				styleSlickGrid.render();
+			});
+			styleDataView.beginUpdate();
+			styleDataView.setItems(styleGridData);
+			styleDataView.endUpdate();
+		    
+			styleSlickGrid.setSelectionModel(new Slick.RowSelectionModel({selectActiveRow: false}));
+			styleSlickGrid.registerPlugin(styleCheckboxSelector);
+			styleSlickGrid.onCellChange.subscribe(styleSlickGrid_cellChange);
+			styleSlickGrid.onAddNewRow.subscribe(styleSlickGrid_addNewRow);
+			styleSlickGrid.onSelectedRowsChanged.subscribe(styleSlickGrid_selectedRowsChanged);
+			styleSlickGrid.init();
 		}
 	});	
+}
+
+function styleSlickGrid_queueAndExecuteCommand(item, column, editCommand) {
+	styleCommandQueue.push(editCommand);
+	editCommand.execute();
+}
+
+function styleSlickGrid_undo() {
+	var command = styleCommandQueue.pop();
+	if (command && Slick.GlobalEditorLock.cancelCurrentEdit()) {
+		command.undo();
+		styleSlickGrid.gotoCell(command.row, command.cell, false);
+	}
+}
+
+function styleSlickGrid_cellChange(e, args) {
+    var activeCol = args["cell"];
+    var activeColField = gridColumns[activeCol]["field"];
+    var activeRowItem = args["item"]; // the whole row data
+    var pairs = {};
+    pairs[activeColField] = activeRowItem[activeColField];
+}
+
+function styleSlickGrid_addNewRow(e, args) {
+	var rowItem = args["item"];
+	var col = args["col"];
+	
+	var pairs = {};
+	$.each(rowItem, function(key, val) {
+		if (val) pairs[key] = val;
+	});
+	
+}
+
+function styleSlickGrid_selectedRowsChanged(e, args) {
+	var selectedRows = args["rows"];
+	if (!selectedRows.length) $("#edit-area-style #delete-row-btn").attr("disabled", true);
+	else $("#edit-area-style #delete-row-btn").attr("disabled", false);
 }
 
 $(window).on('vi_property_loaded', function() {

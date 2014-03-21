@@ -135,7 +135,9 @@
 				}
 			}
 		}
-		
+	}
+	
+	#edit-area-table, #edit-area-style {
 		#table {
 			font-size: inherit;
 			background: #fff;
@@ -145,7 +147,7 @@
 			left: 0;
 			right: 0;
 		}
-	}	
+	}
 }
 
 .table-header {
