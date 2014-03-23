@@ -99,7 +99,9 @@
 		<ul id="column-list">
 		</ul>
 	</div>
-	<div id="style-list-area">
+	<div id="description-area">
+		<h1>Modify a style</h1>
+		<p><br>Style for a specific column is divided into buckets by levels. Each level has its own color and opacity if the visualization is of polygon type, and icon if the visualization is of point type.</p>
 	</div>
 	<div id="button-area">
 		<button id="publish-btn"><i>&#57534;</i>Publish The Visualization</button>
