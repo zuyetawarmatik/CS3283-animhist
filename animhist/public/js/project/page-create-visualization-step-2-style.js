@@ -33,6 +33,101 @@ function iconValidator(value) {
 	}
 }
 
+function iconSelectEditor(args) {
+	var $select;
+	var defaultValue;
+	var scope = this;
+
+	this.init = function() {
+		$select = $("<select></select>");
+		for (var i = 0; i < allowedIcons.length; i++) {
+			$option = $("<option value='" + allowedIcons[i] + "'>" + allowedIcons[i] + "</option>");
+			$option.appendTo($select);
+		}
+		$select.appendTo(args.container);
+	};
+
+	this.destroy = function() {
+		$select.remove();
+	};
+
+	this.focus = function() {
+		$select.focus();
+	};
+
+	this.loadValue = function(item) {
+		$select.val((defaultValue = item[args.column.field]) ? item[args.column.field] : "");
+		$select.select();
+	};
+
+	this.serializeValue = function() {
+		return $select.val();
+	};
+
+	this.applyValue = function(item, state) {
+		item[args.column.field] = state;
+	};
+
+	this.isValueChanged = function() {
+		return ($select.val() != defaultValue);
+	};
+
+	this.validate = function() {
+		return {
+			valid : true,
+			msg : null
+		};
+	};
+
+	this.init();
+}
+
+function colorEditor(args) {
+	var $text;
+	var defaultValue;
+	var scope = this;
+
+	this.init = function() {
+		$text = $("<input type='text'>");
+		$text.appendTo(args.container);
+	};
+
+	this.destroy = function() {
+		$text.remove();
+	};
+
+	this.focus = function() {
+		$text.focus();
+	};
+
+	this.loadValue = function(item) {
+		$text.val(item[args.column.field]);
+		$text.focus().select();
+		$text.spectrum({showInput: true, color: item[args.column.field]});
+	};
+
+	this.serializeValue = function() {
+		return $text.val();
+	};
+
+	this.applyValue = function(item, state) {
+		item[args.column.field] = state;
+	};
+
+	this.isValueChanged = function() {
+		return ($text.val() != defaultValue);
+	};
+
+	this.validate = function() {
+		return {
+			valid : true,
+			msg : null
+		};
+	};
+
+	this.init();
+}
+
 function colorFormatter(row, cell, value, columnDef, dataContext) {
 	if (value == null || value === "")
 		return "";
@@ -78,8 +173,8 @@ function parseRetrievedStyle() {
 						minWidth: 150};
 		
 		switch (refColumns[i]) {
-		case "Icon": columnItem["validator"] = iconValidator; columnItem["editor"] = Slick.Editors.Text; break;
-		case "Color": columnItem["validator"] = colorValidator; columnItem["formatter"] = colorFormatter; columnItem["editor"] = Slick.Editors.Text; break;
+		case "Icon": columnItem["validator"] = iconValidator; columnItem["editor"] = iconSelectEditor; break;
+		case "Color": columnItem["validator"] = colorValidator; columnItem["formatter"] = colorFormatter; columnItem["editor"] = colorEditor; break;
 		case "Level": case "Opacity": columnItem["validator"] = numberValidator; columnItem["editor"] = Slick.Editors.Text; break;
 		}
 		styleGridColumns.push(columnItem);
@@ -182,4 +277,9 @@ function styleSlickGrid_selectedRowsChanged(e, args) {
 
 $(window).on('vi_property_loaded', function() {
 	retrieveStyle(viProps["defaultColumn"]);
+});
+
+$(window).resize(function() {
+	if (styleSlickGrid)
+		styleSlickGrid.resizeCanvas();
 });

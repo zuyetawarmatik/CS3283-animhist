@@ -172,6 +172,45 @@
 .table-cell.active {
 	border-color: @color-back-blue-button!important;
 	box-shadow: 0 0 2px @color-back-blue-button inset;
+	
+	>select {
+		width: 100%; 
+		height: 100%; 
+		font: inherit; 
+		text-align: right;
+	}
+	
+	.sp-replacer {
+		width: 100%;
+		height: 100%;
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		
+		.sp-preview {
+			height: 100%;
+			width: 90%;
+			box-sizing: border-box;
+			-moz-box-sizing: border-box;
+		}
+		
+		.sp-dd {
+			line-height: 6px;
+			width: 5%;
+			box-sizing: border-box;
+			-moz-box-sizing: border-box;
+		}
+	}
+}
+
+.sp-container {
+	.sp-choose, .sp-cancel {
+		font: inherit;
+	}
+	
+	.sp-input {
+		font: inherit;
+		color: #fff;
+	}
 }
 
 .table-cell-checkbox.selected, .table-cell.selected {
