@@ -71,6 +71,9 @@ function iconEditor(args) {
 	};
 
 	this.isValueChanged = function() {
+		if (defaultValue === undefined)
+			return $select.val() != "";
+		
 		return ($select.val() != defaultValue);
 	};
 
@@ -118,6 +121,9 @@ function colorEditor(args) {
 	};
 
 	this.isValueChanged = function() {
+		if (defaultValue === undefined)
+			return $text.val() != "";
+		
 		return ($text.val() != defaultValue);
 	};
 
@@ -256,7 +262,8 @@ function retrieveStyle(column) {
 		    
 			styleSlickGrid.setSelectionModel(new Slick.RowSelectionModel({selectActiveRow: false}));
 			styleSlickGrid.registerPlugin(styleCheckboxSelector);
-			styleSlickGrid.onAddNewRow.subscribe(styleSlickGrid_addNewRow);
+			if (currentStyleColumn != "")
+				styleSlickGrid.onAddNewRow.subscribe(styleSlickGrid_addNewRow);
 			styleSlickGrid.onSelectedRowsChanged.subscribe(styleSlickGrid_selectedRowsChanged);
 			styleSlickGrid.init();
 		}
@@ -284,10 +291,14 @@ function styleSlickGrid_selectedRowsChanged(e, args) {
 
 function styleSlickGrid_addNewRow(e, args) {
 	var newRow = args["item"];
-	newRow["id"] = incrementVal++;
-	if (newRow["Level"] === undefined) newRow["Level"] = findStyleMaxLevel() + 10;
 	
-	// TODO: for default Opacity, Icon, Color
+	newRow["id"] = incrementVal++;
+	if (newRow["Level"] === undefined) newRow["Level"] = parseInt(findStyleMaxLevel()) + 10;
+	if (viProps["type"] == "polygon") {
+		if (newRow["Opacity"] === undefined) newRow["Opacity"] = 0.5;
+		if (newRow["Color"] === undefined) newRow["Color"] = "#000000";
+	} else if (viProps["type"] == "point")
+		if (newRow["Icon"] === undefined) newRow["Icon"] = "small_red";
 	
 	styleDataView.addItem(newRow);
 }
@@ -300,6 +311,16 @@ function findStyleMaxLevel() {
 	}
 	return ret;
 }
+
+$(function() {
+	$("#edit-area-style #delete-row-btn").click(function() {
+		var rowsID = styleDataView.mapRowsToIds(styleSlickGrid.getSelectedRows());
+		$.each(rowsID, function(i, val) {
+			styleDataView.deleteItem(val);
+		});
+		styleSlickGrid.setSelectedRows([]);
+	});
+});
 
 $(window).on('vi_property_loaded', function() {
 	retrieveStyle(viProps["defaultColumn"]);

@@ -203,11 +203,11 @@ $(function() {
 	};
 	
 	retrieveFusionData();
-	
-	$(window).resize(function() {
-		if (slickGrid)
-			slickGrid.resizeCanvas();
-	});
+});
+
+$(window).resize(function() {
+	if (slickGrid)
+		slickGrid.resizeCanvas();
 });
 
 $(function() {

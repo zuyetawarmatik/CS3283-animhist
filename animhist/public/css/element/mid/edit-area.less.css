@@ -137,6 +137,23 @@
 		}
 	}
 	
+	#edit-area-style {
+		#toolbar {
+			height: 5rem;
+			background: @color-back-top-bar; 
+			
+			button {
+				float: left;
+				width: 5rem;
+				height: 100%;
+				border: none;
+				i {
+					margin: 0;
+				}
+			}
+		}
+	}
+	
 	#edit-area-table, #edit-area-style {
 		#table {
 			font-size: inherit;

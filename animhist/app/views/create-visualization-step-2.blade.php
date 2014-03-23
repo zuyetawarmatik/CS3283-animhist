@@ -61,6 +61,10 @@
 		<div id="table"></div>
 	</div>
 	<div id="edit-area-style">
+		<div id="toolbar">
+			<button id="save-btn" class="blue-btn" title="Save Style"><i>&#57440;</i></button>
+			<button id="delete-row-btn" title="Delete Style Row(s)" disabled><i>&#57597;</i></button>
+		</div>
 		<div id="table"></div>
 	</div>
 </div>
