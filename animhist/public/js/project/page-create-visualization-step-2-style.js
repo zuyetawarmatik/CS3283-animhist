@@ -234,7 +234,9 @@ function parseRetrievedStyle() {
 	incrementVal = i;
 }
 
-function retrieveStyle(column, type) {
+function retrieveStyle(column) {
+	currentStyleColumn = column;
+	
 	$.ajax({
 		url: getPOSTURLPrefix() + "/info?request=style&column=" + column,
 		type: "GET",
@@ -242,10 +244,8 @@ function retrieveStyle(column, type) {
 		headers: {'X-CSRF-Token': getCSRFToken()},
 		success: function(response) {
 			gfusionStyle = response;
-			if (column == viProps["defaultColumn"] && type == "update")
-				$(window).trigger("vi_style_updated");
+			$(window).trigger("vi_style_loaded");
 			parseRetrievedStyle();
-			if (type == "load") $(window).trigger("vi_style_loaded");
 			
 			styleDataView = new Slick.Data.DataView();
 			styleSlickGrid = new Slick.Grid("#edit-area-style #table", styleDataView, styleGridColumns, styleGridOptions);
@@ -264,7 +264,7 @@ function retrieveStyle(column, type) {
 		    
 			styleSlickGrid.setSelectionModel(new Slick.RowSelectionModel({selectActiveRow: false}));
 			styleSlickGrid.registerPlugin(styleCheckboxSelector);
-			if (currentStyleColumn != "")
+			if (currentStyleColumn != null)
 				styleSlickGrid.onAddNewRow.subscribe(styleSlickGrid_addNewRow);
 			styleSlickGrid.onSelectedRowsChanged.subscribe(styleSlickGrid_selectedRowsChanged);
 			styleSlickGrid.init();
@@ -307,7 +307,7 @@ function styleSlickGrid_addNewRow(e, args) {
 
 function findStyleMaxLevel() {
 	var ret = -10;
-	var items = styleDataView.getItems();
+	var items = styleGridData;
 	for (var i = 0; i < items.length; i++) {
 		if (items[i]["Level"] > ret) ret = items[i]["Level"];
 	}
@@ -322,11 +322,54 @@ $(function() {
 		});
 		styleSlickGrid.setSelectedRows([]);
 	});
+	
+	$("#edit-area-style #save-btn").click(function() {
+		var sentStyle = $.extend(true, [], styleGridData);
+		$.each(sentStyle, function(i, val) {
+			delete val.id;
+			val.Level = Number(val.Level);
+			if (val.Opacity !== undefined)
+				val.Opacity = Number(val.Opacity);
+		});
+		sentStyle.sort(function(a, b) {
+			var lvA = Number(a.Level);
+			var lvB = Number(b.Level);
+			if (lvA < lvB) return -1;
+			else if (lvA > lvB) return 1;
+			return 0;
+		});
+		
+		$.ajax({
+			processData: false,
+			contentType: "application/json; charset=utf-8",
+			url: getPOSTURLPrefix() + "/updatestyle",
+			type: "POST",
+			headers: {'X-CSRF-Token': getCSRFToken()},
+			global: false,
+			data: JSON.stringify({
+				colName: currentStyleColumn,
+				style: sentStyle
+			}),
+			beforeSend: function() {
+				noty({
+					layout: 'bottomCenter',
+					text: '.................',
+					type: 'information',
+					animation: {
+						open: {height: 'toggle'},
+						close: {height: 'toggle'},
+						easing: 'swing',
+						    speed: 300
+						},
+					maxVisible: 1
+				});
+			}
+		});
+	});
 });
 
 $(window).on('vi_property_loaded', function() {
-	retrieveStyle(viProps["defaultColumn"], "load");
-	currentStyleColumn = viProps["defaultColumn"];
+	retrieveStyle(viProps["defaultColumn"]);
 });
 
 $(window).resize(function() {

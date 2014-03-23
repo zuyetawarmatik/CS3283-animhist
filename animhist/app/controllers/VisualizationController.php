@@ -306,7 +306,25 @@ class VisualizationController extends \BaseController {
 	
 	public function updateStyle($username, $id)
 	{
-	
+		if (Auth::user()->username == $username) {
+			if (!Input::isJson()) goto fail;
+				
+			$visualization = Visualization::find($id);
+			if (!$visualization || !$visualization->user->isAuthUser()) goto fail;
+			$gft = new GoogleFusionTable($visualization->fusion_table_id, $visualization->type);
+			
+			$col_name = Input::json('colName');
+			if (empty($col_name)) goto fail;
+			
+			$retrieved_style = Input::json('style');
+			
+			return Response::JSON(self::prepareStyleSentToGFusion($col_name, $retrieved_style, $visualization->type));
+			
+		} else {
+			return Response::make('', 401);
+		}
+		
+		fail: return Response::make('', 400);
 	}
 	
 	public function info($username, $id) {
@@ -422,5 +440,36 @@ class VisualizationController extends \BaseController {
 		}
 		
 		return $result;
+	}
+	
+	private static function prepareStyleSentToGFusion($col_name, $retrieved_style, $visualization_type) {
+		$style = [];
+		if ($visualization_type == 'point') {
+			$style['markerOptions']['iconStyler']['columnName'] = $col_name;
+			$style['markerOptions']['iconStyler']['buckets'] = [];
+			for ($i = 0; $i < count($retrieved_style); $i++) {
+				$item = $retrieved_style[$i];
+				$style['markerOptions']['iconStyler']['buckets'][$i]['icon'] = $item['Icon'];
+				$style['markerOptions']['iconStyler']['buckets'][$i]['min'] = $item['Level'];
+				if ($i == count($retrieved_style) - 1)
+					$style['markerOptions']['iconStyler']['buckets'][$i]['max'] = Constant::NUMBER_POSITIVE_INF;
+				else
+					$style['markerOptions']['iconStyler']['buckets'][$i]['max'] = $retrieved_style[$i + 1]['Level'];
+			}
+		} else if ($visualization_type == 'polygon') {
+			$style['polygonOptions']['fillColorStyler']['columnName'] = $col_name;
+			$style['polygonOptions']['fillColorStyler']['buckets'] = [];
+			for ($i = 0; $i < count($retrieved_style); $i++) {
+				$item = $retrieved_style[$i];
+				$style['polygonOptions']['fillColorStyler']['buckets'][$i]['color'] = $item['Color'];
+				$style['polygonOptions']['fillColorStyler']['buckets'][$i]['opacity'] = $item['Opacity'];
+				$style['polygonOptions']['fillColorStyler']['buckets'][$i]['min'] = $item['Level'];
+				if ($i == count($retrieved_style) - 1)
+					$style['polygonOptions']['fillColorStyler']['buckets'][$i]['max'] = Constant::NUMBER_POSITIVE_INF;
+				else
+					$style['polygonOptions']['fillColorStyler']['buckets'][$i]['max'] = $retrieved_style[$i + 1]['Level'];
+			}
+		}
+		return $style;
 	}
 }
