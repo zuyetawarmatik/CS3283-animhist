@@ -33,7 +33,7 @@ function iconValidator(value) {
 	}
 }
 
-function iconSelectEditor(args) {
+function iconEditor(args) {
 	var $select;
 	var defaultValue;
 	var scope = this;
@@ -152,6 +152,27 @@ function colorValidator(value) {
 	}
 }
 
+function opacityValidator(value) {
+	if (isNaN(value)) {
+		return {
+			valid : false,
+			msg : "Please input a number"
+		};
+	} else {
+		if (value < 0 || value > 1) {
+			return {
+				valid : false,
+				msg : "Please input a valid opacity"
+			};
+		} else {
+			return {
+				valid : true,
+				msg : null
+			};
+		}
+	}
+}
+
 function parseRetrievedStyle() {
 	styleGridColumns = new Array();
 	styleGridData = new Array();
@@ -173,9 +194,9 @@ function parseRetrievedStyle() {
 						minWidth: 150};
 		
 		switch (refColumns[i]) {
-		case "Icon": columnItem["validator"] = iconValidator; columnItem["editor"] = iconSelectEditor; break;
+		case "Icon": columnItem["validator"] = iconValidator; columnItem["editor"] = iconEditor; break;
 		case "Color": columnItem["validator"] = colorValidator; columnItem["formatter"] = colorFormatter; columnItem["editor"] = colorEditor; break;
-		case "Level": case "Opacity": columnItem["validator"] = numberValidator; columnItem["editor"] = Slick.Editors.Text; break;
+		case "Level": case "Opacity": columnItem["validator"] = opacityValidator; columnItem["editor"] = Slick.Editors.Text; break;
 		}
 		styleGridColumns.push(columnItem);
 	}
