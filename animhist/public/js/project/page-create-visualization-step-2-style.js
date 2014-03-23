@@ -2,6 +2,8 @@ var allowedIcons = ["small_red", "small_blue", "small_green", "small_yellow", "s
 var pointStyleColumns = ["Level", "Icon"];
 var polygonStyleColumns = ["Level", "Color", "Opacity"];
 
+var incrementVal = 0;
+var currentStyleColumn;
 var gfusionStyle;
 var styleGridColumns, styleGridData;
 var styleDataView, styleSlickGrid;
@@ -88,7 +90,7 @@ function colorEditor(args) {
 	var scope = this;
 
 	this.init = function() {
-		$text = $("<input type='text'>");
+		$text = $("<input type='text' class='editor-text'>");
 		$text.appendTo(args.container);
 	};
 
@@ -101,9 +103,10 @@ function colorEditor(args) {
 	};
 
 	this.loadValue = function(item) {
-		$text.val(item[args.column.field]);
+		var colorVal = (item[args.column.field] !== undefined && item[args.column.field] != "") ? item[args.column.field] : "#000000"; 
+		$text.val(colorVal);
 		$text.focus().select();
-		$text.spectrum({showInput: true, color: item[args.column.field]});
+		$text.spectrum({showInput: true, color: colorVal});
 	};
 
 	this.serializeValue = function() {
@@ -196,7 +199,8 @@ function parseRetrievedStyle() {
 		switch (refColumns[i]) {
 		case "Icon": columnItem["validator"] = iconValidator; columnItem["editor"] = iconEditor; break;
 		case "Color": columnItem["validator"] = colorValidator; columnItem["formatter"] = colorFormatter; columnItem["editor"] = colorEditor; break;
-		case "Level": case "Opacity": columnItem["validator"] = opacityValidator; columnItem["editor"] = Slick.Editors.Text; break;
+		case "Level": columnItem["validator"] = numberValidator; columnItem["editor"] = Slick.Editors.Text; break;
+		case "Opacity": columnItem["validator"] = opacityValidator; columnItem["editor"] = Slick.Editors.Text; break;
 		}
 		styleGridColumns.push(columnItem);
 	}
@@ -220,6 +224,8 @@ function parseRetrievedStyle() {
 		
 		styleGridData.push(rowItem);
 	}
+	
+	incrementVal = i;
 }
 
 function retrieveStyle(column) {
@@ -250,7 +256,6 @@ function retrieveStyle(column) {
 		    
 			styleSlickGrid.setSelectionModel(new Slick.RowSelectionModel({selectActiveRow: false}));
 			styleSlickGrid.registerPlugin(styleCheckboxSelector);
-			styleSlickGrid.onCellChange.subscribe(styleSlickGrid_cellChange);
 			styleSlickGrid.onAddNewRow.subscribe(styleSlickGrid_addNewRow);
 			styleSlickGrid.onSelectedRowsChanged.subscribe(styleSlickGrid_selectedRowsChanged);
 			styleSlickGrid.init();
@@ -271,33 +276,34 @@ function styleSlickGrid_undo() {
 	}
 }
 
-function styleSlickGrid_cellChange(e, args) {
-    var activeCol = args["cell"];
-    var activeColField = gridColumns[activeCol]["field"];
-    var activeRowItem = args["item"]; // the whole row data
-    var pairs = {};
-    pairs[activeColField] = activeRowItem[activeColField];
-}
-
-function styleSlickGrid_addNewRow(e, args) {
-	var rowItem = args["item"];
-	var col = args["col"];
-	
-	var pairs = {};
-	$.each(rowItem, function(key, val) {
-		if (val) pairs[key] = val;
-	});
-	
-}
-
 function styleSlickGrid_selectedRowsChanged(e, args) {
 	var selectedRows = args["rows"];
 	if (!selectedRows.length) $("#edit-area-style #delete-row-btn").attr("disabled", true);
 	else $("#edit-area-style #delete-row-btn").attr("disabled", false);
 }
 
+function styleSlickGrid_addNewRow(e, args) {
+	var newRow = args["item"];
+	newRow["id"] = incrementVal++;
+	if (newRow["Level"] === undefined) newRow["Level"] = findStyleMaxLevel() + 10;
+	
+	// TODO: for default Opacity, Icon, Color
+	
+	styleDataView.addItem(newRow);
+}
+
+function findStyleMaxLevel() {
+	var ret = -10;
+	var items = styleDataView.getItems();
+	for (var i = 0; i < items.length; i++) {
+		if (items[i]["Level"] > ret) ret = items[i]["Level"];
+	}
+	return ret;
+}
+
 $(window).on('vi_property_loaded', function() {
 	retrieveStyle(viProps["defaultColumn"]);
+	currentStyleColumn = viProps["defaultColumn"];
 });
 
 $(window).resize(function() {
