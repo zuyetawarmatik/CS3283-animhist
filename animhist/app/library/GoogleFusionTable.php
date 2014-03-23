@@ -307,17 +307,20 @@ class GoogleFusionTable {
 				//$style['markerOptions']['iconStyler']['buckets'][$i]['color'] = $colors[$i];
 				$style['markerOptions']['iconStyler']['buckets'][$i]['min'] = $i * 10;
 				$style['markerOptions']['iconStyler']['buckets'][$i]['max'] = ($i + 1) * 10;
+				if ($i == 4)
+					$style['markerOptions']['iconStyler']['buckets'][$i]['max'] = pow(10, 16);
 			}
-			
 		} else if ($this->visualization_type == 'polygon') {
 			$style['polygonOptions']['fillColorStyler']['columnName'] = $col_name;
 			
 			$style['polygonOptions']['fillColorStyler']['buckets'] = [];
 			for ($i = 0; $i < 5; $i++) {
 				$style['polygonOptions']['fillColorStyler']['buckets'][$i]['color'] = $colors[$i];
+				$style['polygonOptions']['fillColorStyler']['buckets'][$i]['opacity'] = 0.5;
 				$style['polygonOptions']['fillColorStyler']['buckets'][$i]['min'] = $i * 10;
 				$style['polygonOptions']['fillColorStyler']['buckets'][$i]['max'] = ($i + 1) * 10;
-				$style['polygonOptions']['fillColorStyler']['buckets'][$i]['opacity'] = 0.5;
+				if ($i == 4)
+					$style['polygonOptions']['fillColorStyler']['buckets'][$i]['max'] = pow(10, 16);
 			}
 		}
 		
@@ -340,7 +343,7 @@ class GoogleFusionTable {
 		
 		if ($response->code == 200)
 			return $response->body;
-		
+
 		return false;
 	}
 	

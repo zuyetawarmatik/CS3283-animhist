@@ -15,11 +15,11 @@
 	
 Route::get('/', function()
 {
-	$gft = new GoogleFusionTable('134V4nXSsuxE3HLekv4Q3cci2-mI_bEXMTCPp3vDO', 'point');
+	$gft = new GoogleFusionTable('16k8KNWniiZAZOOQhOlfpJnUQdaaFgGDLryaLs2GW', 'polygon');
 	//$columns = $gft->retrieveGFusionProperties()->columns;
 	//return Response::json($gft->deleteColumn(8));
-	return Response::json($gft->retrieveGFusionStyles());
-	//return Response::JSON($gft->createColumnDefaultStyle('point', 'New Valuable'));
+	//return Response::json($gft->retrieveGFusionStyles());
+	return Response::JSON($gft->createColumnDefaultStyle('A'));
 	//return Response::JSON($gft->getColumnStyle('point', 'New Valuable'));
 	//return Response::JSON($gft->deleteColumnStyle('#INVALID_COLUMN'));
 });

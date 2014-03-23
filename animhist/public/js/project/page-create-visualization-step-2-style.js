@@ -234,7 +234,7 @@ function parseRetrievedStyle() {
 	incrementVal = i;
 }
 
-function retrieveStyle(column) {
+function retrieveStyle(column, type) {
 	$.ajax({
 		url: getPOSTURLPrefix() + "/info?request=style&column=" + column,
 		type: "GET",
@@ -242,8 +242,10 @@ function retrieveStyle(column) {
 		headers: {'X-CSRF-Token': getCSRFToken()},
 		success: function(response) {
 			gfusionStyle = response;
+			if (column == viProps["defaultColumn"] && type == "update")
+				$(window).trigger("vi_style_updated");
 			parseRetrievedStyle();
-			$(window).trigger("vi_style_loaded");
+			if (type == "load") $(window).trigger("vi_style_loaded");
 			
 			styleDataView = new Slick.Data.DataView();
 			styleSlickGrid = new Slick.Grid("#edit-area-style #table", styleDataView, styleGridColumns, styleGridOptions);
@@ -323,7 +325,7 @@ $(function() {
 });
 
 $(window).on('vi_property_loaded', function() {
-	retrieveStyle(viProps["defaultColumn"]);
+	retrieveStyle(viProps["defaultColumn"], "load");
 	currentStyleColumn = viProps["defaultColumn"];
 });
 
