@@ -72,16 +72,32 @@
 		{{ Form::close() }}
 	@endif
 	<article id="description-area">
-		<h1>California Electricity Consumption</h1>
-		<p><br><span class="h2">Author: </span>Richard Koe</p>
-		<p><span class="h2">Created at: </span>1:56, 1 Dec 2013</p>
-		<p><span class="h2">Last Updated at: </span>2:38, 1 Dec 2013</p>
+		<h1>{{ $visualization->display_name }}</h1>
+		<p><br><span class="h2">Author: </span>{{ $visualization->user->display_name }}</p>
+		<p><span class="h2">Created at: </span>{{ $visualization->getFormattedCreatedDate() }}</p>
+		<p><span class="h2">Last Updated at: </span>{{ $visualization->getFormattedUpdatedDate() }}</p>
+		<p><br><span class="h2">Type: </span>{{ ucfirst($visualization->type) }}</p>
+		<p id="zoom"><span class="h2">Zoom: </span>{{ number_format($visualization->zoom) }}</p>
+		<p id="center"><span class="h2">Center: </span>{{ number_format($visualization->center_latitude, 2) }}, {{ number_format($visualization->center_longitude, 2) }}</p>
+		<p><span class="h2">Category: </span>{{ $visualization->category }}</p>
 		<p><br><span class="h2">Brief Description:</span></p>
-		<p>This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed non  mauris vitae erat consequat auctor eu in elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris in erat justo. Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi. Proincondimentum fermentum nunc. Etiam pharetra, erat sed fermentum feugiat, velit mauris egestas quam, ut aliquam massa nisl quis neque. Suspendisse in orci enim.</p>
+		<p>
+			@if ($visualization->description)
+				{{ $visualization->description }}
+			@else
+				(The visualization does not have any description yet.)
+			@endif
+		</p>
 	</article>
-	@if (true)
-		<div id="button-area">
-			<button id="follow-btn"><i>&#57552;</i>Follow The Author</button>
-		</div>
+	<div id="button-area">
+	{{ Form::open(array('name'=>'hidden-form', 'url'=>'#')) }}
+	{{ Form::close() }}
+	@if (!$user->isAuthUser())
+		@if (Auth::check() && DB::table('follows')->where('user_id', Auth::user()->id)->where('following_id', $user->id)->first())
+		<button id="follow-btn" data-url="{{ URL::route('user.unfollow', $user->username) }}"><i>&#57551;</i>Unfollow The Author</button>
+		@else
+		<button id="follow-btn" data-url="{{ URL::route('user.follow', $user->username) }}"><i>&#57552;</i>Follow The Author</button>
+		@endif
 	@endif
+	</div>
 @stop
