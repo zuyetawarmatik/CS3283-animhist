@@ -245,31 +245,35 @@ function retrieveStyle(column) {
 		success: function(response) {
 			gfusionStyle = response;
 			$(window).trigger("vi_style_loaded");
-			parseRetrievedStyle();
-			
-			styleDataView = new Slick.Data.DataView();
-			styleSlickGrid = new Slick.Grid("#edit-area-style #table", styleDataView, styleGridColumns, styleGridOptions);
-			
-			styleDataView.onRowCountChanged.subscribe(function(e, args) {
-				styleSlickGrid.updateRowCount();
-				styleSlickGrid.render();
-			});
-			styleDataView.onRowsChanged.subscribe(function(e, args) {
-				styleSlickGrid.invalidateRows(args.rows);
-				styleSlickGrid.render();
-			});
-			styleDataView.beginUpdate();
-			styleDataView.setItems(styleGridData);
-			styleDataView.endUpdate();
-		    
-			styleSlickGrid.setSelectionModel(new Slick.RowSelectionModel({selectActiveRow: false}));
-			styleSlickGrid.registerPlugin(styleCheckboxSelector);
-			if (currentStyleColumn != null)
-				styleSlickGrid.onAddNewRow.subscribe(styleSlickGrid_addNewRow);
-			styleSlickGrid.onSelectedRowsChanged.subscribe(styleSlickGrid_selectedRowsChanged);
-			styleSlickGrid.init();
+			initStyleTable();
 		}
-	});	
+	});
+}
+
+function initStyleTable() {
+	parseRetrievedStyle();
+	
+	styleDataView = new Slick.Data.DataView();
+	styleSlickGrid = new Slick.Grid("#edit-area-style #table", styleDataView, styleGridColumns, styleGridOptions);
+	
+	styleDataView.onRowCountChanged.subscribe(function(e, args) {
+		styleSlickGrid.updateRowCount();
+		styleSlickGrid.render();
+	});
+	styleDataView.onRowsChanged.subscribe(function(e, args) {
+		styleSlickGrid.invalidateRows(args.rows);
+		styleSlickGrid.render();
+	});
+	styleDataView.beginUpdate();
+	styleDataView.setItems(styleGridData);
+	styleDataView.endUpdate();
+    
+	styleSlickGrid.setSelectionModel(new Slick.RowSelectionModel({selectActiveRow: false}));
+	styleSlickGrid.registerPlugin(styleCheckboxSelector);
+	if (currentStyleColumn != null)
+		styleSlickGrid.onAddNewRow.subscribe(styleSlickGrid_addNewRow);
+	styleSlickGrid.onSelectedRowsChanged.subscribe(styleSlickGrid_selectedRowsChanged);
+	styleSlickGrid.init();
 }
 
 function styleSlickGrid_queueAndExecuteCommand(item, column, editCommand) {
@@ -363,6 +367,19 @@ $(function() {
 						},
 					maxVisible: 1
 				});
+			},
+			error:  function() {
+				notyError({
+					text: 'Update style failed',
+				})
+			},
+			success: function(response) {
+				notySuccess({
+					text: 'Update style successfully',
+				})
+				
+				gfusionStyle = response;
+				initStyleTable();
 			}
 		});
 	});

@@ -4,6 +4,7 @@ var map, gfusionLayer;
 $(window).on('vi_style_loaded', function() {
 	retrieveTimeline();
 	mapInitialize();
+	updateLayerStyle();
 });
 
 $(window).on('vi_property_changed', function(e) {
@@ -13,6 +14,8 @@ $(window).on('vi_property_changed', function(e) {
 			map.setZoom(parseInt(viProps['zoom']));
 		if ($.inArray("centerLatitude", fields) >= 0 || $.inArray("centerLongitude", fields) >= 0)
 			map.setCenter(new google.maps.LatLng(viProps['centerLatitude'], viProps['centerLongitude']));
+		if ($.inArray("defaultColumn", fields) >= 0)
+			updateLayerStyle();
 	}
 });
 
@@ -53,6 +56,11 @@ function mapInitialize() {
 			e.infoWindowHtml = e.row['HTMLData'].value;
 		});
 	}
+}
+
+function updateLayerStyle() {
+	if (viProps["defaultStyleId"] !== undefined)
+		gfusionLayer.setOptions({"styleId": viProps["defaultStyleId"]});
 }
 
 function updateLayerQuery(milestone) {

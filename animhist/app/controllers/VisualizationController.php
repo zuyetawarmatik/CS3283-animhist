@@ -140,8 +140,11 @@ class VisualizationController extends \BaseController {
 			
 			if (Input::has('description'))
 				$json['description'] = $visualization->description;
-			if (Input::has('default-column'))
+			if (Input::has('default-column')) {
+				$gft = new GoogleFusionTable($visualization->fusion_table_id, $visualization->type);
 				$json['defaultColumn'] = $visualization->default_column;
+				$json['defaultStyleId'] = $gft->getColumnStyle($visualization->default_column)->styleId;
+			} 
 			if (Input::has('display-name'))
 				$json['displayName'] = $visualization->display_name;
 			if (Input::has('category'))
@@ -318,8 +321,9 @@ class VisualizationController extends \BaseController {
 			
 			$retrieved_style = Input::json('style');
 			
-			return Response::JSON(self::prepareStyleSentToGFusion($col_name, $retrieved_style, $visualization->type));
+			$ret = $gft->updateColumnStyle($col_name, self::prepareStyleSentToGFusion($col_name, $retrieved_style, $visualization->type));
 			
+			if ($ret) return Response::JSON($gft->getColumnStyle($col_name));
 		} else {
 			return Response::make('', 401);
 		}
@@ -351,6 +355,8 @@ class VisualizationController extends \BaseController {
 						"zoom" => number_format($visualization->zoom),
 						"centerLatitude" => number_format($visualization->center_latitude, 2),
 						"centerLongitude" => number_format($visualization->center_longitude, 2)];
+				if ($visualization->default_column != null)
+					$json["defaultStyleId"] = $gft->getColumnStyle($visualization->default_column)->styleId;
 				$gfusion_props = $gft->retrieveGFusionProperties();
 				$json["htmlData"] = false;
 				foreach ($gfusion_props->columns as $column) {

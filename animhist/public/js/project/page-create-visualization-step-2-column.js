@@ -272,7 +272,8 @@ $(function() {
 				global: false,
 				data: {"default-column": val},
 				success: function(response) {
-					viProps["defaultColumn"] = val;
+					viProps["defaultColumn"] = response["defaultColumn"];
+					viProps["defaultStyleId"] = response["defaultStyleId"];
 					$(window).trigger({
 						type: "vi_property_changed",
 						fields: ["defaultColumn"]
