@@ -36,6 +36,7 @@ $(window).on('vi_property_loaded', function() {
 	addColumnListButtons();
 });
 
+/* Prepare the list of columns to set default */
 function addDefaultColumnOptions() {
 	$("#default-column-select").empty();
 	
@@ -48,6 +49,7 @@ function addDefaultColumnOptions() {
 	$("#default-column-select option[value='" + viProps["defaultColumn"] + "']").attr("selected", "selected");
 }
 
+/* Prepare the list of column item buttons */
 function addColumnListButtons() {
 	$("#column-list").empty();
 	
@@ -86,6 +88,7 @@ function addColumnListButtons() {
 }
 
 $(function() {
+	/* Delete a column item */
 	$("#column-list").on("click", ".column-delete-btn", function() {
 		var index = $(this).parent().index();
 		var ajaxVar = $.extend({}, ajaxTemplate2, {
@@ -108,6 +111,7 @@ $(function() {
 		$.ajax(ajaxVar);
 	});
 	
+	/* Disable HTMLData column item */
 	$("#column-list").on("click", ".column-disable-btn", function() {
 		var index = $(this).parent().index();
 		if (!columnList[index]["disabled"]) {
@@ -157,6 +161,7 @@ $(function() {
 		}
 	});
 	
+	/* Add a new column item */
 	$("#column-list").on("click", ".column-add-btn", function() {
 		vex.dialog.open({
 			message: "Add a New Column",
@@ -209,6 +214,7 @@ $(function() {
 		});
 	});
 	
+	/* Edit a column item */
 	$("#column-list").on("click", ".column-edit-btn", function() {
 		var index = $(this).parent().index();
 		var columnName = columnList[index]["caption"], columnType = columnList[index]["type-caption"];
@@ -267,6 +273,7 @@ $(function() {
 		});
 	});
 	
+	/* Change the default column to visualize */
 	$("#default-column-select").change(function() {
 		var val = $(this).val();
 		if (val != "") {

@@ -45,6 +45,7 @@ function addColumnListButtons() {
 $(function() {
 	addColumnListButtons();
 	
+	/* Delete a column item */
 	$("#column-list").on("click", ".column-delete-btn", function() {
 		var $parent = $(this).parent(); 
 		var id = $parent.index();
@@ -52,6 +53,7 @@ $(function() {
 		columnList.splice(id, 1);
 	});
 	
+	/* Disable HTMLData column item */
 	$("#column-list").on("click", ".column-disable-btn", function() {
 		var $parent = $(this).parent(); 
 		var id = $parent.index();
@@ -72,9 +74,8 @@ $(function() {
 			$(this).html("&#57656;");
 		}
 	});
-});
-
-$(function() {
+	
+	/* Add a new column item */
 	$("#column-list").on("click", ".column-add-btn", function() {
 		vex.dialog.open({
 			message: "Add a New Column",
@@ -110,6 +111,7 @@ $(function() {
 		});
 	});
 	
+	/* Edit a column item */
 	$("#column-list").on("click", ".column-edit-btn", function() {
 		var index = $(this).parent().index();
 		var columnName = columnList[index]["caption"], columnType = columnList[index]["type-caption"];
@@ -153,6 +155,7 @@ $(function() {
 	});
 });
 
+/* Form submission */
 $(function() {
 	$("[name='create-visualization-form']").submit(function(event) {
 		event.preventDefault();
@@ -192,6 +195,8 @@ $(function() {
 	});
 });
 
+
+/* Prepare the column list to send to server */
 function prepareColumnList() {
 	var result = new Array();
 	$.each(columnList, function(i, obj) {
