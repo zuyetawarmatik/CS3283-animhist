@@ -1,5 +1,6 @@
 var gfusionTableID;
 var map, gfusionLayer;
+var playingTimer;
 
 $(window).on('vi_style_loaded', function() {
 	retrieveTimeline();
@@ -75,25 +76,59 @@ function updateLayerQuery(milestone) {
 	});
 }
 
+function togglePlayVisualization() {
+	$("#play-btn").attr("data-is-playing", $("#play-btn").attr("data-is-playing") == "false" ? "true" : "false");
+}
+
+function pauseVisualization() {
+	$("#play-btn").attr("data-is-playing", "false");
+}
+
 $(function() {
 	$("#timeline-list").attrchange({
 		trackValues: true, 
 		callback: function (event) {
 			if (event.attributeName == "data-milestone") {
 				$(".timeline-item.focused").removeClass("focused");
-				var milestoneIndex = $.inArray(event.newValue, gridTimeline);
-				$(".timeline-item:nth-child(" + milestoneIndex + ")").addClass("focused");
+				currentTimelineMilestoneId = $.inArray(event.newValue, gridTimeline);
+				$(".timeline-item:nth-child(" + currentTimelineMilestoneId + ")").addClass("focused");
 				updateLayerQuery(event.newValue);
+			}
+		}
+	});
+	
+	$("#play-btn").attrchange({
+		trackValues: true,
+		callback: function (event) {
+			if (event.attributeName == "data-is-playing") {
+				if (event.newValue == "true") {
+					$(this).html("<i>&#57611;</i>");
+					playingTimer = window.setInterval(function() {
+						var nextTimelineMilestoneId = (currentTimelineMilestoneId + 1) % gridTimeline.length;
+						if (nextTimelineMilestoneId == 0) nextTimelineMilestoneId = 1; // Omit "All" entry
+						$("#timeline-list").attr("data-milestone", gridTimeline[nextTimelineMilestoneId]);
+					}, 1000);
+				} else if (event.newValue == "false") {
+					$(this).html("<i>&#57610;</i>");
+					window.clearInterval(playingTimer);
+				}
 			}
 		}
 	});
 });
 
 $(function() {
+	gfusionTableID = $("#map").data("fusion-table");
+	
+	$("#play-btn").click(function() {
+		if (gridTimeline.length > 1) {
+			togglePlayVisualization();
+		}
+	});
+	
 	$("#timeline-list").on("click", ".timeline-item", function() {
 		if (!$(this).hasClass("focused")) {
 			$("#timeline-list").attr("data-milestone", $(this).html());
 		}
 	});
-	gfusionTableID = $("#map").data("fusion-table");
 });

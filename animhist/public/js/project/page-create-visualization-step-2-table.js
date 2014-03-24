@@ -4,6 +4,7 @@ var dataView, slickGrid;
 var checkboxSelector;
 var commandQueue = [];
 var ajaxTemplate;
+var currentTimelineMilestoneId;
 
 var gridOptions = {
 	asyncEditorLoading: false,
@@ -168,12 +169,13 @@ function retrieveTimeline(focused) {
 					$("<li class='timeline-item'>" + gridTimeline[i] + "</li>").appendTo("#timeline-list");
 			}
 			
-			if (!$("#filter-list").attr("data-filter") || !focused)	focused = "All";
+			if (!$("#filter-list").attr("data-filter") || focused === undefined) focused = "All";
 			$("#filter-list").attr("data-filter", focused);
 			
 			// Have one or more milestones (rather than 'All')
 			if (gridTimeline.length > 1)
-				$("#timeline-list").attr("data-milestone", gridTimeline[1]);
+				$("#timeline-list").attr("data-milestone", gridTimeline[currentTimelineMilestoneId = 1]);
+			else currentTimelineMilestoneId = 0;
 		}
 	});	
 }

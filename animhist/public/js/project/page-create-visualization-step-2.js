@@ -19,9 +19,11 @@ $(function() {
 				
 				$("#button-area").addClass("current");
 			} else if (newCurrent == 1) {
+				pauseVisualization();
 				slickGrid.resizeCanvas();
 				$("#button-area").removeClass("current");
 			} else if (newCurrent == 2) {
+				pauseVisualization();
 				styleSlickGrid.resizeCanvas();
 				$("#button-area").removeClass("current");
 			}

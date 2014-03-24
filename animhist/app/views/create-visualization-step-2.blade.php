@@ -49,7 +49,7 @@
 		<div id="map" data-fusion-table="{{ $visualization->fusion_table_id }}">
 		</div>
 		<div id="seekbar">	
-			<button id="play-btn" title="Play"><i>&#57610;</i></button>
+			<button id="play-btn" title="Play" data-is-playing="false"><i>&#57610;</i></button>
 			<ul id="timeline-list"></ul>
 		</div>
 	</div>
