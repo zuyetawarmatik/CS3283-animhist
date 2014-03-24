@@ -9,10 +9,8 @@ function retrieveVisualizationProperty() {
 		global: false,
 		success: function(response) {
 			viProps = response;
-			$(window).trigger("vi_property_loaded");
 			columnList = response["columnList"];
-			addDefaultColumnOptions();
-			addColumnListButtons();
+			$(window).trigger("vi_property_loaded");
 		}
 	});
 }

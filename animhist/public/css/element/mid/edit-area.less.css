@@ -151,6 +151,25 @@
 					margin: 0;
 				}
 			}
+			
+			.styled-select {
+				box-sizing: border-box;
+			    -moz-box-sizing: border-box;
+			    
+				width: 50%;
+				height: 100%;
+				float: right;
+				
+				background-color: @color-back-left-panel;
+				
+				select {
+					box-sizing: border-box;
+				    -moz-box-sizing: border-box;
+				    
+					height: 100%;
+					width: 120%;
+				}
+			}
 		}
 	}
 	

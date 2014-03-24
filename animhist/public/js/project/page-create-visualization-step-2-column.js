@@ -31,6 +31,11 @@ $(function(){
 	};
 });
 
+$(window).on('vi_property_loaded', function() {
+	addDefaultColumnOptions();
+	addColumnListButtons();
+});
+
 function addDefaultColumnOptions() {
 	$("#default-column-select").empty();
 	

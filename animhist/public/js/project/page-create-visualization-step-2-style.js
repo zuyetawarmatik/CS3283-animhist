@@ -234,7 +234,8 @@ function parseRetrievedStyle() {
 	incrementVal = i;
 }
 
-function retrieveStyle(column) {
+// type: "load" or "select"
+function retrieveStyle(column, type) {
 	currentStyleColumn = column;
 	
 	$.ajax({
@@ -244,7 +245,7 @@ function retrieveStyle(column) {
 		headers: {'X-CSRF-Token': getCSRFToken()},
 		success: function(response) {
 			gfusionStyle = response;
-			$(window).trigger("vi_style_loaded");
+			if (type == "load") $(window).trigger("vi_style_loaded");
 			initStyleTable();
 		}
 	});
@@ -383,10 +384,30 @@ $(function() {
 			}
 		});
 	});
+	
+	$("#style-column-select").change(function() {
+		var val = $(this).val();
+		if (val != "") {
+			retrieveStyle(val, "select");
+		}
+	});
 });
 
+function addStyleColumnOptions() {
+	$("#style-column-select").empty();
+	
+	$.each(columnList, function(i, obj) {
+		if (obj["type-caption"] == 'Number') {
+			$("#style-column-select").append("<option value='" +  obj["caption"] + "'>" + obj["caption"] + "</option>");
+		}
+	});
+	
+	$("#style-column-select option[value='" + viProps["defaultColumn"] + "']").attr("selected", "selected");
+}
+
 $(window).on('vi_property_loaded', function() {
-	retrieveStyle(viProps["defaultColumn"]);
+	addStyleColumnOptions();
+	retrieveStyle(viProps["defaultColumn"], "load");
 });
 
 $(window).resize(function() {
