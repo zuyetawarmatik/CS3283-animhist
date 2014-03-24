@@ -31,6 +31,14 @@ class Visualization extends Eloquent {
 		}
 	}
 	
+	public function getFormattedUpdatedDate() {
+		if ($this->updated_at->diffInDays() > 30) {
+			return $this->updated_at->toFormattedDateString();
+		} else {
+			return $this->updated_at->diffForHumans();
+		}
+	}
+	
 	public function getMilestoneFormatString() {
 		$format_str = 'd M Y';
 		switch (strtolower($this->milestone_format)) {

@@ -79,7 +79,8 @@
 		<h1 class="editable" id="displayname"><span class="content">{{ $visualization->display_name }}</span></h1>
 		<p><br><span class="h2">Author: </span>{{ $visualization->user->display_name }}</p>
 		<p><span class="h2">Created at: </span>{{ $visualization->getFormattedCreatedDate() }}</p>
-		<p><span class="h2">Type: </span>{{ ucfirst($visualization->type) }}</p>
+		<p><span class="h2">Last Updated at: </span>{{ $visualization->getFormattedUpdatedDate() }}</p>
+		<p><br><span class="h2">Type: </span>{{ ucfirst($visualization->type) }}</p>
 		<p class="editable" id="zoom"><span class="h2">Zoom: </span><span class="content">{{ number_format($visualization->zoom) }}</span></p>
 		<p class="editable" id="center"><span class="h2">Center: </span><span class="content">{{ number_format($visualization->center_latitude, 2) }}, {{ number_format($visualization->center_longitude, 2) }}</span></p>
 		<p class="editable" id="category"><span class="h2">Category: </span><span class="content">{{ $visualization->category }}</span></p>

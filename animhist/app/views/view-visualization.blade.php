@@ -5,23 +5,16 @@
 @stop
 
 @section('js')
-	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 	{{ HTML::script('js/project/page-view-visualization.js'); }}
 @stop
 
 @section('left-area-main')
 	<div id="visualization-area">
-		<div id="map">
+		<div id="map" data-fusion-table="{{ $visualization->fusion_table_id }}">
 		</div>
-		<div id="seek">
-			<div id="play-btn">&#57610;</div>
-			<ul id="timeline-list">
-				<li class="timeline-item focused">2006</li>
-				<li class="timeline-item">2007</li>
-				<li class="timeline-item">2008</li>
-				<li class="timeline-item">2009</li>
-				<li class="timeline-item">2010</li>
-			</ul>
+		<div id="seekbar">	
+			<button id="play-btn" title="Play" data-is-playing="false"><i>&#57610;</i></button>
+			<ul id="timeline-list"></ul>
 		</div>
 	</div>
 	@if (true)

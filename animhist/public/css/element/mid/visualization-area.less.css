@@ -8,34 +8,30 @@
 		#map {
 			position: absolute;
 			width: 100%;
-			top: 0;
-			bottom: 6rem;
+			top: 5rem;
+			bottom: 5rem;
 		}
 	
-		#seek {
+		#seekbar {
 			position: absolute;
 			width: 100%;
 			bottom: 0;
-			height: 6rem;
-			background: @color-back-top-bar;
+			height: 5rem;
+			background: @color-back-top-bar; 
 			
-			#play-btn {
+			button {
 				float: left;
-				height: 2rem;
-				width: 6rem;
-				padding: 2rem 0;
-				font-family: Conv_icomoon;
-				//font-weight: normal;
-				background: @color-back-button;
-				
-				&:hover {
-					background: @color-back-like-button;
+				width: 5rem;
+				height: 100%;
+				border: none;
+				i {
+					margin: 0;
 				}
 			}
 			
 			#timeline-list {
-				height: 6rem;
-				margin-left: 6rem;
+				height: 100%;
+				margin-left: 5rem;
 				padding-left: 1rem;
 				overflow-x: auto;
 				overflow-y: hidden;
@@ -44,7 +40,7 @@
 				.timeline-item {
 					display: inline-block;
 					text-align: center;
-					padding: 2rem 1rem;
+					padding: 1.5rem 1rem;
 					height: 2rem;
 					cursor: pointer;
 					
