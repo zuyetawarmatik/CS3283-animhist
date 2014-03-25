@@ -59,9 +59,13 @@ Route::group(['before' => 'auth', 'prefix' => 'user'], function(){
 	Route::post('logout', ['as' => 'user.logout', 'uses' => 'UserController@logout']);
 });
 
-// /{username}
+
 Route::group(['prefix' => '{username}'], function(){
+	// /{username}
 	Route::get('/', ['as' => 'user.show', 'uses' => 'UserController@show'])->where('username', '[a-zA-Z0-9-_]+');
+	
+	// /{username}/visualization/show/{id}
+	Route::get('visualization/show/{id}', ['as'=> 'visualization.show', 'uses' => 'VisualizationController@show'])->where('username', '[a-zA-Z0-9-_]+');;
 });
 
 Route::group(['before' => 'auth.truncateURLToUsername', 'prefix' => '{username}'], function(){

@@ -5,6 +5,7 @@
 @stop
 
 @section('js')
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 	{{ HTML::script('js/project/page-view-visualization.js'); }}
 @stop
 
@@ -60,7 +61,7 @@
 		<div id="like-btn">&#57556;</div>
 	@endif
 	<div id="like-info">
-		{{ $like_info }}
+		
 	</div>
 @stop
 

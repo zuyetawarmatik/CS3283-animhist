@@ -83,9 +83,19 @@ class VisualizationController extends \BaseController {
 		}
 	}
 
-	public function show($id)
+	public function show($username, $id)
 	{
+		$user = User::where('username', '=', $username)->first();
+		$visualization = Visualization::find($id);
+		if (!$visualization || !$visualization->user->isAuthUser()) goto fail;
 		
+		if (Input::get('ajax')) {
+			return ViewResponseUtility::makeSubView('view-visualization', $visualization->display_name, ['user'=>$user, 'visualization'=>$visualization]);
+		} else {
+			return ViewResponseUtility::makeBaseView(URL::route('visualization.show', [$username, $id]), Constant::SIDEBAR_MYVISUALIZATION);
+		}
+		
+		fail: return Response::make('', 400);
 	}
 
 	public function showEdit($id)
