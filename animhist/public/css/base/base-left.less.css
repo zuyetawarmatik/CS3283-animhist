@@ -15,8 +15,6 @@
 	color: #fff;
 	
 	#user-bar {
-		height: 8rem;
-		
 		img#avatar {
 			float: left;
 			margin: 1rem;
@@ -57,7 +55,9 @@
 	}
 	
 	#nav-list {
-		top: 8rem;
+		position: absolute;
+ 		top: 8rem;
+		width: 100%;
 		
 		.nav-item {
 			border-bottom: @color-border-nav 1px solid;

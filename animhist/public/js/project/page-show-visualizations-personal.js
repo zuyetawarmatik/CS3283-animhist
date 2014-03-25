@@ -61,10 +61,18 @@ $(function() {
 
 	$(document).on({
 		mouseenter : function() {
-			$(this).append("<div class='overlay'></div>");
+			$overlay = $("<div class='overlay' style='display:none'></div>");
+			var isOwned = $(this).data("owned") == "true";
+			if (isOwned) {
+				$overlay.append("")
+			}
+			$(this).append($overlay);
+			$overlay.stop(true).show('fade', 500);
 		},
 		mouseleave : function() {
-			$(".overlay", this).remove();
+			$(".overlay", this).hide('fade', 300, function() {
+				$(this).remove();
+			});
 		}
 	}, ".visualization-item");
 });

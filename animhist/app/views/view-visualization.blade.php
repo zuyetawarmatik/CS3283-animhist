@@ -11,7 +11,7 @@
 @stop
 
 @section('left-area-main')
-	<div id="visualization-area" data-user-id="{{ $user->username }}" data-vi-id="{{ $visualization->id }}">
+	<div id="visualization-area" data-user-id="{{ $visualization->user->username }}" data-vi-id="{{ $visualization->id }}">
 		<div id="map">
 		</div>
 		<div id="seekbar">	
@@ -94,11 +94,11 @@
 	<div id="button-area">
 	{{ Form::open(array('name'=>'hidden-form', 'url'=>'#')) }}
 	{{ Form::close() }}
-	@if (!$user->isAuthUser())
-		@if (Auth::check() && DB::table('follows')->where('user_id', Auth::user()->id)->where('following_id', $user->id)->first())
-		<button id="follow-btn" data-url="{{ URL::route('user.unfollow', $user->username) }}"><i>&#57551;</i>Unfollow The Author</button>
+	@if (!$visualization->user->isAuthUser())
+		@if (Auth::check() && DB::table('follows')->where('user_id', Auth::user()->id)->where('following_id', $visualization->user->id)->first())
+		<button id="follow-btn" data-url="{{ URL::route('user.unfollow', $visualization->user->username) }}"><i>&#57551;</i>Unfollow The Author</button>
 		@else
-		<button id="follow-btn" data-url="{{ URL::route('user.follow', $user->username) }}"><i>&#57552;</i>Follow The Author</button>
+		<button id="follow-btn" data-url="{{ URL::route('user.follow', $visualization->user->username) }}"><i>&#57552;</i>Follow The Author</button>
 		@endif
 	@else
 		<button id="edit-visualization-btn" data-url="{{}}"><i>&#57350;</i>Edit This Visualization</button>

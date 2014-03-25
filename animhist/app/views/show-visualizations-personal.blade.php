@@ -60,7 +60,7 @@
 @section('visualizations')
 	@foreach ($user->visualizations as $visualization)
 		@if ($user->isAuthUser() || (!$user->isAuthUser() && $visualization->published))
-			<li class="visualization-item">
+			<li class="visualization-item" data-user-id={{$visualization->user->username}} data-vi-id={{$visualization->id}} data-owned={{ var_export($visualization->user->isAuthUser()) }}>
 				<div class="visualization-img"><img src="http://maps.googleapis.com/maps/api/staticmap?center={{$visualization->center_latitude}},{{$visualization->center_longitude}}&zoom={{max(number_format($visualization->zoom)-1,1)}}&size=340x200&sensor=false"/></div>
 				<div class="avatar-wrapper">
 					<a href="{{ URL::route('user.show', $user->username).'?ajax=1' }}"><img class="avatar" src="{{ $user->avatar->url('thumb') }}" /></a>

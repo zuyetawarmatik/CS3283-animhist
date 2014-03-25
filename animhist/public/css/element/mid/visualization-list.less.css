@@ -11,13 +11,15 @@
 			border: 1px @color-border-light solid;
 			float: left;
 			position: relative;
+			cursor: pointer;
 			
 			.overlay {
 				width: 34rem;
 				height: 20rem;
 				position: absolute;
 				top: 0;
-				background: fade(@color-back-top-bar, 80%);
+				background: fade(@color-back-top-bar, 25%);
+				box-shadow: 0 0 4rem fade(#000, 50%) inset;
 				z-index: 100;
 			}
 			
