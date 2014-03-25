@@ -242,7 +242,6 @@ function retrieveStyle(column, type) {
 		url: getPOSTURLPrefix() + "/info?request=style&column=" + column,
 		type: "GET",
 		global: false,
-		headers: {'X-CSRF-Token': getCSRFToken()},
 		success: function(response) {
 			gfusionStyle = response;
 			if (type == "load") $(window).trigger("vi_style_loaded");

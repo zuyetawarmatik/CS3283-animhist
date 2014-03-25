@@ -15,18 +15,13 @@
 	
 Route::get('/', function()
 {
-	$gft = new GoogleFusionTable('16k8KNWniiZAZOOQhOlfpJnUQdaaFgGDLryaLs2GW', 'polygon');
+	//$gft = new GoogleFusionTable('16k8KNWniiZAZOOQhOlfpJnUQdaaFgGDLryaLs2GW', 'polygon');
 	//$columns = $gft->retrieveGFusionProperties()->columns;
 	//return Response::json($gft->deleteColumn(8));
 	//return Response::json($gft->retrieveGFusionStyles());
-	return Response::JSON($gft->createColumnDefaultStyle('A'));
+	//return Response::JSON($gft->createColumnDefaultStyle('A'));
 	//return Response::JSON($gft->getColumnStyle('point', 'New Valuable'));
 	//return Response::JSON($gft->deleteColumnStyle('#INVALID_COLUMN'));
-});
-
-Route::get('play', function()
-{
-	return View::make('view-visualization', array('title'=>'California Electricity Consumption <span class="h6">by</span> <a href="#">Richard Koe</a>', 'like_info'=>'56 Likes', 'has_back'=>true));
 });
 
 Route::get('search', function()
@@ -59,15 +54,6 @@ Route::group(['before' => 'auth', 'prefix' => 'user'], function(){
 	Route::post('logout', ['as' => 'user.logout', 'uses' => 'UserController@logout']);
 });
 
-
-Route::group(['prefix' => '{username}'], function(){
-	// /{username}
-	Route::get('/', ['as' => 'user.show', 'uses' => 'UserController@show'])->where('username', '[a-zA-Z0-9-_]+');
-	
-	// /{username}/visualization/show/{id}
-	Route::get('visualization/show/{id}', ['as'=> 'visualization.show', 'uses' => 'VisualizationController@show'])->where('username', '[a-zA-Z0-9-_]+');;
-});
-
 Route::group(['before' => 'auth.truncateURLToUsername', 'prefix' => '{username}'], function(){
 	// /{username}/visualization/create
 	Route::get('visualization/create', ['as'=> 'visualization.showCreate', 'uses' => 'VisualizationController@showCreate']);
@@ -95,9 +81,6 @@ Route::group(['before' => 'auth', 'prefix' => '{username}'], function(){
 	// /{username}/visualization/{id}
 	Route::delete('visualization/{id}', ['before' => 'csrf', 'as'=> 'visualization.destroy', 'uses' => 'VisualizationController@destroy']);
 	
-	// /{username}/visualization/{id}/info
-	Route::get('visualization/{id}/info', ['before' => 'csrf', 'as'=> 'visualization.info', 'uses' => 'VisualizationController@info']);
-	
 	// /{username}/visualization/{id}/updatetable
 	Route::post('visualization/{id}/updatetable', ['before' => 'csrf', 'as'=> 'visualization.updateTable', 'uses' => 'VisualizationController@updateTable']);
 	
@@ -106,4 +89,15 @@ Route::group(['before' => 'auth', 'prefix' => '{username}'], function(){
 	
 	// /{username}/visualization/{id}/updatestyle
 	Route::post('visualization/{id}/updatestyle', ['before' => 'csrf', 'as'=> 'visualization.updateStyle', 'uses' => 'VisualizationController@updateStyle']);
+});
+
+Route::group(['prefix' => '{username}'], function(){
+	// /{username}
+	Route::get('/', ['as' => 'user.show', 'uses' => 'UserController@show']);
+
+	// /{username}/visualization/{id}
+	Route::get('visualization/{id}', ['as'=> 'visualization.show', 'uses' => 'VisualizationController@show']);
+
+	// /{username}/visualization/{id}/info
+	Route::get('visualization/{id}/info', ['as'=> 'visualization.info', 'uses' => 'VisualizationController@info']);
 });

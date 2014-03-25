@@ -342,52 +342,45 @@ class VisualizationController extends \BaseController {
 	}
 	
 	public function info($username, $id) {
-		if (Auth::user()->username == $username) {
-			
-			$visualization = Visualization::find($id);
-			if (!$visualization || !$visualization->user->isAuthUser()) goto fail;
-			$gft = new GoogleFusionTable($visualization->fusion_table_id, $visualization->type);
-			
-			if (Input::get('request') == 'data') {
-				$ret = $gft->retrieveGFusionAllData();
-				if (!$ret) goto fail;
-				return Response::json($ret);
-			} else if (Input::get('request') == 'property') {
-				$json = ["displayName" => $visualization->display_name,
-						"username" => $visualization->user->username,
-						"type" => $visualization->type,
-						"description" => $visualization->description,
-						"category" => $visualization->category,
-						"published" => $visualization->published,
-						"milestoneFormat" => $visualization->milestone_format,
-						"milestones" => $visualization->milestones,
-						"defaultColumn" => $visualization->default_column,
-						"zoom" => number_format($visualization->zoom),
-						"centerLatitude" => number_format($visualization->center_latitude, 2),
-						"centerLongitude" => number_format($visualization->center_longitude, 2)];
-				if ($visualization->default_column != null)
-					$json["defaultStyleId"] = $gft->getColumnStyle($visualization->default_column)->styleId;
-				$gfusion_props = $gft->retrieveGFusionProperties();
-				$json["htmlData"] = false;
-				foreach ($gfusion_props->columns as $column) {
-					if (strtolower($column->name) == 'htmldata' && $column->type == 'STRING') {
-						$json["htmlData"] = true; break;
-					}
+		$visualization = Visualization::find($id);
+		if (!$visualization || $visualization->user->username != $username) goto fail;
+		$gft = new GoogleFusionTable($visualization->fusion_table_id, $visualization->type);
+		
+		if (Input::get('request') == 'data') {
+			$ret = $gft->retrieveGFusionAllData();
+			if (!$ret) goto fail;
+			return Response::json($ret);
+		} else if (Input::get('request') == 'property') {
+			$json = ["displayName" => $visualization->display_name,
+					"username" => $visualization->user->username,
+					"type" => $visualization->type,
+					"description" => $visualization->description,
+					"category" => $visualization->category,
+					"published" => $visualization->published,
+					"milestoneFormat" => $visualization->milestone_format,
+					"milestones" => $visualization->milestones,
+					"defaultColumn" => $visualization->default_column,
+					"zoom" => number_format($visualization->zoom),
+					"centerLatitude" => number_format($visualization->center_latitude, 2),
+					"centerLongitude" => number_format($visualization->center_longitude, 2)];
+			if ($visualization->default_column != null)
+				$json["defaultStyleId"] = $gft->getColumnStyle($visualization->default_column)->styleId;
+			$gfusion_props = $gft->retrieveGFusionProperties();
+			$json["htmlData"] = false;
+			foreach ($gfusion_props->columns as $column) {
+				if (strtolower($column->name) == 'htmldata' && $column->type == 'STRING') {
+					$json["htmlData"] = true; break;
 				}
-				$json["columnList"] = self::prepareColumnListSentToClient($gfusion_props->columns, $visualization->milestone_format);
-				return Response::json($json);
-			} else if  (Input::get('request') == 'timeline') {
-				$ret = $gft->retrieveGFusionTimeline();
-				if (!is_array($ret)) goto fail;
-				return Response::json($ret);
-			} else if  (Input::get('request') == 'style') {
-				$ret = $gft->getColumnStyle(Input::get('column'));
-				return Response::json($ret);
-			} else {
-				goto fail;
 			}
-		} else {
-			return Response::make('', 401);
+			$json["columnList"] = self::prepareColumnListSentToClient($gfusion_props->columns, $visualization->milestone_format);
+			return Response::json($json);
+		} else if  (Input::get('request') == 'timeline') {
+			$ret = $gft->retrieveGFusionTimeline();
+			if (!is_array($ret)) goto fail;
+			return Response::json($ret);
+		} else if  (Input::get('request') == 'style') {
+			$ret = $gft->getColumnStyle(Input::get('column'));
+			return Response::json($ret);
 		}
 		
 		fail: return Response::make('', 400);

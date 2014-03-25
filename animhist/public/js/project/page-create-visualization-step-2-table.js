@@ -107,7 +107,6 @@ function retrieveFusionData() {
 	$.ajax({
 		url: getPOSTURLPrefix() + "/info?request=data",
 		type: "GET",
-		headers: {'X-CSRF-Token': getCSRFToken()},
 		error: function() {
 			notyError({
 				text: "Loading data error, refresh to try again"
@@ -154,7 +153,6 @@ function retrieveTimeline(focused) {
 		url: getPOSTURLPrefix() + "/info?request=timeline",
 		type: "GET",
 		global: false,
-		headers: {'X-CSRF-Token': getCSRFToken()},
 		success: function(response) {
 			$("#filter-list").empty();
 			$("#timeline-list").empty();

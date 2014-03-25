@@ -5,7 +5,6 @@ function retrieveVisualizationProperty() {
 	$.ajax({
 		url: getPOSTURLPrefix() + "/info?request=property",
 		type: "GET",
-		headers: {'X-CSRF-Token': getCSRFToken()},
 		global: false,
 		success: function(response) {
 			viProps = response;
