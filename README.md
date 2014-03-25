@@ -7,7 +7,7 @@ How to set up the project
 -------------------------
 - Make sure that you have installed Apache, MySQL and PHP >= 5.5 (or XAMPP full package if lazy) in your PC.
 - Make sure that you have installed Composer, Git. Google it if you don't know the link, it should be at the top seach result.
-- Configure Apache/PHP in your PC to allow Laravel properly working (referring to http://www.youtube.com/watch?v=u_OZA27Batc, http://www.youtube.com/watch?v=JNn_tS2KpcY), including: Enable OpenSSL in php.ini, Enable Mcrypt PHP Module, Config Virtual Host. Also need to enable Apache mod_rewrite as well:
+- Configure Apache/PHP in your PC to allow Laravel properly working (referring to http://www.youtube.com/watch?v=u_OZA27Batc, http://www.youtube.com/watch?v=JNn_tS2KpcY), including: Enable OpenSSL and File Info (php_fileinfo) in php.ini, Enable Mcrypt PHP Module, Config Virtual Host. Also need to enable Apache mod_rewrite as well:
 ```sh
 sudo a2enmod rewrite
 sudo service apache2 restart
