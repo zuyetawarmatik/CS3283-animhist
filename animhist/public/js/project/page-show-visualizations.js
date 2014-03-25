@@ -28,7 +28,6 @@ $(function() {
 		$(this).addClass("selected");
 		
 		var category = $(".category-caption", this).html();
-
 		if (category == "All") {
 			$(".visualization-item").show();
 		} else {

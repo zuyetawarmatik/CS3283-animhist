@@ -1,13 +1,17 @@
 #left-area {
 	#visualization-list {
-		height: 100%;
-		overflow: auto;		
+		position: absolute;
+		overflow: auto;
+		left: 0;
+		right: 0;
+		top: 6rem;
+		bottom: 0;	
 		padding-right: 1rem;
 		
 		.visualization-item {
 			width: 34rem;
 			height: 26rem;
-			margin: 4rem 0 0 4rem;
+			margin: 0 0 4rem 4rem;
 			border: 1px @color-border-light solid;
 			float: left;
 			position: relative;

@@ -58,6 +58,10 @@
 	</div>
 @stop
 
+@section('info')
+	<p>Showing all visualizations of {{$user->display_name}}</p> 
+@stop
+
 @section('visualizations')
 	@foreach ($user->visualizations as $visualization)
 		@if ($user->isAuthUser() || (!$user->isAuthUser() && $visualization->published))

@@ -5,6 +5,9 @@
 @stop
 
 @section('left-area')
+	<div class="visualizations-info">
+		@yield('info')
+	</div>
 	<ul id="visualization-list">
 		@yield('visualizations')
 	</ul>

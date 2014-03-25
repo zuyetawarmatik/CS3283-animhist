@@ -1,17 +1,2 @@
 @import (less) "show-visualizations.less.css";
 @import (less) "element/top/search-form.less.css";
-
-#search-info {
-	color: @color-type-on-white;
-	margin: 2rem 4rem;
-	
-	span {
-		color: @color-type-on-white;
-	}
-}
-
-#left-area {
-	#visualization-list {
-		top: 2rem;
-	}
-}
