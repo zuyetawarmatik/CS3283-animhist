@@ -1,5 +1,5 @@
 $(function() {
-	$(document).on({
+	$("#visualization-list").on({
 		mouseenter: function() {
 			$(".overlay", this).stop(true).show('fade', 400);
 		},
@@ -8,6 +8,18 @@ $(function() {
 		}
 	}, ".visualization-item");
 	
+	$("#visualization-list").on({
+		click: function() {
+			parent.changeIFrameSrc($(this).data("url"), true);
+		}
+	}, ".overlay");
+	
+	$("#visualization-list").on({
+		click: function(e) {
+			e.preventDefault(true);
+			parent.changeIFrameSrc($(this).attr("href"), true);
+		}
+	}, "a");
 	
 	/* Right category area animation */
 	$("#category-list > li").prepend('<span class="category-bck"></span>');
