@@ -15,6 +15,7 @@
 		<h1>Categories</h1>
 		<ul id="category-list">
 			<li class="category-item selected"><span class="category-caption">All</span></li>
+			@yield('categories')
 		</ul>
 	</div>
 @stop

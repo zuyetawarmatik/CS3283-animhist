@@ -60,7 +60,7 @@
 @section('visualizations')
 	@foreach ($user->visualizations as $visualization)
 		@if ($user->isAuthUser() || (!$user->isAuthUser() && $visualization->published))
-			<li class="visualization-item">
+			<li class="visualization-item" data-vi-category="{{$visualization->category}}">
 				<div class="overlay" style="display:none">
 					<p><span class="h2">Created at: </span>{{ $visualization->getFormattedCreatedDate() }}</p>
 					<p><span class="h2">Last Updated at: </span>{{ $visualization->getFormattedUpdatedDate() }}</p>
@@ -87,5 +87,11 @@
 				</div>
 			</li>
 		@endif
+	@endforeach
+@stop
+
+@section('categories')
+	@foreach ($categories as $category)
+		<li class="category-item"><span class="category-caption">{{$category}}</span></li>
 	@endforeach
 @stop

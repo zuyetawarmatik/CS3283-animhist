@@ -70,11 +70,16 @@ class UserController extends \BaseController {
 		$user = User::where('username', '=', $username)->first();
 		if ($user) {
 			if (Input::get('ajax')) {
-				$title = '';
-				if ($user->isAuthUser()) $title = 'My Visualizations';
-				else $title = $user->display_name.'&#39;s Visualizations';
-				
-				return ViewResponseUtility::makeSubView('show-visualizations-personal', $title, ['user'=>$user], true);
+				$title = ''; $categories;
+				if ($user->isAuthUser()) {
+					$title = 'My Visualizations';
+					$categories = DB::table('visualizations')->where('user_id', $user->id)->groupBy('category')->lists('category');
+				} else {
+					$title = $user->display_name.'&#39;s Visualizations';
+					$categories = DB::table('visualizations')->where('user_id', $user->id)->where('published', true)->groupBy('category')->lists('category');
+				}
+
+				return ViewResponseUtility::makeSubView('show-visualizations-personal', $title, ['user'=>$user, 'categories'=>$categories], true);
 			} else {
 				if ($user->isAuthUser())
 					return ViewResponseUtility::makeBaseView(URL::route('user.show', $username), Constant::SIDEBAR_MYVISUALIZATION);
