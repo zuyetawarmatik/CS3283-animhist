@@ -18,9 +18,38 @@
 				height: 20rem;
 				position: absolute;
 				top: 0;
-				background: fade(@color-back-top-bar, 25%);
-				box-shadow: 0 0 4rem fade(#000, 50%) inset;
+				background: fade(@color-back-top-bar, 60%);
+				box-shadow: 0 0 3rem fade(#000, 50%) inset;
 				z-index: 100;
+				
+				p {
+					margin-left: 0.5rem;
+					margin-right: 0.5rem;
+					text-align: center;
+					text-shadow: 0 0 2px @color-back-top-bar;
+					
+					&:first-child {
+						margin-top: 5rem;
+					}
+				}
+				
+				.visualization-buttons {
+					margin-top: 2rem;
+					text-align: center;
+					
+					a {
+						font-family: Conv_icomoon;
+						color: #fff;
+						
+						&:hover {
+							color: @color-type-link;
+						}
+						
+						&:not(:last-child) {
+							margin-right: 0.5rem;
+						}
+					}
+				}
 			}
 			
 			.visualization-img {

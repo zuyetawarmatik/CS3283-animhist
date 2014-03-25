@@ -57,6 +57,9 @@ Route::group(['before' => 'auth', 'prefix' => 'user'], function(){
 Route::group(['before' => 'auth.truncateURLToUsername', 'prefix' => '{username}'], function(){
 	// /{username}/visualization/create
 	Route::get('visualization/create', ['as'=> 'visualization.showCreate', 'uses' => 'VisualizationController@showCreate']);
+
+	// /{username}/visualization/{id}/edit
+	Route::get('visualization/{id}/edit', ['as'=> 'visualization.showEdit', 'uses' => 'VisualizationController@showEdit']);
 	
 	// /{username}/settings
 	Route::get('settings', ['as' => 'user.showEdit', 'uses' => 'UserController@showEdit']);

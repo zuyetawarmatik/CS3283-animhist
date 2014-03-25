@@ -60,7 +60,23 @@
 @section('visualizations')
 	@foreach ($user->visualizations as $visualization)
 		@if ($user->isAuthUser() || (!$user->isAuthUser() && $visualization->published))
-			<li class="visualization-item" data-user-id={{$visualization->user->username}} data-vi-id={{$visualization->id}} data-owned={{ var_export($visualization->user->isAuthUser()) }}>
+			<li class="visualization-item">
+				<div class="overlay" style="display:none">
+					<p><span class="h2">Created at: </span>{{ $visualization->getFormattedCreatedDate() }}</p>
+					<p><span class="h2">Last Updated at: </span>{{ $visualization->getFormattedUpdatedDate() }}</p>
+					<div class="visualization-buttons">
+						@if ($visualization->user->isAuthUser())
+							@if ($visualization->published)
+								<a href="{{ URL::route('visualization.show', [$visualization->user->username, $visualization->id]).'?ajax=1' }}">&#57542;</a>
+								<a href="{{ URL::route('visualization.showEdit', [$visualization->user->username, $visualization->id]).'?ajax=1' }}">&#57350;</a>
+							@else
+								<a href="{{ URL::route('visualization.showCreate', $visualization->user->username).'?step=2&vi_id='.$visualization->id.'&ajax=1' }}">&#57350;</a>
+							@endif
+						@else
+							<a href="{{ URL::route('visualization.show', [$visualization->user->username, $visualization->id]).'?ajax=1' }}">&#57542;</a>
+						@endif
+					</div>
+				</div>
 				<div class="visualization-img"><img src="http://maps.googleapis.com/maps/api/staticmap?center={{$visualization->center_latitude}},{{$visualization->center_longitude}}&zoom={{max(number_format($visualization->zoom)-1,1)}}&size=340x200&sensor=false"/></div>
 				<div class="avatar-wrapper">
 					<a href="{{ URL::route('user.show', $user->username).'?ajax=1' }}"><img class="avatar" src="{{ $user->avatar->url('thumb') }}" /></a>
