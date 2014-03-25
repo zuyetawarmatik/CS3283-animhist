@@ -57,14 +57,4 @@ $(function() {
 		}
 		$(this).addClass("selected");
 	});
-	
-
-	$(document).on({
-		mouseenter : function() {
-			$(".overlay", this).stop(true).show('fade', 400);
-		},
-		mouseleave : function() {
-			$(".overlay", this).hide('fade', 400);
-		}
-	}, ".visualization-item");
 });

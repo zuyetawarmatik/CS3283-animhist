@@ -48,16 +48,14 @@ $(function() {
 	
 	/* Left sidebar animation */
 	$("#nav-list > li").prepend('<span class="nav-bck"></span>');
-	$("#nav-list > li").hover(
-		function() {
-			if (!$(this).hasClass("selected"))
-				$(".nav-bck", this).stop(true).animate({left: "0", opacity: "1"}, 400, "easeOutQuad");
+	$(document).on({
+		mouseenter: function() {
+			$(".nav-bck", this).stop(true).animate({left: "0", opacity: "1"}, 400, "easeOutQuad");
 		},
-		function() {
-			if (!$(this).hasClass("selected"))
-				$(".nav-bck", this).stop(true).animate({left: "-100%", opacity: "0"}, 400, "easeOutQuad");
+		mouseleave: function() {
+			$(".nav-bck", this).stop(true).animate({left: "-100%", opacity: "0"}, 400, "easeOutQuad");
 		}
-	);
+	}, "#nav-list > li:not(.selected)");
 	
 	/* Left sidebar navigation */
 	$("#nav-list > li").on("click", function() {

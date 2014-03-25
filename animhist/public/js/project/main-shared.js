@@ -58,17 +58,6 @@ $(function() {
 		}
 	});
 	
-	/* Right category area animation */
-	$("#category-list > li").prepend('<span class="category-bck"></span>');
-	$("#category-list > li:not(.selected)").hover(
-		function() {
-			$(".category-bck", this).stop(true).animate({left: "0", opacity: "1"}, 300, "easeOutQuad");
-		},
-		function() {
-			$(".category-bck", this).stop(true).animate({left: "100%", opacity: "0"}, 300, "easeOutQuad");
-		}
-	);
-	
 	/* Back button click */
 	$("#back-btn").click(function() {
 		parent.changeIFrameSrcOrdinary($(this).data("url"));

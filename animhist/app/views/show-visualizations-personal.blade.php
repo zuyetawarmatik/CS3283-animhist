@@ -5,6 +5,7 @@
 @stop
 
 @section('js')
+	@parent
 	{{ HTML::script('js/project/page-show-visualizations-personal.js'); }}
 @stop
 
