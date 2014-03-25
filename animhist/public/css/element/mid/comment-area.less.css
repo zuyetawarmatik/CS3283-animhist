@@ -6,7 +6,6 @@
 		height: 6rem;
 		
 		#comment-area-title {
-			width: 100%;
 			height: 2rem;
 			padding: 2rem 0;
 			color: @color-type-on-white;
@@ -30,7 +29,6 @@
 			overflow-y: auto;
 			
 			.comment-item {
-				width: 100%;
 				margin-bottom: 2rem;
 				
 				.avatar-wrapper {

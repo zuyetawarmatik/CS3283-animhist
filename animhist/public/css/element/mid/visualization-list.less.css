@@ -1,11 +1,7 @@
 #left-area {
 	#visualization-list {
-		position: absolute;
-		overflow: auto;
-		left: 0;
-		right: 0;
-		top: 0;
-		bottom: 0;
+		height: 100%;
+		overflow: auto;		
 		padding-right: 1rem;
 		
 		.visualization-item {
@@ -14,15 +10,19 @@
 			margin: 4rem 0 0 4rem;
 			border: 1px @color-border-light solid;
 			float: left;
+			position: relative;
 			
-			.visualization-link {
-				display: block;
+			.overlay {
 				width: 34rem;
 				height: 20rem;
-				img {
-					width: 34rem;
-					height: 20rem;
-				}
+				position: absolute;
+				top: 0;
+				background: fade(@color-back-top-bar, 80%);
+				z-index: 100;
+			}
+			
+			.visualization-img {
+				height: 20rem;
 			}
 			
 			.avatar-wrapper {

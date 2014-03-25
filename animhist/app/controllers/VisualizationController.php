@@ -86,8 +86,10 @@ class VisualizationController extends \BaseController {
 	public function show($username, $id)
 	{
 		$user = User::where('username', '=', $username)->first();
+		
 		$visualization = Visualization::find($id);
-		if (!$visualization || $visualization->user->username != $username) return Response::make('', 400);;
+		if (!$visualization || $visualization->user->username != $username || !$visualization->published)
+			return Redirect::route('user.show', $username);
 		
 		if (Input::get('ajax')) {
 			return ViewResponseUtility::makeSubView('view-visualization', $visualization->display_name, ['user'=>$user, 'visualization'=>$visualization]);

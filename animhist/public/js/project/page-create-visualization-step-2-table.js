@@ -353,6 +353,34 @@ function slickGrid_addNewRow(e, args) {
 						} else {
 							dataView.refresh();
 						}
+						
+						// Update center property if this is the first row having Geocode
+						var needChangeCenter = true;
+						for (var i = 0; i < gridData.length; i++) {
+							if (gridData[i]["ROWID"] != newRow["ROWID"] && gridData[i]["Geocode"] != "") {
+								needChangeCenter = false;
+							}
+						}
+						if (needChangeCenter) {
+							if (newRow["Geocode"] != "") {
+								var latlng = newRow["Geocode"].split(" ");
+								$.ajax({
+								    url: getPOSTURLPrefix() + "/updateproperty",
+									type: "POST",
+									headers: {'X-CSRF-Token': getCSRFToken()},
+									global: false,
+									data: {"center-latitude": latlng[0], "center-longitude": latlng[1]},
+									success: function(response) {
+										viProps.centerLatitude = response.centerLatitude;
+										viProps.centerLongitude = response.centerLongitude;
+										$(window).trigger({
+											type: "vi_property_changed",
+											fields: ["centerLatitude", "centerLongitude"]
+										});
+									}
+								});
+							}
+						}
 					}
 				}
 			});

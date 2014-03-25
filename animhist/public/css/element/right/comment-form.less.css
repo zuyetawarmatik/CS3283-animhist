@@ -1,17 +1,19 @@
 #right-area {
 	form[name='comment-form'] {
-		height: 13rem;
-		margin: 15px 2rem 0 2rem;
+		overflow-y: auto;
+		margin: 1.5rem 2rem 0 2rem;
 		padding-bottom: 2rem;
 		border-bottom: 1px dashed #afafaf;
 		
 		textarea[name='comment-box'] {
-			width: 36rem;
-			height: 6rem;
+			box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			width: 100%;
+			height: 8rem;
 		}
 		
 		input[name='submit-btn'] {
-			margin-left: 27rem;
+			float: right;
 			margin-top: 1rem;
 			width: 13rem;
 		}

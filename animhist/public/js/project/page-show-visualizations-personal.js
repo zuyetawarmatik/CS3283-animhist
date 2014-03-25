@@ -58,4 +58,13 @@ $(function() {
 		$(this).addClass("selected");
 	});
 	
+
+	$(document).on({
+		mouseenter : function() {
+			$(this).append("<div class='overlay'></div>");
+		},
+		mouseleave : function() {
+			$(".overlay", this).remove();
+		}
+	}, ".visualization-item");
 });
