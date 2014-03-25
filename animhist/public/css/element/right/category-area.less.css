@@ -6,10 +6,6 @@
 	
 	h1 {
 		margin: 0 3rem;
-		
-		//white-space: nowrap;
-		//overflow: hidden;
-		//text-overflow: ellipsis;
 	}
 	
 	#category-list {
@@ -54,6 +50,9 @@
 				padding: 2rem 3rem;
 				color: @color-type-link;
 				font-weight: 700;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
 			}
 		}
 	}
