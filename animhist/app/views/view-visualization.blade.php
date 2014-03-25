@@ -6,12 +6,13 @@
 
 @section('js')
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+	{{ HTML::script('js/attrchange/attrchange.js'); }}
 	{{ HTML::script('js/project/page-view-visualization.js'); }}
 @stop
 
 @section('left-area-main')
-	<div id="visualization-area">
-		<div id="map" data-fusion-table="{{ $visualization->fusion_table_id }}">
+	<div id="visualization-area" data-user-id="{{ $user->username }}" data-vi-id="{{ $visualization->id }}">
+		<div id="map">
 		</div>
 		<div id="seekbar">	
 			<button id="play-btn" title="Play" data-is-playing="false"><i>&#57610;</i></button>
@@ -99,6 +100,8 @@
 		@else
 		<button id="follow-btn" data-url="{{ URL::route('user.follow', $user->username) }}"><i>&#57552;</i>Follow The Author</button>
 		@endif
+	@else
+		<button id="edit-visualization-btn" data-url="{{}}"><i>&#57350;</i>Edit This Visualization</button>
 	@endif
 	</div>
 @stop

@@ -46,7 +46,7 @@
 		<li><a href="#">Style</a></li>
 	</ul>
 	<div id="edit-area-visualization">
-		<div id="map" data-fusion-table="{{ $visualization->fusion_table_id }}">
+		<div id="map">
 		</div>
 		<div id="seekbar">	
 			<button id="play-btn" title="Play" data-is-playing="false"><i>&#57610;</i></button>

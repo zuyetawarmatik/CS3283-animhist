@@ -15,8 +15,8 @@
 	}
 	
 	#button-area {
-		#follow-btn {
-			width: 38rem;
+		button {
+			width: 100%;
 		}
 	}
 }

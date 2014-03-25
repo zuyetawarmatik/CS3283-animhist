@@ -1,11 +1,48 @@
-var gfusionTableID;
+var viProps;
 var map, gfusionLayer;
 var playingTimer;
+var playingTimeline;
+var currentTimelineMilestoneId;
 
-$(window).on('load', function() {
-	//retrieveTimeline();
+function retrieveVisualizationProperty() {
+	$.ajax({
+		url: getPOSTURLPrefix() + "/info?request=property",
+		type: "GET",
+		global: false,
+		success: function(response) {
+			viProps = response;
+			$(window).trigger("vi_property_loaded");
+		}
+	});
+}
+
+function retrieveTimeline() {
+	$.ajax({
+		url: getPOSTURLPrefix() + "/info?request=timeline",
+		type: "GET",
+		global: false,
+		success: function(response) {
+			$("#timeline-list").empty();
+			
+			playingTimeline = response;
+			
+			for (var i = 0; i < playingTimeline.length; i++) {
+				$("<li class='timeline-item'>" + playingTimeline[i] + "</li>").appendTo("#timeline-list");
+			}
+			
+			$("#timeline-list").attr("data-milestone", playingTimeline[currentTimelineMilestoneId = 0]);
+		}
+	});	
+}
+
+$(function() {
+	retrieveVisualizationProperty();
+});
+
+$(window).on('vi_property_loaded', function() {
 	mapInitialize();
-	//updateLayerStyle();
+	retrieveTimeline();
+	updateLayerStyle();
 });
 
 $(function() {
@@ -58,7 +95,7 @@ function updateLayerQuery(milestone) {
 	gfusionLayer.setOptions({
 		query: {
 			select: select,
-			from: gfusionTableID,
+			from: viProps["gfusionTableID"],
 			where: where 
 		}
 	});
@@ -68,17 +105,13 @@ function togglePlayVisualization() {
 	$("#play-btn").attr("data-is-playing", $("#play-btn").attr("data-is-playing") == "false" ? "true" : "false");
 }
 
-function pauseVisualization() {
-	$("#play-btn").attr("data-is-playing", "false");
-}
-
 $(function() {
 	$("#timeline-list").attrchange({
 		trackValues: true, 
 		callback: function (event) {
 			if (event.attributeName == "data-milestone") {
 				$(".timeline-item.focused").removeClass("focused");
-				currentTimelineMilestoneId = $.inArray(event.newValue, gridTimeline);
+				currentTimelineMilestoneId = $.inArray(event.newValue, playingTimeline);
 				$(".timeline-item:nth-child(" + currentTimelineMilestoneId + ")").addClass("focused");
 				updateLayerQuery(event.newValue);
 			}
@@ -92,9 +125,8 @@ $(function() {
 				if (event.newValue == "true") {
 					$(this).html("<i>&#57611;</i>");
 					playingTimer = window.setInterval(function() {
-						var nextTimelineMilestoneId = (currentTimelineMilestoneId + 1) % gridTimeline.length;
-						if (nextTimelineMilestoneId == 0) nextTimelineMilestoneId = 1; // Omit "All" entry
-						$("#timeline-list").attr("data-milestone", gridTimeline[nextTimelineMilestoneId]);
+						var nextTimelineMilestoneId = (currentTimelineMilestoneId + 1) % playingTimeline.length;
+						$("#timeline-list").attr("data-milestone", playingTimeline[nextTimelineMilestoneId]);
 					}, 1000);
 				} else if (event.newValue == "false") {
 					$(this).html("<i>&#57610;</i>");
@@ -106,10 +138,8 @@ $(function() {
 });
 
 $(function() {
-	gfusionTableID = $("#map").data("fusion-table");
-	
 	$("#play-btn").click(function() {
-		if (gridTimeline.length > 1) {
+		if (playingTimeline.length > 0) {
 			togglePlayVisualization();
 		}
 	});
@@ -145,3 +175,15 @@ $(function() {
 		commentArea.toggleClass("expanded");
 	});
 });
+
+function getUserID() {
+	return $("#visualization-area").data("user-id");
+}
+
+function getVisualizationID() {
+	return $("#visualization-area").data("vi-id");
+}
+
+function getPOSTURLPrefix() {
+	return "/" + getUserID() + "/visualization/" + getVisualizationID();
+}

@@ -87,15 +87,18 @@ class VisualizationController extends \BaseController {
 	{
 		$user = User::where('username', '=', $username)->first();
 		$visualization = Visualization::find($id);
-		if (!$visualization || !$visualization->user->isAuthUser()) goto fail;
+		if (!$visualization || $visualization->user->username != $username) return Response::make('', 400);;
 		
 		if (Input::get('ajax')) {
 			return ViewResponseUtility::makeSubView('view-visualization', $visualization->display_name, ['user'=>$user, 'visualization'=>$visualization]);
 		} else {
-			return ViewResponseUtility::makeBaseView(URL::route('visualization.show', [$username, $id]), Constant::SIDEBAR_MYVISUALIZATION);
+			if ($user->isAuthUser())
+				return ViewResponseUtility::makeBaseView(URL::route('visualization.show', [$username, $id]), Constant::SIDEBAR_MYVISUALIZATION);
+			else {
+				$highlight_id = Auth::check() ? Constant::SIDEBAR_USERVISUALIZATION : Constant::SIDEBAR_GUEST_USERVISUALIZATION;
+				return ViewResponseUtility::makeBaseView(URL::route('visualization.show', [$username, $id]), $highlight_id, ['user'=>$user]);
+			}
 		}
-		
-		fail: return Response::make('', 400);
 	}
 
 	public function showEdit($id)
@@ -351,7 +354,8 @@ class VisualizationController extends \BaseController {
 			if (!$ret) goto fail;
 			return Response::json($ret);
 		} else if (Input::get('request') == 'property') {
-			$json = ["displayName" => $visualization->display_name,
+			$json = ["gfusionTableID" => $visualization->fusion_table_id,
+					"displayName" => $visualization->display_name,
 					"username" => $visualization->user->username,
 					"type" => $visualization->type,
 					"description" => $visualization->description,

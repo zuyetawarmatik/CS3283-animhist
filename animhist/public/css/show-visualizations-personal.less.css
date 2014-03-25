@@ -10,9 +10,8 @@
 	}
 	
 	#button-area {
-		#follow-btn, #edit-profile-btn {
+		button {
 			width: 100%;
-			position: absolute;
 		}
 	}
 }

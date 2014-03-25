@@ -1,4 +1,3 @@
-var gfusionTableID;
 var map, gfusionLayer;
 var playingTimer;
 
@@ -70,7 +69,7 @@ function updateLayerQuery(milestone) {
 	gfusionLayer.setOptions({
 		query: {
 			select: select,
-			from: gfusionTableID,
+			from: viProps["gfusionTableID"],
 			where: where 
 		}
 	});
@@ -118,8 +117,6 @@ $(function() {
 });
 
 $(function() {
-	gfusionTableID = $("#map").data("fusion-table");
-	
 	$("#play-btn").click(function() {
 		if (gridTimeline.length > 1) {
 			togglePlayVisualization();
