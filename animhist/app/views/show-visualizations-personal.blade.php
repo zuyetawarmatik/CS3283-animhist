@@ -59,7 +59,7 @@
 @stop
 
 @section('info')
-	<p>Showing all visualizations of {{$user->display_name}}</p> 
+	<p data-username="{{$user->display_name}}">{{$user->display_name}}'s all visualizations</p> 
 @stop
 
 @section('visualizations')

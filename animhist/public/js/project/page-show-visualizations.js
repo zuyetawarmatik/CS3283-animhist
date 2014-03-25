@@ -28,11 +28,14 @@ $(function() {
 		$(this).addClass("selected");
 		
 		var category = $(".category-caption", this).html();
+		var username = $(".visualizations-info p").data("username");
 		if (category == "All") {
 			$(".visualization-item").show();
+			$(".visualizations-info p").html(username + "'s all visualizations");
 		} else {
 			$(".visualization-item:not([data-vi-category='" + category + "'])").hide();
 			$(".visualization-item[data-vi-category='" + category + "']").show();
+			$(".visualizations-info p").html(username + "'s visualizations of category " + category);
 		}
 	});
 });
