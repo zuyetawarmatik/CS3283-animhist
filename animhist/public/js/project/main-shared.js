@@ -73,7 +73,7 @@ $(document).ajaxStart(function() {
 			open: {height: 'toggle'},
 			close: {height: 'toggle'},
 			easing: 'swing',
-		    speed: 300
+			speed: 300
 		},
 		maxVisible: 1
 	});

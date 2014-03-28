@@ -169,7 +169,7 @@ $(function() {
 		
 		$.ajax({
 			processData: false,
-		    contentType: false,
+			contentType: false,
 			url: this.action,
 			type: this.method,
 			data: formData,

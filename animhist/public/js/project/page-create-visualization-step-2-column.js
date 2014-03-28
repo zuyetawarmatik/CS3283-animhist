@@ -3,8 +3,8 @@ var ajaxTemplate2;
 $(function(){
 	ajaxTemplate2 = {
 		processData: false,
-	    contentType: "application/json; charset=utf-8",
-	    url: getPOSTURLPrefix() + "/updatetable",
+		contentType: "application/json; charset=utf-8",
+		url: getPOSTURLPrefix() + "/updatetable",
 		type: "POST",
 		headers: {'X-CSRF-Token': getCSRFToken()},
 		global: false,

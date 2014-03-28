@@ -134,9 +134,9 @@ function retrieveFusionData() {
 				slickGrid.render();
 			});
 			dataView.beginUpdate();
-		    dataView.setItems(gridData);
-		    dataView.setFilter(milestoneFilter);
-		    dataView.endUpdate();
+			dataView.setItems(gridData);
+			dataView.setFilter(milestoneFilter);
+			dataView.endUpdate();
 		    
 			slickGrid.setSelectionModel(new Slick.RowSelectionModel({selectActiveRow: false}));
 			slickGrid.registerPlugin(checkboxSelector);
@@ -181,7 +181,7 @@ function retrieveTimeline(focused) {
 $(function() {
 	ajaxTemplate = {
 		processData: false,
-	    contentType: "application/json; charset=utf-8",
+		contentType: "application/json; charset=utf-8",
 		url: getPOSTURLPrefix() + "/updatetable",
 		type: "POST",
 		headers: {'X-CSRF-Token': getCSRFToken()},
