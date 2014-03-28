@@ -258,7 +258,7 @@ $(function() {
 				notySuccess({
 					text: "Visualization published",
 					callback: {
-						//afterShow: function(){handleJSONRedirectResponse(response, false);}
+						afterShow: function(){handleJSONRedirectResponse(response, false);}
 					}
 				});
 			}

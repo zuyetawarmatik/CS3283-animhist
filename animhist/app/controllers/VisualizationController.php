@@ -178,9 +178,11 @@ class VisualizationController extends \BaseController {
 				$json['centerLatitude'] = number_format($visualization->center_latitude, 2);
 			if (Input::has('center-longitude'))
 				$json['centerLongitude'] = number_format($visualization->center_longitude, 2);
-			if (Input::has('published'))
-				$json['published'] = $visualization->published;
-				// TODO: return to view vis page
+			if (Input::has('published')) {
+				// Return to view visualization page
+				if ($visualization->published)
+					return JSONResponseUtility::Redirect(URL::route('visualization.show', [$username, $visualization->id]), true);
+			}
 			
 			return Response::JSON($json);
 		} else {

@@ -149,6 +149,10 @@ $(function() {
 			$("#timeline-list").attr("data-milestone", $(this).html());
 		}
 	});
+	
+	$("#edit-visualization-btn").click(function() {
+		parent.changeIFrameSrc($(this).data('url'), true);
+	});
 });
 
 $(function() {
