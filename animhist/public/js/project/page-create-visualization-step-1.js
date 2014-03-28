@@ -161,8 +161,11 @@ $(function() {
 		event.preventDefault();
 		
 		var formData = new FormData(this);
-		var preparedColumnList = prepareColumnList();
-		formData.append("column-list", JSON.stringify(preparedColumnList));
+		
+		if ($("[name='option']:checked").val() == "manual") {
+			var preparedColumnList = prepareColumnList();
+			formData.append("column-list", JSON.stringify(preparedColumnList));
+		}
 		
 		$.ajax({
 			processData: false,

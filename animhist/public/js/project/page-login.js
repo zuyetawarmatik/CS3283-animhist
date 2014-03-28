@@ -14,7 +14,7 @@ $(function() {
 		if (endReferer) formData.append("referer", endReferer);
 		$.ajax({
 			processData: false,
-		    contentType: false,
+			contentType: false,
 			url: this.action,
 			type: this.method,
 			data: formData,

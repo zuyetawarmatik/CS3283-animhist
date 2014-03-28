@@ -53,8 +53,9 @@
 				<td colspan="2">
 					<div class="styled-radio">
 						{{ Form::radio('option', 'upload') }}
-						<label><span><span></span></span>I would like to upload my data (Make sure your data has Milestone and Position columns, <a>download our template Excel file here</a>)</label>
+						<label><span><span></span></span>I would like to upload my data (Make sure your data has Milestone and Position columns, <a>download our template CSV file here</a>)</label>
 					</div>
+					{{ Form::file('upload') }}
 				</td>
 			</tr>
 			<tr>

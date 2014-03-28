@@ -34,6 +34,7 @@ class VisualizationController extends \BaseController {
 			$rules = array(
 					'display-name'		=> 'required|unique:visualizations,display_name,NULL,id,user_id,'.Auth::user()->id,
 					'type'      		=> 'required',
+					'upload'			=> 'required_if:option,upload'
 			);
 			$validator = Validator::make(Input::all(), $rules);
 			if ($validator->fails())
@@ -47,29 +48,36 @@ class VisualizationController extends \BaseController {
 			$visualization->category = Input::get('category');
 			$visualization->published = false;
 			
-			$column_list = json_decode(Input::get('column-list'), true);
-			
-			foreach ($column_list as $column) {
-				if ($column['caption'] == 'Milestone') {
-					$visualization->milestone_format = $column['type-caption'];
-					break;
-				}
-			}
-			
 			$visualization->zoom = 3;
 			$visualization->center_latitude = 0.00;
 			$visualization->center_longitude = 0.00;
-			
+
 			$visualization_name = $username.'_'.$visualization->display_name;
-			$gf_column_list = self::prepareColumnListSentToGFusion($column_list, Input::get('type'));
-			$fusion_table_id = GoogleFusionTable::create($visualization_name, Input::get('type'), $gf_column_list);
+			$gf_column_list;
+			$fusion_table_id = false;
+			if (Input::get('option') == 'manual') {
+				$column_list = json_decode(Input::get('column-list'), true);
+					
+				foreach ($column_list as $column) {
+					if ($column['caption'] == 'Milestone') {
+						$visualization->milestone_format = $column['type-caption'];
+						break;
+					}
+				}
+				
+				$gf_column_list = self::prepareColumnListSentToGFusion($column_list, Input::get('type'));
+				$fusion_table_id = GoogleFusionTable::create($visualization_name, Input::get('type'), $gf_column_list);
+			}
 			
 			if ($fusion_table_id) {
 				$visualization->fusion_table_id = $fusion_table_id;
-				foreach ($gf_column_list as $gf_column) {
-					if ($gf_column['type'] == 'NUMBER') {
-						$visualization->default_column = $gf_column['name'];
-						break;
+				
+				if (Input::get('option') == 'manual') {
+					foreach ($gf_column_list as $gf_column) {
+						if ($gf_column['type'] == 'NUMBER') {
+							$visualization->default_column = $gf_column['name'];
+							break;
+						}
 					}
 				}
 				
