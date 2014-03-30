@@ -246,8 +246,7 @@ class GoogleFusionTable {
 		return false;
 	}
 	
-	// TODO : private
-	public function retrieveGFusionStyles() {
+	private function retrieveGFusionStyles() {
 		$access_token = self::getGFusionOAuthAccessToken();
 		
 		$response = Request::get($this->getGFusionPrefixURL().'/styles')
