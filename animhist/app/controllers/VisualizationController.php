@@ -53,7 +53,7 @@ class VisualizationController extends \BaseController {
 			$visualization->center_longitude = 0.00;
 
 			$visualization_name = $username.'_'.$visualization->display_name;
-			$gf_column_list;
+			$gf_column_list; $table_info;
 			$fusion_table_id = false;
 			if (Input::get('option') == 'manual') {
 				$column_list = json_decode(Input::get('column-list'), true);
@@ -77,18 +77,21 @@ class VisualizationController extends \BaseController {
 				$filename = $uploaded_file->getClientOriginalName();
 				$uploaded_file->move($path, $filename);
 				
-				return json_encode(self::prepareCSVSentToGFusion([$path_in_public, $filename], Input::get('type')));
+				$table_info = self::prepareCSVSentToGFusion([$path_in_public, $filename], Input::get('type'));
+				$fusion_table_id = GoogleFusionTable::createWithFile($visualization_name, Input::get('type'), $table_info);
+				
+				File::deleteDirectory($_SERVER['DOCUMENT_ROOT'].'/'.$path_in_public);
 			}
 			
 			if ($fusion_table_id) {
 				$visualization->fusion_table_id = $fusion_table_id;
 				
-				if (Input::get('option') == 'manual') {
-					foreach ($gf_column_list as $gf_column) {
-						if ($gf_column['type'] == 'NUMBER') {
-							$visualization->default_column = $gf_column['name'];
-							break;
-						}
+				$ref_column_list = Input::get('option') == 'manual' ? $gf_column_list : $table_info['columns'];
+				 
+				foreach ($ref_column_list as $gf_column) {
+					if ($gf_column['type'] == 'NUMBER') {
+						$visualization->default_column = $gf_column['name'];
+						break;
 					}
 				}
 				
@@ -237,7 +240,8 @@ class VisualizationController extends \BaseController {
 						if (strtolower($visualization->type) == 'point') {
 							$geocode = GoogleGeocoding::getLatLongForString($col_val_pairs['Position']);
 							if ($geocode) $col_val_pairs['Geocode'] = $geocode;
-						}
+						} else
+							$col_val_pairs['Geocode'] = $col_val_pairs['Position'];
 					}
 					
 					$result = $gft->updateRow($row_id, $col_val_pairs);
@@ -255,7 +259,8 @@ class VisualizationController extends \BaseController {
 						if (strtolower($visualization->type) == 'point') {
 							$geocode = GoogleGeocoding::getLatLongForString($col_val_pairs['Position']);
 							if ($geocode) $col_val_pairs['Geocode'] = $geocode;
-						}
+						} else
+							$col_val_pairs['Geocode'] = $col_val_pairs['Position'];
 					}
 						
 					$result = $gft->insertRow($col_val_pairs);
@@ -535,12 +540,14 @@ class VisualizationController extends \BaseController {
 		
 		$arr = self::readCSV($path.'/'.$filename);
 		
-		$headers;
-		if (count($arr) > 0) $headers = $arr[0];
-		else return false;
+		$headers; $specs;
+		if (count($arr) > 1) {
+			$headers = $arr[0];
+			$specs = $arr[1];
+		} else return false;
 		
 		$reduced_headers = array_unique($headers);
-		$rows = array_slice($arr, 1);
+		$rows = array_slice($arr, 2);
 		
 		$milestone_col = array_search('milestone', array_map('strtolower', $headers));
 		$position_col = array_search('position', array_map('strtolower', $headers));
@@ -589,17 +596,29 @@ class VisualizationController extends \BaseController {
  			$exported_rows[] = $exported_row;
 		}
 		
+		/* Prepare column list */
+		$column_list = [['name'=>'CreatedAt', 'type'=>'DATETIME'], ['name'=>'MilestoneRep', 'type'=>'DATETIME'], ['name'=>'Geocode', 'type'=>'LOCATION'], ['name'=>'Milestone', 'type'=>'DATETIME'], ['name'=>'Position', 'type'=>'LOCATION']];
+		for ($i = 5; $i < count($exported_headers); $i++) {
+			$header = $exported_headers[$i];
+			$column = [];
+			$column['name'] = $header;
+			$column_type = $specs[array_search($header, $headers)];
+			$column['type'] = strtolower($column_type) == 'number' ? 'NUMBER' : 'STRING';
+			
+			$column_list[] = $column; 
+		}
+		
+		/* Prepare CSV to upload to Google */
 		$re_path = $path.'/e_'.$filename;
 		$fp = fopen($re_path, 'w');
-		fputcsv($fp, $exported_headers,',','"');
 		foreach ($exported_rows as $exported_row)
 			fputcsv($fp, $exported_row,',','"');
 		fclose($fp);
 		
-		return $re_path;
+		return ['path'=>$re_path, 'columns'=>$column_list];
 	}
 	
-	public static function prepareProperDateTime($dt, $format_str) {
+	private static function prepareProperDateTime($dt, $format_str) {
 		$ret = $dt;
 		$splitted = explode('/', $dt);
 		

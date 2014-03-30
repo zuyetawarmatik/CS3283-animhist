@@ -422,6 +422,29 @@ class GoogleFusionTable {
 		return false;
 	}
 	
+	public function importFromCSV($file_path) {
+		$access_token = self::getGFusionOAuthAccessToken();
+		
+		$response = Request::post('https://www.googleapis.com/upload/fusiontables/v1/tables/'.$this->gf_table_id.'/import')
+					->addHeaders(['Authorization'=>'Bearer '.self::getGFusionOAuthAccessToken()])
+					->attach(['file'=>$file_path])
+					->send();
+		
+		if ($response->code == 401) {
+			$access_token = self::refreshGFusionOAuthAccessToken();
+			// Reupload data
+			$response = Request::post('https://www.googleapis.com/upload/fusiontables/v1/tables/'.$this->gf_table_id.'/import')
+					->addHeaders(['Authorization'=>'Bearer '.self::getGFusionOAuthAccessToken()])
+					->attach([$file_path])
+					->send();
+		}
+		
+		if ($response->code == 200) 
+			return true;
+		
+		return false;
+	}
+	
 	private function getGFusionPrefixURL() {
 		return 'https://www.googleapis.com/fusiontables/v1/tables/'.$this->gf_table_id;
 	}
@@ -523,5 +546,18 @@ class GoogleFusionTable {
 		}
 		
 		return false;
+	}
+	
+	public static function createWithFile($name, $type, $table_info) {
+		$csv_path = $table_info['path'];
+		$column_list = $table_info['columns'];
+		
+		$gf_table_id = self::create($name, $type, $column_list);
+		if (!$gf_table_id) return false;
+		
+		$gft = new GoogleFusionTable($gf_table_id, $type);
+		$gft->importFromCSV($csv_path);
+		
+		return $gf_table_id;
 	}
 }

@@ -15,14 +15,8 @@
 	
 Route::get('/', function()
 {
-	//return VisualizationController::prepareProperDateTime('12/0030', 'm/d/Y');
-	//$gft = new GoogleFusionTable('16k8KNWniiZAZOOQhOlfpJnUQdaaFgGDLryaLs2GW', 'polygon');
-	//$columns = $gft->retrieveGFusionProperties()->columns;
-	//return Response::json($gft->deleteColumn(8));
-	//return Response::json($gft->retrieveGFusionStyles());
-	//return Response::JSON($gft->createColumnDefaultStyle('A'));
-	//return Response::JSON($gft->getColumnStyle('point', 'New Valuable'));
-	//return Response::JSON($gft->deleteColumnStyle('#INVALID_COLUMN'));
+	$gft = new GoogleFusionTable('1meq4rVWe5QrVFoV3Qpi_eChMW4UBFDQKb0vydd_f', 'polygon');
+	return json_encode($gft->importFromCSV('/home/zuyetawarmatik/CS3283-animhist/animhist/public/uploads/tmp/php9kY5hM/e_sea_gdp_polygon.csv'));
 });
 
 Route::get('search', function()
