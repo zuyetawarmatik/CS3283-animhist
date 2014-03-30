@@ -15,6 +15,7 @@
 	
 Route::get('/', function()
 {
+	//return VisualizationController::prepareProperDateTime('12/0030', 'm/d/Y');
 	//$gft = new GoogleFusionTable('16k8KNWniiZAZOOQhOlfpJnUQdaaFgGDLryaLs2GW', 'polygon');
 	//$columns = $gft->retrieveGFusionProperties()->columns;
 	//return Response::json($gft->deleteColumn(8));

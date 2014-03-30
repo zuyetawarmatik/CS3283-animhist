@@ -67,6 +67,17 @@ class VisualizationController extends \BaseController {
 				
 				$gf_column_list = self::prepareColumnListSentToGFusion($column_list, Input::get('type'));
 				$fusion_table_id = GoogleFusionTable::create($visualization_name, Input::get('type'), $gf_column_list);
+			} else if (Input::get('option') == 'upload') {
+				$uploaded_file = Input::file('upload');
+				if ($uploaded_file->getMimeType() != 'text/plain' || $uploaded_file->getClientOriginalExtension() != 'csv')
+					return JSONResponseUtility::ValidationError(['upload'=>['Wrong uploaded file type.']]);
+				
+				$path_in_public = 'uploads'.$uploaded_file->getRealPath(); 
+				$path = 'public/'.$path_in_public;
+				$filename = $uploaded_file->getClientOriginalName();
+				$uploaded_file->move($path, $filename);
+				
+				return json_encode(self::prepareCSVSentToGFusion([$path_in_public, $filename], Input::get('type')));
 			}
 			
 			if ($fusion_table_id) {
@@ -496,5 +507,110 @@ class VisualizationController extends \BaseController {
 			}
 		}
 		return $style;
+	}
+	
+	private static function readCSV($file) {
+		$arr = [];
+		$fp = fopen($file, 'r');
+		while (!feof($fp)) {
+			$new_row = (array) fgetcsv($fp);
+			
+			$is_empty = true;
+			foreach ($new_row as $cell) {
+				if ($cell != '') {
+					$is_empty = false;
+					break;
+				}
+			}
+			
+			if (!$is_empty) $arr[] = $new_row;
+		}
+		fclose($fp);
+		return $arr;
+	}
+	
+	private static function prepareCSVSentToGFusion($file_vars, $visualization_type) {
+		$path = $_SERVER['DOCUMENT_ROOT'].'/'.$file_vars[0];
+		$filename = $file_vars[1];
+		
+		$arr = self::readCSV($path.'/'.$filename);
+		
+		$headers;
+		if (count($arr) > 0) $headers = $arr[0];
+		else return false;
+		
+		$reduced_headers = array_unique($headers);
+		$rows = array_slice($arr, 1);
+		
+		$milestone_col = array_search('milestone', array_map('strtolower', $headers));
+		$position_col = array_search('position', array_map('strtolower', $headers));
+
+		if ($milestone_col === false || $position_col === false) return false;
+		
+		$exported_headers = [];
+		$exported_headers[Constant::COL_ID_CREATEDAT] = 'CreatedAt';
+		$exported_headers[Constant::COL_ID_MILESTONEREP] = 'MilestoneRep';
+		$exported_headers[Constant::COL_ID_GEOCODE] = 'Geocode';
+		$exported_headers[Constant::COL_ID_MILESTONE] = 'Milestone';
+		$exported_headers[Constant::COL_ID_POSITION] = 'Position';
+		foreach ($reduced_headers as $header) {
+			if (array_search(strtolower($header), array_map('strtolower', $exported_headers)) == false && $header != '')
+				$exported_headers[] = $header;
+		}
+		
+		$exported_rows = [];
+		for ($i = 0; $i < count($rows) - 1; $i++) {
+			$row = $rows[$i];
+			
+			$exported_row = array_fill(0, count($exported_headers), '');
+			
+			$exported_row[Constant::COL_ID_CREATEDAT] = date('Y/m/d H:i:s');
+			
+			if ($c_milestone = self::prepareProperDateTime($row[$milestone_col], 'm/d/Y'))
+				$exported_row[Constant::COL_ID_MILESTONE] = $c_milestone;
+			
+			if ($c_milestone = self::prepareProperDateTime($row[$milestone_col], 'Y'))
+				$exported_row[Constant::COL_ID_MILESTONEREP] = $c_milestone; // Default is Year milestone type
+				
+			$exported_row[Constant::COL_ID_POSITION] = $row[$position_col];
+ 			
+ 			if (strtolower($visualization_type) == 'point') {
+ 				$geocode = GoogleGeocoding::getLatLongForString($row[$position_col]);
+ 				if ($geocode) $exported_row[Constant::COL_ID_GEOCODE] = $geocode;
+ 			} else {
+ 				$exported_row[Constant::COL_ID_GEOCODE] = $exported_row[Constant::COL_ID_POSITION];
+ 			}
+ 			
+ 			for ($j = 5; $j < count($exported_headers); $j++) {
+ 				$header = $exported_headers[$j];
+ 				$exported_row[$j] = $row[array_search($header, $headers)];
+ 			}
+ 			
+ 			$exported_rows[] = $exported_row;
+		}
+		
+		$re_path = $path.'/e_'.$filename;
+		$fp = fopen($re_path, 'w');
+		fputcsv($fp, $exported_headers,',','"');
+		foreach ($exported_rows as $exported_row)
+			fputcsv($fp, $exported_row,',','"');
+		fclose($fp);
+		
+		return $re_path;
+	}
+	
+	public static function prepareProperDateTime($dt, $format_str) {
+		$ret = $dt;
+		$splitted = explode('/', $dt);
+		
+		if (count($splitted) == 1)
+			$ret = '1/1/'.$dt;
+		else if (count($splitted) == 2)
+			$ret = $splitted[0].'/1/'.$splitted[1];
+		
+		$datetime = new DateTime($ret);
+		$ret = $datetime->format($format_str);
+		
+		return $ret;
 	}
 }

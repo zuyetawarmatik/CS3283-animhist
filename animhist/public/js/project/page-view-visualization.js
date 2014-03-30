@@ -90,7 +90,7 @@ function updateLayerStyle() {
 }
 
 function updateLayerQuery(milestone) {
-	var select = 'Position, Geocode'; 
+	var select = 'Geocode'; 
 	var where = "MilestoneRep = '" + milestone + "'";
 	gfusionLayer.setOptions({
 		query: {

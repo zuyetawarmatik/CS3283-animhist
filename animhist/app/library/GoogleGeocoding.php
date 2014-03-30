@@ -11,7 +11,7 @@ class GoogleGeocoding {
 	
 	public static function getLatLongForString($str) {
 		$res = GoogleGeocoding::getGeocodeForString($str);
-		if ($res->status == 'OK') {
+		if (is_object($res) && $res->status == 'OK') {
 			$lat = $res->results[0]->geometry->location->lat;
 			$long = $res->results[0]->geometry->location->lng;
 			return $lat.' '.$long;
