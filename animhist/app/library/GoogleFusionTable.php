@@ -452,13 +452,13 @@ class GoogleFusionTable {
 		$access_token = self::getGFusionOAuthAccessToken();
 		$encoded_sql = urlencode($sql);
 	
-		$response = Request::$method('https://www.googleapis.com/fusiontables/v1/query?sql='.$encoded_sql)
+		$response = Request::$method('https://www.googleapis.com/fusiontables/v1/query?typed=false&sql='.$encoded_sql)
 		->addHeaders(['Authorization'=>'Bearer '.$access_token])
 		->send();
 	
 		if ($response->code == 401) {
 			$access_token = self::refreshGFusionOAuthAccessToken();
-			$response = Request::$method('https://www.googleapis.com/fusiontables/v1/query?sql='.$encoded_sql)
+			$response = Request::$method('https://www.googleapis.com/fusiontables/v1/query?typed=false&sql='.$encoded_sql)
 			->addHeaders(['Authorization'=>'Bearer '.$access_token])
 			->send();
 		}
