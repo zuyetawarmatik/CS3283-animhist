@@ -1,21 +1,30 @@
 #top-bar {
 	form[name='search-form'] {
-		position: absolute;
-		top: 2rem;
-		left: 14rem;
+		float: left;
+		margin-top: 2rem;
+		margin-left: 5rem;
 		
 		input[name='search-box'] {
 			width: 42rem;
 			height: 2rem;
 			background: @color-back-left-panel;
 			font-weight: 600;
-			padding-left: 4rem;
 		}
-		
-		i {
-			position: absolute;
+		input[name='search-box']::-webkit-input-placeholder {
 			font-family: Conv_icomoon;
-			top: 1rem; left: 1rem;
+			font-style: normal;
+		}
+		input[name='search-box']:-moz-placeholder {
+			font-family: Conv_icomoon;
+			font-style: normal;
+		}
+		input[name='search-box']::-moz-placeholder {
+			font-family: Conv_icomoon;
+			font-style: normal;
+		}
+		input[name='search-box']:-ms-input-placeholder {
+			font-family: Conv_icomoon;
+			font-style: normal;
 		}
 	}
 }

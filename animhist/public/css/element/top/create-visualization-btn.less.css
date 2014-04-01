@@ -1,8 +1,8 @@
 #top-bar {
 	#create-visualization-btn {
-		position: absolute;
-		top: 2rem;
-		left: 22rem;
+		float: left;
+		margin-top: 2rem;
+		margin-left: 5rem;
 		padding: 0 2rem;
 	}
 }

@@ -67,7 +67,7 @@ class UserController extends \BaseController {
 	 */
 	public function show($username)
 	{
-		$user = User::where('username', '=', $username)->first();
+		$user = User::where('username', $username)->first();
 		if ($user) {
 			if (Input::get('ajax')) {
 				$title = ''; $categories;

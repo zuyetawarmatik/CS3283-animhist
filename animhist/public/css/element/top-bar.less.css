@@ -19,7 +19,10 @@
 	}
 	
 	#title {
-		margin-left: 10rem;
+		display: inline-block;
+		float: left;
+		
+		margin-left: 2rem;
 		height: 2rem;
 		padding: 3rem 0;
 		

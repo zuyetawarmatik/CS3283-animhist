@@ -16,19 +16,29 @@ class VisualizationController extends \BaseController {
 	
 	public function search()
 	{	
+		if (!Input::has('q')) return;
 		$q = Input::get('q');
-		$visualizations = Visualization
-							::select('id', 'user_id', 'category')
+		$vis = Visualization::select('id')
 							->where('display_name', 'LIKE', '%'.$q.'%')->where('published', 1)->get();
 		
 		$ret_vis = [];
-		foreach ($visualizations as $visualization) {
+		foreach ($vis as $vi) {
+			$visualization = Visualization::find($vi->id);
 			$ret_vi = [];
-			$user = User::find($visualization->id);
-			$ret_vi['showURL'] = URL::route('visualization.show', [$user->username, $visualization->id]);
+			$user = User::find($visualization->user_id);
+			$ret_vi['category'] = $visualization->category;
+			$ret_vi['displayName'] = $visualization->display_name;
+			$ret_vi['createdAt'] = $visualization->getFormattedCreatedDate();
+			$ret_vi['updatedAt'] = $visualization->getFormattedUpdatedDate();
+			$ret_vi['userDisplayName'] = $user->display_name;
+			$ret_vi['userAvatarURL'] = $user->avatar->url('thumb');
+			$ret_vi['userURL'] = URL::route('user.show', $user->username);
+			$ret_vi['viewURL'] = URL::route('visualization.show', [$user->username, $visualization->id]);
+			$ret_vi['imgURL'] = 'http://maps.googleapis.com/maps/api/staticmap?maptype=terrain&key=AIzaSyBTVe9qjhnOgr7dNZJGjpQkyuViCn3wKDU&center='.$visualization->center_latitude.','.$visualization->center_longitude.'&zoom='.max(number_format($visualization->zoom)-1,1).'&size=340x200&sensor=false';
+			$ret_vis[] = $ret_vi;
 		}
 		
-		return Response::json($visualizations);
+		return Response::json($ret_vis);
 	}
 	
 	public function showCreate($username)
@@ -135,7 +145,7 @@ class VisualizationController extends \BaseController {
 
 	public function show($username, $id)
 	{
-		$user = User::where('username', '=', $username)->first();
+		$user = User::where('username', $username)->first();
 		
 		$visualization = Visualization::find($id);
 		if (!$visualization || $visualization->user->username != $username || !$visualization->published)

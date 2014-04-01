@@ -8,13 +8,13 @@ $(function() {
 		}
 	}, ".visualization-item");
 	
-	$("#visualization-list .overlay").on("click",
+	$("#visualization-list").on("click", ".overlay",
 		function() {
 			parent.changeIFrameSrc($(this).data("url"), true);
 		}
 	);
 	
-	$("#visualization-list a:not(.del)").on("click",
+	$("#visualization-list").on("click", "a:not(.del)",
 		function(e) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -22,7 +22,7 @@ $(function() {
 		}
 	);
 	
-	$("#visualization-list a.del").on("click",
+	$("#visualization-list").on("click", "a.del",
 		function(e) {
 			e.preventDefault();
 			e.stopPropagation();
