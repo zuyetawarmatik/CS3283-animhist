@@ -2,6 +2,21 @@
 
 class VisualizationController extends \BaseController {
 	
+	public function showSearch() {
+		if (Input::get('ajax'))
+			return ViewResponseUtility::makeSubView('show-visualizations-search', 'Search');
+		else
+			return ViewResponseUtility::makeBaseView(URL::route('visualization.showSearch'), Constant::SIDEBAR_GUEST_SEARCH);
+	}
+	
+	public function search()
+	{
+		$q = Input::get('q');
+		$visualizations = DB::table('visualizations')->where('display_name', 'LIKE', '%'.$q.'%')->where('published', 1)->get();
+		
+		return json_encode($visualizations);
+	}
+	
 	public function showCreate($username)
 	{
 		if (Auth::user()->username == $username) {
@@ -72,8 +87,9 @@ class VisualizationController extends \BaseController {
 				if ($uploaded_file->getMimeType() != 'text/plain' || $uploaded_file->getClientOriginalExtension() != 'csv')
 					return JSONResponseUtility::ValidationError(['upload'=>['Wrong uploaded file type.']]);
 				
-				$path_in_public = 'uploads'.$uploaded_file->getRealPath(); 
-				$path = 'public/'.$path_in_public;
+				$path_in_public = 'uploads/'.basename($uploaded_file->getRealPath());
+				//return $uploaded_file->getRealPath();
+				$path = $path_in_public;
 				$filename = $uploaded_file->getClientOriginalName();
 				$uploaded_file->move($path, $filename);
 				

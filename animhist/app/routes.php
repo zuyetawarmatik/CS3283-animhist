@@ -19,12 +19,13 @@ Route::get('/', function()
 	return json_encode($gft->importFromCSV('/home/zuyetawarmatik/CS3283-animhist/animhist/public/uploads/tmp/php9kY5hM/e_sea_gdp_polygon.csv'));
 });
 
-Route::get('search', function()
-{
-	return View::make('show-visualizations-search', array('title'=>'Search', 'has_back'=>false, 'has_minimize_right'=>true));
-});
 
 // ==========================================================
+
+// /search
+Route::get('search', ['as' => 'visualization.showSearch', 'uses' => 'VisualizationController@showSearch']);
+Route::post('search', ['as' => 'visualization.search', 'uses' => 'VisualizationController@search']);
+
 
 Route::group(['before' => 'guest', 'prefix' => '/'], function(){
 	// /login
