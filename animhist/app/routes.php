@@ -15,8 +15,8 @@
 	
 Route::get('/', function()
 {
-	$gft = new GoogleFusionTable('1meq4rVWe5QrVFoV3Qpi_eChMW4UBFDQKb0vydd_f', 'polygon');
-	return json_encode($gft->importFromCSV('/home/zuyetawarmatik/CS3283-animhist/animhist/public/uploads/tmp/php9kY5hM/e_sea_gdp_polygon.csv'));
+	$gft = new GoogleFusionTable('1yy9FoPRlCVk5ncS5rfbekDNnyUYpemOPcv5CF0Wj', 'polygon');
+	return json_encode($gft->retrieveGFusionData());
 });
 
 Route::get('search', function()
