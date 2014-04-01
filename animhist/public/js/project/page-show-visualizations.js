@@ -8,18 +8,49 @@ $(function() {
 		}
 	}, ".visualization-item");
 	
-	$("#visualization-list").on({
-		click: function() {
+	$("#visualization-list .overlay").on("click",
+		function() {
 			parent.changeIFrameSrc($(this).data("url"), true);
 		}
-	}, ".overlay");
+	);
 	
-	$("#visualization-list").on({
-		click: function(e) {
-			e.preventDefault(true);
+	$("#visualization-list a:not(.del)").on("click",
+		function(e) {
+			e.preventDefault();
+			e.stopPropagation();
 			parent.changeIFrameSrc($(this).attr("href"), true);
 		}
-	}, "a");
+	);
+	
+	$("#visualization-list a.del").on("click",
+		function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			$this = $(this);
+			$.ajax({
+				url: $this.data("url"),
+				type: "DELETE",
+				headers: {'X-CSRF-Token': $("[name='_token']").val()},
+				global: false,
+				error: function() {
+					notyError({
+						text: "Visualization deletion failed"
+					});
+				},
+				success: function(response) {
+					notySuccess({
+						text: "Visualization deleted",
+						layout: 'bottomCenter',
+						callback: {
+							afterShow: function() {
+								$this.closest(".visualization-item").remove();
+							}
+						}
+					});
+				}
+			});
+		}
+	);
 	
 	/* Right category area animation */
 	$("#category-list > li").prepend('<span class="category-bck"></span>');

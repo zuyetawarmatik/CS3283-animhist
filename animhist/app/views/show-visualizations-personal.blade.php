@@ -63,6 +63,8 @@
 @stop
 
 @section('visualizations')
+	{{ Form::open(array('name'=>'hidden-form', 'url'=>'#')) }}
+	{{ Form::close() }}
 	@foreach ($user->visualizations as $visualization)
 		@if ($user->isAuthUser() || (!$user->isAuthUser() && $visualization->published))
 			<li class="visualization-item" data-vi-category="{{$visualization->category}}">
@@ -84,9 +86,10 @@
 								<a href="{{ URL::route('visualization.showCreate', $visualization->user->username).'?step=2&vi_id='.$visualization->id }}">&#57350;</a>
 							@endif
 						@endif
+						<a class="del" data-url="{{ URL::route('visualization.destroy', [$visualization->user->username, $visualization->id]) }}">&#57512;</a>
 					</div>
 				</div>
-				<div class="visualization-img"><img src="http://maps.googleapis.com/maps/api/staticmap?center={{$visualization->center_latitude}},{{$visualization->center_longitude}}&zoom={{max(number_format($visualization->zoom)-1,1)}}&size=340x200&sensor=false"/></div>
+				<div class="visualization-img"><img src="http://maps.googleapis.com/maps/api/staticmap?maptype=terrain&key=AIzaSyBTVe9qjhnOgr7dNZJGjpQkyuViCn3wKDU&center={{$visualization->center_latitude}},{{$visualization->center_longitude}}&zoom={{max(number_format($visualization->zoom)-1,1)}}&size=340x200&sensor=false"/></div>
 				<div class="avatar-wrapper">
 					<a href="{{ URL::route('user.show', $user->username) }}"><img class="avatar" src="{{ $user->avatar->url('thumb') }}" /></a>
 				</div>

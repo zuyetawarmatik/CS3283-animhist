@@ -34,5 +34,4 @@
 			</tr>
 		</table>
 	{{ Form::close() }}
-	
 @stop

@@ -26,7 +26,6 @@ Route::get('/', function()
 Route::get('search', ['as' => 'visualization.showSearch', 'uses' => 'VisualizationController@showSearch']);
 Route::post('search', ['as' => 'visualization.search', 'uses' => 'VisualizationController@search']);
 
-
 Route::group(['before' => 'guest', 'prefix' => '/'], function(){
 	// /login
 	Route::get('login', function(){return Redirect::route('user.showLogin');});
