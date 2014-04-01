@@ -4,8 +4,11 @@ function search(query) {
 		type: "POST",
 		data: {q: query},
 		global: false,
-		success: function(response) {
+		beforeSend: function() {
 			$("#visualization-list").empty();
+			$(".visualizations-info p").html("Searched results for <span style='font-style:italic'>'" + query + "':</span>");
+		},
+		success: function(response) {
 			$.each(response, function(i, vi) {
 				$thisViLi = $("<li class='visualization-item' data-vi-category='" + vi.category + "'>\
 									<div class='overlay' style='display:none' data-url='" + vi.viewURL + "'>\
@@ -32,7 +35,7 @@ function search(query) {
 
 function initialSearch() {
 	var q = getUrlParameters("q", window.top.location.href, true);
-	search(q);
+	if (q !== false) search(q);
 }
 
 $(function() {

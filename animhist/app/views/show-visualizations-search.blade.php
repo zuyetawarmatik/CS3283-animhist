@@ -15,3 +15,7 @@
 		{{ Form::text('search-box', '', ['placeholder'=>'&#57471;']) }}
 	{{ Form::close() }}
 @stop
+
+@section('info')
+	<p></p> 
+@stop
