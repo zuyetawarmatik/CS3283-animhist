@@ -71,7 +71,7 @@
 						<span class="nav-icon">&#57552;</span>
 						<span class="nav-caption">Featured</span>
 					</li>
-					<li class="nav-item" data-url="{{ URL::to('search') }}">
+					<li class="nav-item" data-url="{{ URL::route('visualization.showSearch') }}">
 						<span class="nav-icon">&#57471;</span>
 						<span class="nav-caption">Search</span>
 					</li>
