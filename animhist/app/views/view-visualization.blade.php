@@ -95,7 +95,7 @@
 	{{ Form::open(array('name'=>'hidden-form', 'url'=>'#')) }}
 	{{ Form::close() }}
 	@if (!$visualization->user->isAuthUser())
-		@if (Auth::check() && DB::table('follows')->where('user_id', Auth::user()->id)->where('following_id', $visualization->user->id)->first())
+		@if (Auth::check() && Follow::where('user_id', Auth::user()->id)->where('following_id', $visualization->user->id)->first())
 		<button id="follow-btn" data-url="{{ URL::route('user.unfollow', $visualization->user->username) }}"><i>&#57551;</i>Unfollow The Author</button>
 		@else
 		<button id="follow-btn" data-url="{{ URL::route('user.follow', $visualization->user->username) }}"><i>&#57552;</i>Follow The Author</button>

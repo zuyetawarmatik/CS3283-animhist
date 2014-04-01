@@ -13,6 +13,6 @@
 	@parent
 	{{ Form::open(array('name'=>'search-form', 'url'=>URL::Route('visualization.search'))) }}
 		<i>&#57471;</i>
-		{{ Form::text('search-box', 'Type your search here') }}
+		{{ Form::text('search-box') }}
 	{{ Form::close() }}
 @stop

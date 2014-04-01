@@ -47,7 +47,7 @@
 	{{ Form::open(array('name'=>'hidden-form', 'url'=>'#')) }}
 	{{ Form::close() }}
 	@if (!$user->isAuthUser())
-		@if (Auth::check() && DB::table('follows')->where('user_id', Auth::user()->id)->where('following_id', $user->id)->first())
+		@if (Auth::check() && Follow::where('user_id', Auth::user()->id)->where('following_id', $user->id)->first())
 		<button id="follow-btn" data-url="{{ URL::route('user.unfollow', $user->username) }}"><i>&#57551;</i>Unfollow The Author</button>
 		@else
 		<button id="follow-btn" data-url="{{ URL::route('user.follow', $user->username) }}"><i>&#57552;</i>Follow The Author</button>
@@ -85,8 +85,8 @@
 							@else
 								<a href="{{ URL::route('visualization.showCreate', $visualization->user->username).'?step=2&vi_id='.$visualization->id }}">&#57350;</a>
 							@endif
+							<a class="del" data-url="{{ URL::route('visualization.destroy', [$visualization->user->username, $visualization->id]) }}">&#57512;</a>
 						@endif
-						<a class="del" data-url="{{ URL::route('visualization.destroy', [$visualization->user->username, $visualization->id]) }}">&#57512;</a>
 					</div>
 				</div>
 				<div class="visualization-img"><img src="http://maps.googleapis.com/maps/api/staticmap?maptype=terrain&key=AIzaSyBTVe9qjhnOgr7dNZJGjpQkyuViCn3wKDU&center={{$visualization->center_latitude}},{{$visualization->center_longitude}}&zoom={{max(number_format($visualization->zoom)-1,1)}}&size=340x200&sensor=false"/></div>

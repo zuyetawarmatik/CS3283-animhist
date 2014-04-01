@@ -153,6 +153,41 @@ $(function() {
 	$("#edit-visualization-btn").click(function() {
 		parent.changeIFrameSrc($(this).data('url'), true);
 	});
+	
+	$('#follow-btn').click(function() {
+		var link = $(this).data('url');
+		$.ajax({
+			url: link,
+			type: "POST",
+			global: false,
+			headers: {'X-CSRF-Token': $("[name='_token']").val()},
+			error: function(response) {
+				var alertSt = "";
+				$.each(response["responseJSON"]["error"], function(key, val) {
+					$.each(val, function(index, tx) {
+						alertSt += tx + "<br/>";
+					});
+				});
+				notyError({
+					text: alertSt
+				});
+			},
+			success: function(response) {
+				if (response["redirect"]) {
+					handleJSONRedirectResponse(response, true);
+					return;
+				}
+				
+				if (link.substr(link.length - 7, link.length) === "/follow") {
+					$('#follow-btn').html('<i>&#57551;</i>Unfollow The Author');
+					$('#follow-btn').data('url', link.replace("/follow", "/unfollow"));
+				} else {
+					$('#follow-btn').html('<i>&#57552;</i>Follow The Author');
+					$('#follow-btn').data('url', link.replace("/unfollow", "/follow"));
+				}
+			}
+		});
+	});
 });
 
 $(function() {

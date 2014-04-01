@@ -73,10 +73,10 @@ class UserController extends \BaseController {
 				$title = ''; $categories;
 				if ($user->isAuthUser()) {
 					$title = 'My Visualizations';
-					$categories = DB::table('visualizations')->where('user_id', $user->id)->groupBy('category')->lists('category');
+					$categories = Visualization::where('user_id', $user->id)->groupBy('category')->lists('category');
 				} else {
 					$title = $user->display_name.'&#39;s Visualizations';
-					$categories = DB::table('visualizations')->where('user_id', $user->id)->where('published', true)->groupBy('category')->lists('category');
+					$categories = Visualization::where('user_id', $user->id)->where('published', true)->groupBy('category')->lists('category');
 				}
 
 				return ViewResponseUtility::makeSubView('show-visualizations-personal', $title, ['user'=>$user, 'categories'=>$categories], true);
@@ -188,13 +188,13 @@ class UserController extends \BaseController {
 	
 	public function followUser($username)
 	{
-		$following_user = DB::table('users')->where('username', $username)->first();
+		$following_user = User::where('username', $username)->first();
 		if (!$following_user) return JSONResponseUtility::ValidationError(['user'=>['User to follow does not exist.']]);
 		
 		$following_id = $following_user->id;
 		if (Auth::user()->id == $following_id) return JSONResponseUtility::ValidationError(['user'=>['User and followed user are the same.']]);
 		
-		$existing_follow = DB::table('follows')->where('user_id', Auth::user()->id)->where('following_id', $following_id)->first();
+		$existing_follow = Follow::where('user_id', Auth::user()->id)->where('following_id', $following_id)->first();
 		if ($existing_follow) return JSONResponseUtility::ValidationError(['follow'=>['Already following this person.']]);
 		
 		$follow = new Follow();
@@ -207,13 +207,13 @@ class UserController extends \BaseController {
 	
 	public function unfollowUser($username)
 	{
-		$following_user = DB::table('users')->where('username', $username)->first();
+		$following_user = User::where('username', $username)->first();
 		if (!$following_user) return JSONResponseUtility::ValidationError(['user'=>['User to unfollow does not exist.']]);
 		
 		$following_id = $following_user->id;
 		if (Auth::user()->id == $following_id) return JSONResponseUtility::ValidationError(['user'=>['User and followed user are the same.']]);
 		
-		$existing_follow = DB::table('follows')->where('user_id', Auth::user()->id)->where('following_id', $following_id)->first();
+		$existing_follow = Follow::where('user_id', Auth::user()->id)->where('following_id', $following_id)->first();
 		if (!$existing_follow)
 			return JSONResponseUtility::ValidationError(['unfollow'=>['You haven\'t followed this user yet to unfollow.']]);
 		

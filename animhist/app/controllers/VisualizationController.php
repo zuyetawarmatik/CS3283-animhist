@@ -6,16 +6,29 @@ class VisualizationController extends \BaseController {
 	{
 		if (Input::get('ajax'))
 			return ViewResponseUtility::makeSubView('show-visualizations-search', 'Search');
-		else
-			return ViewResponseUtility::makeBaseView(URL::route('visualization.showSearch'), Constant::SIDEBAR_GUEST_SEARCH);
+		else {
+			if (Auth::check())
+				return ViewResponseUtility::makeBaseView(URL::route('visualization.showSearch'), Constant::SIDEBAR_SEARCH);
+			else
+				return ViewResponseUtility::makeBaseView(URL::route('visualization.showSearch'), Constant::SIDEBAR_GUEST_SEARCH);
+		}
 	}
 	
 	public function search()
-	{
+	{	
 		$q = Input::get('q');
-		$visualizations = DB::table('visualizations')->where('display_name', 'LIKE', '%'.$q.'%')->where('published', 1)->get();
+		$visualizations = Visualization
+							::select('id', 'user_id', 'category')
+							->where('display_name', 'LIKE', '%'.$q.'%')->where('published', 1)->get();
 		
-		return json_encode($visualizations);
+		$ret_vis = [];
+		foreach ($visualizations as $visualization) {
+			$ret_vi = [];
+			$user = User::find($visualization->id);
+			$ret_vi['showURL'] = URL::route('visualization.show', [$user->username, $visualization->id]);
+		}
+		
+		return Response::json($visualizations);
 	}
 	
 	public function showCreate($username)
