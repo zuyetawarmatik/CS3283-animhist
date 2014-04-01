@@ -2,7 +2,8 @@
 
 class VisualizationController extends \BaseController {
 	
-	public function showSearch() {
+	public function showSearch()
+	{
 		if (Input::get('ajax'))
 			return ViewResponseUtility::makeSubView('show-visualizations-search', 'Search');
 		else
@@ -87,16 +88,14 @@ class VisualizationController extends \BaseController {
 				if ($uploaded_file->getMimeType() != 'text/plain' || $uploaded_file->getClientOriginalExtension() != 'csv')
 					return JSONResponseUtility::ValidationError(['upload'=>['Wrong uploaded file type.']]);
 				
-				$path_in_public = 'uploads/'.basename($uploaded_file->getRealPath());
-				//return $uploaded_file->getRealPath();
-				$path = $path_in_public;
+				$path = public_path().'/uploads/'.basename($uploaded_file->getRealPath());
 				$filename = $uploaded_file->getClientOriginalName();
 				$uploaded_file->move($path, $filename);
 				
-				$table_info = self::prepareCSVSentToGFusion([$path_in_public, $filename], Input::get('type'));
+				$table_info = self::prepareCSVSentToGFusion([$path, $filename], Input::get('type'));
 				$fusion_table_id = GoogleFusionTable::createWithFile($visualization_name, Input::get('type'), $table_info);
 				
-				File::deleteDirectory($_SERVER['DOCUMENT_ROOT'].'/'.$path_in_public);
+				File::deleteDirectory($path);
 			}
 			
 			if ($fusion_table_id) {
@@ -551,7 +550,7 @@ class VisualizationController extends \BaseController {
 	}
 	
 	private static function prepareCSVSentToGFusion($file_vars, $visualization_type) {
-		$path = $_SERVER['DOCUMENT_ROOT'].'/'.$file_vars[0];
+		$path = $file_vars[0];
 		$filename = $file_vars[1];
 		
 		$arr = self::readCSV($path.'/'.$filename);
@@ -582,7 +581,7 @@ class VisualizationController extends \BaseController {
 		}
 		
 		$exported_rows = [];
-		for ($i = 0; $i < count($rows) - 1; $i++) {
+		for ($i = 0; $i < count($rows); $i++) {
 			$row = $rows[$i];
 			
 			$exported_row = array_fill(0, count($exported_headers), '');
