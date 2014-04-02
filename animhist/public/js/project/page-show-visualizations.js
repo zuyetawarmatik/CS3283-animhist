@@ -43,7 +43,17 @@ $(function() {
 						layout: 'bottomCenter',
 						callback: {
 							afterShow: function() {
-								$this.closest(".visualization-item").remove();
+								$thisLi = $this.closest(".visualization-item");
+								var category = $thisLi.data("vi-category");
+								$thisLi.remove();
+								var sameCatCount = $(".visualization-item[data-vi-category='" + category + "']").length;
+								if (sameCatCount == 0)
+									$(".category-item").each(function() {
+										if ($(".category-caption", $(this)).html() == category) {
+											$(this).remove();
+											return false;
+										}
+									});
 							}
 						}
 					});
@@ -64,7 +74,7 @@ $(function() {
 	}, "#category-list > li:not(.selected)");
 	
 	/* Right category click */
-	$(".category-item").on("click", function() {
+	$("#category-list").on("click", ".category-item", function() {
 		$(".category-item.selected .category-bck").attr("style", "");
 		$(".category-item.selected").removeClass("selected");
 		
@@ -74,11 +84,17 @@ $(function() {
 		var username = $(".visualizations-info p").data("username");
 		if (category == "All") {
 			$(".visualization-item").show();
-			$(".visualizations-info p").html(username + "'s all visualizations");
+			if (username !== undefined)
+				$(".visualizations-info p").html(username + "'s all visualizations:");
+			else
+				$(".visualizations-info p").html("Showing all visualizations:");
 		} else {
 			$(".visualization-item:not([data-vi-category='" + category + "'])").hide();
 			$(".visualization-item[data-vi-category='" + category + "']").show();
-			$(".visualizations-info p").html(username + "'s visualizations of category " + category);
+			if (username !== undefined)
+				$(".visualizations-info p").html(username + "'s visualizations of category <span style='font-style:italic'>" + category + "</span>:");
+			else
+				$(".visualizations-info p").html("Showing visualizations of category <span style='font-style:italic'>" + category + "</span>:");
 		}
 	});
 });

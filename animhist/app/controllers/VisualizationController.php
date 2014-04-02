@@ -18,8 +18,10 @@ class VisualizationController extends \BaseController {
 	{	
 		if (!Input::has('q')) return;
 		$q = Input::get('q');
-		$vis = Visualization::select('id')
-							->where('display_name', 'LIKE', '%'.$q.'%')->where('published', 1)->get();
+		$query = Visualization::select('id', 'category')
+							->where('display_name', 'LIKE', '%'.$q.'%')->where('published', 1);
+		$vis = $query->get();
+		$categories = $query->groupBy('category')->lists('category');
 		
 		$ret_vis = [];
 		foreach ($vis as $vi) {
@@ -38,7 +40,7 @@ class VisualizationController extends \BaseController {
 			$ret_vis[] = $ret_vi;
 		}
 		
-		return Response::json($ret_vis);
+		return Response::json(['visualizations'=>$ret_vis, 'categories'=>$categories]);
 	}
 	
 	public function showCreate($username)

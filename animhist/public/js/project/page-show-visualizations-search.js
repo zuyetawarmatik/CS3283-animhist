@@ -9,7 +9,7 @@ function search(query) {
 			$(".visualizations-info p").html("Searched results for <span style='font-style:italic'>'" + query + "':</span>");
 		},
 		success: function(response) {
-			$.each(response, function(i, vi) {
+			$.each(response.visualizations, function(i, vi) {
 				$thisViLi = $("<li class='visualization-item' data-vi-category='" + vi.category + "'>\
 									<div class='overlay' style='display:none' data-url='" + vi.viewURL + "'>\
 										<p><span class='h2'>Created at: </span>" + vi.createdAt + "</p>\
@@ -28,6 +28,12 @@ function search(query) {
 									</div>\
 								</li>");
 				$thisViLi.appendTo("#visualization-list");
+			});
+			
+			$("#category-list li:not(:first-child)").remove();
+			$("#category-list li:first-child").addClass("selected");
+			$.each(response.categories, function(i, cat) {
+				$("<li class='category-item'><span class='category-bck'></span><span class='category-caption'>" + cat + "</span></li>").appendTo("#category-list");
 			});
 		}
 	});
