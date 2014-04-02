@@ -10,7 +10,7 @@
 		
 		.visualization-item {
 			width: 34rem;
-			height: 26rem;
+			height: auto;
 			margin: 0 0 4rem 4rem;
 			border: 1px @color-border-light solid;
 			float: left;

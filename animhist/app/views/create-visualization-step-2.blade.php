@@ -109,7 +109,9 @@
 		<p><br>Style for a specific column is divided into buckets by levels. Each level (the minimum value of a range) has its own color and opacity if the visualization is of polygon type, and icon if the visualization is of point type.</p>
 	</div>
 	<div id="button-area">
+		@if (!$visualization->published)
 		<button id="publish-btn"><i>&#57534;</i>Publish The Visualization</button>
+		@endif
 		<button id="delete-btn" class="red-btn"><i>&#57512;</i>Discard The Visualization</button>
 	</div>
 @stop

@@ -165,9 +165,19 @@ class VisualizationController extends \BaseController {
 		}
 	}
 
-	public function showEdit($id)
+	public function showEdit($username, $id)
 	{
+		if (Auth::user()->username == $username) {
+			$visualization = Visualization::find($id);
+			if (!$visualization || !$visualization->user->isAuthUser() || !$visualization->published) goto fail;
+			if (Input::get('ajax')) {
+				return ViewResponseUtility::makeSubView('create-visualization-step-2', 'Edit Visualization: <span style="font-weight:300">'.$visualization->display_name.'</span>', ['visualization'=>$visualization]);
+			} else {
+				return ViewResponseUtility::makeBaseView(URL::route('visualization.showEdit', [$username, $id]), Constant::SIDEBAR_MYVISUALIZATION);
+			}
+		}
 		
+		fail: return Redirect::route('user.show', $username);
 	}
 
 	public function updateProperty($username, $id)

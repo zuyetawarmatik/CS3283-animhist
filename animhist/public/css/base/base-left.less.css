@@ -61,7 +61,7 @@
 		
 		.nav-item {
 			border-bottom: @color-border-nav 1px solid;
-			height: 5rem;
+			height: auto;
 			cursor: pointer;
 			transition: border 0.4s;
 			
