@@ -306,22 +306,11 @@ function slickGrid_cellChange(e, args) {
     $.ajax(ajaxVar);
 }
 
-function slickGrid_addNewRow(e, args) {
-	var rowItem = args["item"];
-	var col = args["col"];
-	
-	var pairs = {};
-	$.each(rowItem, function(key, val) {
-		if (val) pairs[key] = val;
-	});
-	
-	if (pairs["Milestone"])
-		pairs["Milestone"] = prepareProperDateTime(pairs["Milestone"]);
-	
+function addNewRow(sentData) {
 	var ajaxVar = $.extend({}, ajaxTemplate, {
 		data: JSON.stringify({
 			type: "row-insert",
-			colvalPairs: pairs
+			colvalPairs: sentData
 		}),
 		error: function() {
 			notyError({
@@ -386,7 +375,23 @@ function slickGrid_addNewRow(e, args) {
 			});
 		}
 	});
+	
 	$.ajax(ajaxVar);
+}
+
+function slickGrid_addNewRow(e, args) {
+	var rowItem = args["item"];
+	var col = args["col"];
+	
+	var pairs = {};
+	$.each(rowItem, function(key, val) {
+		if (val) pairs[key] = val;
+	});
+	
+	if (pairs["Milestone"])
+		pairs["Milestone"] = prepareProperDateTime(pairs["Milestone"]);
+
+	addNewRow(pairs);
 }
 
 function slickGrid_selectedRowsChanged(e, args) {
@@ -396,6 +401,47 @@ function slickGrid_selectedRowsChanged(e, args) {
 }
 
 $(function() {
+	$("#edit-area-table #row-add-btn").click(function() {
+		var colIDArr = [];
+		$.each(gfusionProps.columns, function(i, v) {
+			colIDArr.push(v.columnId);
+		});
+		
+		$vexContent = $("<table></table>");
+		for (var i = 1; i < gridColumns.length; i++) {
+			var column = gridColumns[i];
+			var columnName = column["field"];
+			$vexRow = $("<tr><td></td><td></td></tr>");
+			$("td:first-child", $vexRow).html("<label>" + columnName + "</label>");
+			
+			var columnId = column["id"];
+			var columnRefId = colIDArr.indexOf(columnId);
+			var columnType = gfusionProps.columns[columnRefId].type;
+			$("td:nth-child(2)", $vexRow).html("<input name='" + columnName + "' type='text' data-col-id='" + columnId + "' data-col-type='" + columnType + "'/>");
+			
+			$vexRow.appendTo($vexContent);
+		}
+		
+		vex.dialog.open({
+			message: "Add New Row",
+			input: $vexContent[0].outerHTML,
+			callback: function(data){
+				if (data) {
+					var pairs = {};
+					$.each(data, function(key, val) {
+						if (val) pairs[key] = val;
+					});
+					if (Object.keys(pairs).length == 0) return;
+					
+					if (pairs["Milestone"])
+						pairs["Milestone"] = prepareProperDateTime(pairs["Milestone"]);
+					
+					addNewRow(pairs);
+				}
+			}
+		});
+	});
+	
 	$("#edit-area-table #row-delete-btn").click(function() {
 		var rowsID = dataView.mapRowsToIds(slickGrid.getSelectedRows());
 		var ajaxVar = $.extend({}, ajaxTemplate, {

@@ -54,7 +54,8 @@
 		</div>
 	</div>
 	<div id="edit-area-table" class="current">
-		<div id="toolbar">	
+		<div id="toolbar">
+			<button id="row-add-btn" title="Add New Row"><i>&#57602;</i></button>
 			<button id="row-delete-btn" title="Delete Row(s)" disabled><i>&#57597;</i></button>
 			<ul id="filter-list"></ul>
 		</div>

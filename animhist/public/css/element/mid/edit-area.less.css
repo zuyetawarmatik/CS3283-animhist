@@ -107,6 +107,9 @@
 				i {
 					margin: 0;
 				}
+				&:not(:first-child) {
+					margin-left: 0.1rem;
+				}
 			}
 			
 			#filter-list {
@@ -149,6 +152,9 @@
 				border: none;
 				i {
 					margin: 0;
+				}
+				&:not(:first-child) {
+					margin-left: 0.1rem;
 				}
 			}
 			
