@@ -1,4 +1,5 @@
-var map, gfusionLayer;
+var map, gfusionLayer, drawingManager;
+var drawnShape;
 var playingTimer;
 
 $(window).on('vi_style_loaded', function() {
@@ -46,7 +47,7 @@ function mapInitialize() {
 			style: google.maps.ZoomControlStyle.SMALL
 		},
 	});
-
+	
 	gfusionLayer = new google.maps.FusionTablesLayer();
 	gfusionLayer.setMap(map);
 	
@@ -56,6 +57,30 @@ function mapInitialize() {
 			e.infoWindowHtml = e.row['HTMLData'].value;
 		});
 	}
+	
+	/* For drawing on the map */
+	drawingManager = new google.maps.drawing.DrawingManager({
+		drawingControl: true,
+		drawingControlOptions: {
+			position: google.maps.ControlPosition.TOP_CENTER,
+			drawingModes: viProps["type"] == "point" ? [google.maps.drawing.OverlayType.MARKER] : [google.maps.drawing.OverlayType.POLYGON]
+		}
+	});
+	drawingManager.setMap(map);
+	google.maps.event.addListener(drawingManager, 'overlaycomplete', function(e) {
+		drawingManager.setDrawingMode(null);
+		drawnShape = e.overlay;
+		switch (e.type) {
+		case google.maps.drawing.OverlayType.MARKER:
+			var lat = drawnShape.getPosition().lat().toFixed(3);
+			var lng = drawnShape.getPosition().lng().toFixed(3);
+			openAddRowVex({Position: lat + " " + lng}, drawnShape);
+			break;
+		case google.maps.drawing.OverlayType.POLYGON:
+			console.log(drawnShape.getPaths());
+			break;
+		}
+	});
 }
 
 function updateLayerStyle() {

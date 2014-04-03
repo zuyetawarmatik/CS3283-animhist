@@ -215,9 +215,9 @@ class VisualizationController extends \BaseController {
 			if (Input::has('zoom'))
 				$visualization->zoom = number_format(Input::get('zoom'));
 			if (Input::has('center-latitude'))
-				$visualization->center_latitude = number_format(Input::get('center-latitude'), 2);
+				$visualization->center_latitude = number_format(Input::get('center-latitude'), 3);
 			if (Input::has('center-longitude'))
-				$visualization->center_longitude = number_format(Input::get('center-longitude'), 2);
+				$visualization->center_longitude = number_format(Input::get('center-longitude'), 3);
 			if (Input::has('published'))
 				$visualization->published = Input::get('published') == 'true' ? true : false;
 			
@@ -239,9 +239,9 @@ class VisualizationController extends \BaseController {
 			if (Input::has('zoom'))
 				$json['zoom'] = number_format($visualization->zoom);
 			if (Input::has('center-latitude'))
-				$json['centerLatitude'] = number_format($visualization->center_latitude, 2);
+				$json['centerLatitude'] = number_format($visualization->center_latitude, 3);
 			if (Input::has('center-longitude'))
-				$json['centerLongitude'] = number_format($visualization->center_longitude, 2);
+				$json['centerLongitude'] = number_format($visualization->center_longitude, 3);
 			if (Input::has('published')) {
 				// Return to view visualization page
 				if ($visualization->published)
@@ -288,8 +288,12 @@ class VisualizationController extends \BaseController {
 					/* Determine Geocode */
 					if (isset($col_val_pairs['Position'])) {
 						if (strtolower($visualization->type) == 'point') {
-							$geocode = GoogleGeocoding::getLatLongForString($col_val_pairs['Position']);
-							if ($geocode) $col_val_pairs['Geocode'] = $geocode;
+							if (preg_match('/^(\-?\d+(\.\d+)?)\s*(\-?\d+(\.\d+)?)$/', $col_val_pairs['Position']))
+								$col_val_pairs['Geocode'] = $col_val_pairs['Position'];
+							else {
+								$geocode = GoogleGeocoding::getLatLongForString($col_val_pairs['Position']);
+								if ($geocode) $col_val_pairs['Geocode'] = $geocode;
+							}
 						} else
 							$col_val_pairs['Geocode'] = $col_val_pairs['Position'];
 					}
@@ -307,8 +311,12 @@ class VisualizationController extends \BaseController {
 					/* Determine Geocode */
 					if (isset($col_val_pairs['Position'])) {
 						if (strtolower($visualization->type) == 'point') {
-							$geocode = GoogleGeocoding::getLatLongForString($col_val_pairs['Position']);
-							if ($geocode) $col_val_pairs['Geocode'] = $geocode;
+							if (preg_match('/^(\-?\d+(\.\d+)?)\s*(\-?\d+(\.\d+)?)$/', $col_val_pairs['Position']))
+								$col_val_pairs['Geocode'] = $col_val_pairs['Position'];
+							else {
+								$geocode = GoogleGeocoding::getLatLongForString($col_val_pairs['Position']);
+								if ($geocode) $col_val_pairs['Geocode'] = $geocode;
+							}
 						} else
 							$col_val_pairs['Geocode'] = $col_val_pairs['Position'];
 					}
@@ -443,8 +451,8 @@ class VisualizationController extends \BaseController {
 					"milestones" => $visualization->milestones,
 					"defaultColumn" => $visualization->default_column,
 					"zoom" => number_format($visualization->zoom),
-					"centerLatitude" => number_format($visualization->center_latitude, 2),
-					"centerLongitude" => number_format($visualization->center_longitude, 2)];
+					"centerLatitude" => number_format($visualization->center_latitude, 3),
+					"centerLongitude" => number_format($visualization->center_longitude, 3)];
 			if ($visualization->default_column != null)
 				$json["defaultStyleId"] = $gft->getColumnStyle($visualization->default_column)->styleId;
 			$gfusion_props = $gft->retrieveGFusionProperties();

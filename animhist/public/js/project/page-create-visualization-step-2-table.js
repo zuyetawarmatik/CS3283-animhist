@@ -400,46 +400,61 @@ function slickGrid_selectedRowsChanged(e, args) {
 	else $("#edit-area-table #row-delete-btn").attr("disabled", false);
 }
 
+function openAddRowVex(presetData) {
+	var colIDArr = [];
+	$.each(gfusionProps.columns, function(i, v) {
+		colIDArr.push(v.columnId);
+	});
+	
+	$vexContent = $("<table></table>");
+	for (var i = 1; i < gridColumns.length; i++) {
+		var column = gridColumns[i];
+		var columnName = column["field"];
+		$vexRow = $("<tr><td></td><td></td></tr>");
+		$("td:first-child", $vexRow).html("<label>" + columnName + "</label>");
+		
+		var columnId = column["id"];
+		var columnRefId = colIDArr.indexOf(columnId);
+		var columnType = gfusionProps.columns[columnRefId].type;
+		$("td:nth-child(2)", $vexRow).html("<input name='" + columnName + "' type='text' data-col-id='" + columnId + "' data-col-type='" + columnType + "'/>");
+		
+		$vexRow.appendTo($vexContent);
+	}
+
+	vex.dialog.open({
+		message: "Add New Row",
+		input: $vexContent[0].outerHTML,
+		afterOpen: function() {
+			if (presetData) {
+				$.each(presetData, function(k, v) {
+					$("input[name='" + k + "']").val(v);
+				});
+			}
+		},
+		callback: function(data){
+			if (data) {
+				var pairs = {};
+				$.each(data, function(key, val) {
+					if (val) pairs[key] = val;
+				});
+				if (Object.keys(pairs).length == 0) return;
+				
+				if (pairs["Milestone"])
+					pairs["Milestone"] = prepareProperDateTime(pairs["Milestone"]);
+				
+				addNewRow(pairs);
+			}
+		},
+		afterClose: function() {
+			// For manual drawing
+			if (drawnShape) drawnShape.setMap(null);
+		}
+	});
+}
+
 $(function() {
 	$("#edit-area-table #row-add-btn").click(function() {
-		var colIDArr = [];
-		$.each(gfusionProps.columns, function(i, v) {
-			colIDArr.push(v.columnId);
-		});
-		
-		$vexContent = $("<table></table>");
-		for (var i = 1; i < gridColumns.length; i++) {
-			var column = gridColumns[i];
-			var columnName = column["field"];
-			$vexRow = $("<tr><td></td><td></td></tr>");
-			$("td:first-child", $vexRow).html("<label>" + columnName + "</label>");
-			
-			var columnId = column["id"];
-			var columnRefId = colIDArr.indexOf(columnId);
-			var columnType = gfusionProps.columns[columnRefId].type;
-			$("td:nth-child(2)", $vexRow).html("<input name='" + columnName + "' type='text' data-col-id='" + columnId + "' data-col-type='" + columnType + "'/>");
-			
-			$vexRow.appendTo($vexContent);
-		}
-		
-		vex.dialog.open({
-			message: "Add New Row",
-			input: $vexContent[0].outerHTML,
-			callback: function(data){
-				if (data) {
-					var pairs = {};
-					$.each(data, function(key, val) {
-						if (val) pairs[key] = val;
-					});
-					if (Object.keys(pairs).length == 0) return;
-					
-					if (pairs["Milestone"])
-						pairs["Milestone"] = prepareProperDateTime(pairs["Milestone"]);
-					
-					addNewRow(pairs);
-				}
-			}
-		});
+		openAddRowVex();
 	});
 	
 	$("#edit-area-table #row-delete-btn").click(function() {

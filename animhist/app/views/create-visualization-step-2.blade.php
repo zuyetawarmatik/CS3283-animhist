@@ -10,7 +10,7 @@
 @stop
 
 @section('js')
-	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=drawing"></script>
 	{{ HTML::script('js/attrchange/attrchange.js'); }}
 	{{ HTML::script('js/spectrum/spectrum.js'); }}
 	{{ HTML::script('js/vex-2.0.1/js/vex.combined.min.js'); }}
@@ -83,7 +83,7 @@
 		<p><span class="h2">Last Updated at: </span>{{ $visualization->getFormattedUpdatedDate() }}</p>
 		<p><br><span class="h2">Type: </span>{{ ucfirst($visualization->type) }}</p>
 		<p class="editable" id="zoom"><span class="h2">Zoom: </span><span class="content">{{ number_format($visualization->zoom) }}</span></p>
-		<p class="editable" id="center"><span class="h2">Center: </span><span class="content">{{ number_format($visualization->center_latitude, 2) }}, {{ number_format($visualization->center_longitude, 2) }}</span></p>
+		<p class="editable" id="center"><span class="h2">Center: </span><span class="content">{{ number_format($visualization->center_latitude, 3) }}, {{ number_format($visualization->center_longitude, 3) }}</span></p>
 		<p class="editable" id="category"><span class="h2">Category: </span><span class="content">{{ $visualization->category }}</span></p>
 		<p class="editable" id="description"><br><span class="h2">Brief Description:</span></p>
 		<p>

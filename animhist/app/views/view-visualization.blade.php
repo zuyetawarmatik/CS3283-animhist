@@ -80,7 +80,7 @@
 		<p><span class="h2">Last Updated at: </span>{{ $visualization->getFormattedUpdatedDate() }}</p>
 		<p><br><span class="h2">Type: </span>{{ ucfirst($visualization->type) }}</p>
 		<p id="zoom"><span class="h2">Zoom: </span>{{ number_format($visualization->zoom) }}</p>
-		<p id="center"><span class="h2">Center: </span>{{ number_format($visualization->center_latitude, 2) }}, {{ number_format($visualization->center_longitude, 2) }}</p>
+		<p id="center"><span class="h2">Center: </span>{{ number_format($visualization->center_latitude, 3) }}, {{ number_format($visualization->center_longitude, 3) }}</p>
 		<p><span class="h2">Category: </span>{{ $visualization->category }}</p>
 		<p><br><span class="h2">Brief Description:</span></p>
 		<p>

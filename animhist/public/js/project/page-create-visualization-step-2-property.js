@@ -274,7 +274,7 @@ function getMapCurrentZoom() {
 
 function getMapCurrentCenter() {
 	if (map != undefined) {
-		$("[name='centerlat']").val(map.getCenter().lat().toFixed(2));
-		$("[name='centerlong']").val(map.getCenter().lng().toFixed(2));
+		$("[name='centerlat']").val(map.getCenter().lat().toFixed(3));
+		$("[name='centerlong']").val(map.getCenter().lng().toFixed(3));
 	}
 }
