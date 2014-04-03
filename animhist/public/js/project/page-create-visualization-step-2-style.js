@@ -291,8 +291,8 @@ function styleSlickGrid_undo() {
 
 function styleSlickGrid_selectedRowsChanged(e, args) {
 	var selectedRows = args["rows"];
-	if (!selectedRows.length) $("#edit-area-style #delete-row-btn").attr("disabled", true);
-	else $("#edit-area-style #delete-row-btn").attr("disabled", false);
+	if (!selectedRows.length) $("#edit-area-style #row-delete-btn").attr("disabled", true);
+	else $("#edit-area-style #row-delete-btn").attr("disabled", false);
 }
 
 function styleSlickGrid_addNewRow(e, args) {
@@ -319,7 +319,7 @@ function findStyleMaxLevel() {
 }
 
 $(function() {
-	$("#edit-area-style #delete-row-btn").click(function() {
+	$("#edit-area-style #row-delete-btn").click(function() {
 		var rowsID = styleDataView.mapRowsToIds(styleSlickGrid.getSelectedRows());
 		$.each(rowsID, function(i, val) {
 			styleDataView.deleteItem(val);

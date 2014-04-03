@@ -55,7 +55,7 @@
 	</div>
 	<div id="edit-area-table" class="current">
 		<div id="toolbar">	
-			<button id="delete-row-btn" title="Delete Row(s)" disabled><i>&#57597;</i></button>
+			<button id="row-delete-btn" title="Delete Row(s)" disabled><i>&#57597;</i></button>
 			<ul id="filter-list"></ul>
 		</div>
 		<div id="table"></div>
@@ -63,7 +63,7 @@
 	<div id="edit-area-style">
 		<div id="toolbar">
 			<button id="save-btn" class="blue-btn" title="Save Style"><i>&#57440;</i></button>
-			<button id="delete-row-btn" title="Delete Style Row(s)" disabled><i>&#57597;</i></button>
+			<button id="row-delete-btn" title="Delete Style Row(s)" disabled><i>&#57597;</i></button>
 			<span class="styled-select">
 				<select id="style-column-select">
 				</select>

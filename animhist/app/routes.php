@@ -15,8 +15,8 @@
 	
 Route::get('/', function()
 {
-	$gft = new GoogleFusionTable('1yy9FoPRlCVk5ncS5rfbekDNnyUYpemOPcv5CF0Wj', 'polygon');
-	return json_encode($gft->retrieveGFusionData());
+	//$gft = new GoogleFusionTable('1yy9FoPRlCVk5ncS5rfbekDNnyUYpemOPcv5CF0Wj', 'polygon');
+	//return json_encode($gft->retrieveGFusionData());
 });
 
 
