@@ -109,6 +109,9 @@ class VisualizationController extends \BaseController {
 				$gf_column_list = self::prepareColumnListSentToGFusion($column_list, Input::get('type'));
 				$fusion_table_id = GoogleFusionTable::create($visualization_name, Input::get('type'), $gf_column_list);
 			} else if (Input::get('option') == 'upload') {
+				// Default is milestone type year
+				$visualization->milestone_format = 'year';
+				
 				$uploaded_file = Input::file('upload');
 				if ($uploaded_file->getMimeType() != 'text/plain' || $uploaded_file->getClientOriginalExtension() != 'csv')
 					return JSONResponseUtility::ValidationError(['upload'=>['Wrong uploaded file type.']]);
@@ -125,7 +128,6 @@ class VisualizationController extends \BaseController {
 			
 			if ($fusion_table_id) {
 				$visualization->fusion_table_id = $fusion_table_id;
-				
 				$ref_column_list = Input::get('option') == 'manual' ? $gf_column_list : $table_info['columns'];
 				 
 				foreach ($ref_column_list as $gf_column) {
