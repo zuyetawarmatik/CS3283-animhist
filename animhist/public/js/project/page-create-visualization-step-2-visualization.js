@@ -64,6 +64,9 @@ function mapInitialize() {
 		drawingControlOptions: {
 			position: google.maps.ControlPosition.TOP_CENTER,
 			drawingModes: viProps["type"] == "point" ? [google.maps.drawing.OverlayType.MARKER] : [google.maps.drawing.OverlayType.POLYGON]
+		},
+		polygonOptions: {
+			strokeWeight: 1
 		}
 	});
 	drawingManager.setMap(map);
@@ -74,10 +77,19 @@ function mapInitialize() {
 		case google.maps.drawing.OverlayType.MARKER:
 			var lat = drawnShape.getPosition().lat().toFixed(3);
 			var lng = drawnShape.getPosition().lng().toFixed(3);
-			openAddRowVex({Position: lat + " " + lng}, drawnShape);
+			openAddRowVex({Position: lat + " " + lng});
 			break;
 		case google.maps.drawing.OverlayType.POLYGON:
-			console.log(drawnShape.getPaths());
+			var vertices = drawnShape.getPath().j;
+			var verticesStr = "";
+			for (var i = 0; i < vertices.length; i++) {
+				var lat = vertices[i].A.toFixed(3);
+				var lng = vertices[i].k.toFixed(3);
+				verticesStr += lat + "," + lng;
+				if (i < vertices.length - 1) verticesStr += " ";
+			}
+			var kmlStr = "<Polygon><outerBoundaryIs><LinearRing><coordinates>" + verticesStr + "</coordinates></LinearRing></outerBoundaryIs></Polygon>";
+			openAddRowVex({Position: kmlStr});
 			break;
 		}
 	});
