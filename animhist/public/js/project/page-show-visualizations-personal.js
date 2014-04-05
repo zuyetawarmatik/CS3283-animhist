@@ -39,7 +39,7 @@ $(function() {
 					$('#follow-btn').data('url', link.replace("/unfollow", "/follow"));
 				}
 				
-				$("#num-followers").html(response["followers"]);
+				$("#num-followers").html(response["numFollowers"]);
 			}
 		});
 	});

@@ -38,12 +38,7 @@
 	
 	#button-area {
 		#publish-btn {
-			width: 100%;
 			margin-bottom: 0.7rem;
-		}
-		
-		#delete-btn {
-			width: 100%;
 		}
 	}
 }

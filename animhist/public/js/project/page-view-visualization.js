@@ -217,24 +217,26 @@ $(function() {
 
 $(function() {
 	var commentArea = $("#comment-area");
+	var commentAreaTitle;
 	
 	$("#comment-area-title").hover(function() {
+		commentAreaTitle = $(this).html();
 		if (commentArea.hasClass("expanded"))
 			$(this).html("&#57636;");
 		else
 			$(this).html("&#57632;");
 	}, function() {
-		$(this).html("12 comments");
+		$(this).html(commentAreaTitle);
 	});
 	
 	$("#comment-area-title").click(function() {
 		var visualArea = $("#visualization-area");
 		if (commentArea.hasClass("expanded")) {
-			visualArea.stop(true).animate({bottom: "60px"}, 400, mapResizeTrigger);
-			commentArea.stop(true).animate({height: "60px"}, 400);
+			visualArea.stop(true).animate({bottom: "6rem"}, 400, mapResizeTrigger);
+			commentArea.stop(true).animate({height: "6rem"}, 400);
 		} else {
-			visualArea.stop(true).animate({bottom: "300px"}, 400, mapResizeTrigger);
-			commentArea.stop(true).animate({height: "300px"}, 400);
+			visualArea.stop(true).animate({bottom: "30rem"}, 400, mapResizeTrigger);
+			commentArea.stop(true).animate({height: "30rem"}, 400);
 		}
 		commentArea.toggleClass("expanded");
 	});

@@ -437,14 +437,24 @@ class VisualizationController extends \BaseController {
 		if (!$visualization || $visualization->user->username != $username) goto fail;
 		
 		if (Input::has('content')) {
+			$user = Auth::user();
+			
 			$comment = new Comment();
-			$comment->user_id = Auth::user()->id;
+			$comment->user_id = $user->id;
 			$comment->visualization_id = $id;
 			$comment->content = Input::get('content');
 			$comment->save();
-			return ResponseUtility::success();
+			
+			$ret = [];
+			$ret['createdAt'] = $comment->getFormattedCreatedDate();
+			$ret['userDisplayName'] = $user->display_name;
+			$ret['userAvatarURL'] = $user->avatar->url('thumb');
+			$ret['userURL'] = URL::route('user.show', $user->username);
+			$ret['numComments'] = count($visualization->comments);
+			
+			return Response::json($ret);
 		} else {
-			return ResponseUtility::success();
+			return Response::json([]);
 		}
 		
 		fail: return ResponseUtility::badRequest();

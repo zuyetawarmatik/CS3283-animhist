@@ -22,7 +22,7 @@
 	@if (true)
 		<div id="comment-area">
 			<div id="comment-area-title">
-				{{ count($visualization->comments) }} comments
+				{{ count($visualization->comments) }} comment(s)
 			</div>
 			<ul id="comment-list">
 			@foreach ($visualization->comments as $comment)
@@ -31,7 +31,7 @@
 						<a href="{{ URL::route('user.show', $comment->user->username) }}"><img class="avatar" src="{{ $comment->user->avatar->url('thumb') }}" /></a>
 					</div>
 					<div class="comment-main">
-						<p class="comment-info"><a href="{{ URL::route('user.show', $comment->user->username) }}" class="username">Richard Tan</a> - <span class="time">$comment->getFormattedCreatedDate()</span></p>
+						<p class="comment-info"><a href="{{ URL::route('user.show', $comment->user->username) }}" class="username">{{$comment->user->display_name}}</a> - <span class="time">{{$comment->getFormattedCreatedDate()}}</span></p>
 						<p class="comment-content">{{ $comment->content }}</p>
 					</div>
 				</li>

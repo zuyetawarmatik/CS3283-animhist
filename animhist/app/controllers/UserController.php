@@ -138,7 +138,8 @@ class UserController extends \BaseController {
 
 	public function updatePassword($username)
 	{
-		if (Auth::user()->username == $username) {
+		$user = Auth::user();		
+		if ($user->username == $username) {
 			$rules = ['password-old' => 'required', 
 				  	  'password-new' => 'required|min:5',
 					  'password-retype' => 'required|same:password-new'];
@@ -146,10 +147,9 @@ class UserController extends \BaseController {
 			if ($validator->fails())
 				return JSONResponseUtility::ValidationError($validator->getMessageBag()->toArray());
 			
-			if (!Hash::check(Input::get('password-old'), Auth::user()->password))
+			if (!Hash::check(Input::get('password-old'), $user->password))
 				return JSONResponseUtility::ValidationError(['old-password'=>['Wrong old password.']]);
 			
-			$user = Auth::user();
 			$user->password = Hash::make(Input::get('password-new'));
 			$user->save();
 		} else {
@@ -191,18 +191,19 @@ class UserController extends \BaseController {
 		$following_user = User::where('username', $username)->first();
 		if (!$following_user) return JSONResponseUtility::ValidationError(['user'=>['User to follow does not exist.']]);
 		
+		$follower_id = Auth::user()->id;
 		$following_id = $following_user->id;
-		if (Auth::user()->id == $following_id) return JSONResponseUtility::ValidationError(['user'=>['User and followed user are the same.']]);
+		if ($follower_id == $following_id) return JSONResponseUtility::ValidationError(['user'=>['User and followed user are the same.']]);
 		
-		$existing_follow = Follow::where('user_id', Auth::user()->id)->where('following_id', $following_id)->first();
+		$existing_follow = Follow::where('user_id', $follower_id)->where('following_id', $following_id)->first();
 		if ($existing_follow) return JSONResponseUtility::ValidationError(['follow'=>['Already following this person.']]);
 		
 		$follow = new Follow();
-		$follow->user_id = Auth::user()->id;
+		$follow->user_id = $follower_id;
 		$follow->following_id = $following_id;
 		$follow->save();
 		
-		return Response::json(['followers'=>count(User::find($following_id)->followers)]);
+		return Response::json(['numFollowers'=>count(User::find($following_id)->followers)]);
 	}
 	
 	public function unfollowUser($username)
@@ -210,16 +211,17 @@ class UserController extends \BaseController {
 		$following_user = User::where('username', $username)->first();
 		if (!$following_user) return JSONResponseUtility::ValidationError(['user'=>['User to unfollow does not exist.']]);
 		
+		$follower_id = Auth::user()->id;
 		$following_id = $following_user->id;
-		if (Auth::user()->id == $following_id) return JSONResponseUtility::ValidationError(['user'=>['User and followed user are the same.']]);
+		if ($follower_id == $following_id) return JSONResponseUtility::ValidationError(['user'=>['User and followed user are the same.']]);
 		
-		$existing_follow = Follow::where('user_id', Auth::user()->id)->where('following_id', $following_id)->first();
+		$existing_follow = Follow::where('user_id', $follower_id)->where('following_id', $following_id)->first();
 		if (!$existing_follow)
 			return JSONResponseUtility::ValidationError(['unfollow'=>['You haven\'t followed this user yet to unfollow.']]);
 		
 		Follow::destroy($existing_follow->id);
 		
-		return Response::json(['followers'=>count(User::find($following_id)->followers)]);
+		return Response::json(['numFollowers'=>count(User::find($following_id)->followers)]);
 	}
 	
 	public function logout()
