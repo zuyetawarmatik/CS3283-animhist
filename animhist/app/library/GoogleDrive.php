@@ -54,7 +54,7 @@ class GoogleDrive {
 		$response = Request::get('https://www.googleapis.com/drive/v2/files?q='.$query)
 							->addHeaders(['Authorization'=>'Bearer '.self::getGDriveOAuthAccessToken()])
 							->send();
-		if ($response->code == 401) {
+		if ($response->code == Constant::STATUS_UNAUTHORIZED) {
 			$access_token = self::refreshGDriveOAuthAccessToken();
 			$response = Request::get('https://www.googleapis.com/drive/v2/files?q='.$query)
 						->addHeaders(['Authorization'=>'Bearer '.$access_token])
@@ -79,7 +79,7 @@ class GoogleDrive {
 					->body(json_encode($data))
 					->send();
 		
-		if ($response->code == 401) {
+		if ($response->code == Constant::STATUS_UNAUTHORIZED) {
 			$access_token = self::refreshGDriveOAuthAccessToken();
 			$response = Request::post($url)
 						->sendsJson()

@@ -36,7 +36,7 @@ class GoogleFusionTable {
 		->addHeaders(['Authorization'=>'Bearer '.$access_token])
 		->send();
 	
-		if ($response->code == 401) {
+		if ($response->code == Constant::STATUS_UNAUTHORIZED) {
 			$access_token = self::refreshGFusionOAuthAccessToken();
 			$response = Request::get($this->getGFusionPrefixURL())
 			->addHeaders(['Authorization'=>'Bearer '.$access_token])
@@ -169,7 +169,7 @@ class GoogleFusionTable {
 		->body(json_encode($data))
 		->send();
 	
-		if ($response->code == 401) {
+		if ($response->code == Constant::STATUS_UNAUTHORIZED) {
 			$access_token = self::refreshGFusionOAuthAccessToken();
 			$response = Request::post($this->getGFusionPrefixURL().'/columns')
 			->sendsJson()
@@ -201,7 +201,7 @@ class GoogleFusionTable {
 		->body(json_encode($data))
 		->send();
 	
-		if ($response->code == 401) {
+		if ($response->code == Constant::STATUS_UNAUTHORIZED) {
 			$access_token = self::refreshGFusionOAuthAccessToken();
 			$response = Request::put($this->getGFusionPrefixURL().'/columns/'.$col_id)
 			->sendsJson()
@@ -231,7 +231,7 @@ class GoogleFusionTable {
 		->addHeaders(['Authorization'=>'Bearer '.$access_token])
 		->send();
 	
-		if ($response->code == 401) {
+		if ($response->code == Constant::STATUS_UNAUTHORIZED) {
 			$access_token = self::refreshGFusionOAuthAccessToken();
 			$response = Request::delete($this->getGFusionPrefixURL().'/columns/'.$col_id)
 			->addHeaders(['Authorization'=>'Bearer '.$access_token])
@@ -253,7 +253,7 @@ class GoogleFusionTable {
 		->addHeaders(['Authorization'=>'Bearer '.$access_token])
 		->send();
 		
-		if ($response->code == 401) {
+		if ($response->code == Constant::STATUS_UNAUTHORIZED) {
 			$access_token = self::refreshGFusionOAuthAccessToken();
 			$response = Request::get($this->getGFusionPrefixURL().'/styles')
 			->addHeaders(['Authorization'=>'Bearer '.$access_token])
@@ -331,7 +331,7 @@ class GoogleFusionTable {
 		->body(json_encode($style))
 		->send();
 
-		if ($response->code == 401) {
+		if ($response->code == Constant::STATUS_UNAUTHORIZED) {
 			$access_token = self::refreshGFusionOAuthAccessToken();
 			$response = Request::post($this->getGFusionPrefixURL().'/styles')
 			->addHeaders(['Authorization'=>'Bearer '.$access_token])
@@ -360,7 +360,7 @@ class GoogleFusionTable {
 			->body(json_encode($style))
 			->send();
 			
-			if ($response->code == 401) {
+			if ($response->code == Constant::STATUS_UNAUTHORIZED) {
 				$access_token = self::refreshGFusionOAuthAccessToken();
 				$response = Request::put($this->getGFusionPrefixURL().'/styles/'.$style_id)
 				->addHeaders(['Authorization'=>'Bearer '.$access_token])
@@ -387,7 +387,7 @@ class GoogleFusionTable {
 			->addHeaders(['Authorization'=>'Bearer '.$access_token])
 			->send();
 			
-			if ($response->code == 401) {
+			if ($response->code == Constant::STATUS_UNAUTHORIZED) {
 				$access_token = self::refreshGFusionOAuthAccessToken();
 				$response = Request::delete($this->getGFusionPrefixURL().'/styles/'.$style_id)
 				->addHeaders(['Authorization'=>'Bearer '.$access_token])
@@ -408,7 +408,7 @@ class GoogleFusionTable {
 						->addHeaders(['Authorization'=>'Bearer '.$access_token])
 						->send();
 		
-		if ($response->code == 401) {
+		if ($response->code == Constant::STATUS_UNAUTHORIZED) {
 			$access_token = self::refreshGFusionOAuthAccessToken();
 			$response = Request::delete($this->getGFusionPrefixURL())
 						->addHeaders(['Authorization'=>'Bearer '.$access_token])
@@ -429,7 +429,7 @@ class GoogleFusionTable {
 					->attach(['file'=>$file_path])
 					->send();
 		
-		if ($response->code == 401) {
+		if ($response->code == Constant::STATUS_UNAUTHORIZED) {
 			$access_token = self::refreshGFusionOAuthAccessToken();
 			// Reupload data
 			$response = Request::post('https://www.googleapis.com/upload/fusiontables/v1/tables/'.$this->gf_table_id.'/import')
@@ -456,7 +456,7 @@ class GoogleFusionTable {
 		->addHeaders(['Authorization'=>'Bearer '.$access_token])
 		->send();
 	
-		if ($response->code == 401) {
+		if ($response->code == Constant::STATUS_UNAUTHORIZED) {
 			$access_token = self::refreshGFusionOAuthAccessToken();
 			$response = Request::$method('https://www.googleapis.com/fusiontables/v1/query?typed=false&sql='.$encoded_sql)
 			->addHeaders(['Authorization'=>'Bearer '.$access_token])
@@ -521,7 +521,7 @@ class GoogleFusionTable {
 					->body(json_encode($data))
 					->send();
 		
-		if ($response->code == 401) {
+		if ($response->code == Constant::STATUS_UNAUTHORIZED) {
 			$access_token = self::refreshGFusionOAuthAccessToken();
 			// Reupload data
 			$response = Request::post('https://www.googleapis.com/fusiontables/v1/tables')
