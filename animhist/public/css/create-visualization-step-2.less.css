@@ -8,14 +8,16 @@
 @import (less) "element/right/button-area.less.css";
 
 #right-area {
-	z-index: 500;
-	
 	>:not(.current) {
 		display: none;
 	}
 	
 	#description-area {
 		bottom: 14.7rem;
+		
+		&.edit-page {
+			bottom: 10rem;
+		}
 		
 		.edit-a, .repos-a {
 			font-family: Conv_icomoon;

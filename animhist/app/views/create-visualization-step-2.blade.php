@@ -76,7 +76,7 @@
 @stop
 
 @section('right-area')
-	<div id="description-area">
+	<div id="description-area" class="{{ $visualization->published ? 'edit-page' : '' }}">
 		<h1 class="editable" id="displayname"><span class="content">{{ $visualization->display_name }}</span></h1>
 		<p><br><span class="h2">Author: </span>{{ $visualization->user->display_name }}</p>
 		<p><span class="h2">Created at: </span>{{ $visualization->getFormattedCreatedDate() }}</p>
