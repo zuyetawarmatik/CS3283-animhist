@@ -1,20 +1,30 @@
+var CSRFToken;
+
 $(function() {
-	$("#visualization-list").on({
+	CSRFToken = $("[name='_token']").val();	
+	$visualizationList = $("#visualization-list");
+	$visualizationInfoP = $(".visualizations-info p");
+	$numVisualizations = $("#num-visualizations .content");
+	$categoryList = $("#category-list");
+});
+
+$(function() {
+	$visualizationList.on({
 		mouseenter: function() {
-			$(".overlay", this).stop(true).show('fade', 400);
+			$("div.overlay", this).stop(true).show('fade', 400);
 		},
 		mouseleave: function() {
-			$(".overlay", this).hide('fade', 400);
+			$("div.overlay", this).hide('fade', 400);
 		}
-	}, ".visualization-item");
+	}, "li.visualization-item");
 	
-	$("#visualization-list").on("click", ".overlay",
+	$visualizationList.on("click", "div.overlay",
 		function() {
 			parent.changeIFrameSrc($(this).data("url"), true);
 		}
 	);
 	
-	$("#visualization-list").on("click", "a:not(.del)",
+	$visualizationList.on("click", "a:not(.del)",
 		function(e) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -22,7 +32,7 @@ $(function() {
 		}
 	);
 	
-	$("#visualization-list").on("click", "a.del",
+	$visualizationList.on("click", "a.del",
 		function(e) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -30,8 +40,7 @@ $(function() {
 			$.ajax({
 				url: $this.data("url"),
 				type: "DELETE",
-				headers: {'X-CSRF-Token': $("[name='_token']").val()},
-				global: false,
+				headers: {'X-CSRF-Token': CSRFToken},
 				error: function() {
 					notyError({
 						text: "Visualization deletion failed"
@@ -43,20 +52,20 @@ $(function() {
 						layout: 'bottomCenter',
 						callback: {
 							afterShow: function() {
-								$thisLi = $this.closest(".visualization-item");
+								$thisLi = $this.closest("li.visualization-item");
 								var category = $thisLi.data("vi-category");
 								$thisLi.remove();
-								var sameCatCount = $(".visualization-item[data-vi-category='" + category + "']").length;
+								var sameCatCount = $("li.visualization-item[data-vi-category='" + category + "']").length;
 								if (sameCatCount == 0) {
-									$(".category-item").each(function() {
+									$("li.category-item").each(function() {
 										if ($(".category-caption", $(this)).html() == category) {
 											$(this).remove();
 											return false;
 										}
 									});
 								}
-								var currentNumVis = $("#description-area #num-visualizations .content").html();
-								$("#description-area #num-visualizations .content").html(currentNumVis - 1);
+								var currentNumVis = $numVisualizations.html();
+								$numVisualizations.html(currentNumVis - 1);
 							}
 						}
 					});
@@ -77,27 +86,27 @@ $(function() {
 	}, "#category-list > li:not(.selected)");
 	
 	/* Right category click */
-	$("#category-list").on("click", ".category-item", function() {
-		$(".category-item.selected .category-bck").attr("style", "");
-		$(".category-item.selected").removeClass("selected");
+	$categoryList.on("click", ".category-item", function() {
+		$("li.category-item.selected .category-bck").attr("style", "");
+		$("li.category-item.selected").removeClass("selected");
 		
 		$(this).addClass("selected");
 		
 		var category = $(".category-caption", this).html();
-		var username = $(".visualizations-info p").data("username");
+		var username = $visualizationInfoP.data("username");
 		if (category == "All") {
-			$(".visualization-item").show();
+			$("li.visualization-item").show();
 			if (username !== undefined)
-				$(".visualizations-info p").html(username + "'s all visualizations:");
+				$visualizationInfoP.html(username + "'s all visualizations:");
 			else
-				$(".visualizations-info p").html("Showing all visualizations:");
+				$visualizationInfoP.html("Showing all visualizations:");
 		} else {
-			$(".visualization-item:not([data-vi-category='" + category + "'])").hide();
-			$(".visualization-item[data-vi-category='" + category + "']").show();
+			$("li.visualization-item:not([data-vi-category='" + category + "'])").hide();
+			$("li.visualization-item[data-vi-category='" + category + "']").show();
 			if (username !== undefined)
-				$(".visualizations-info p").html(username + "'s visualizations of category <span style='font-style:italic'>" + category + "</span>:");
+				$visualizationInfoP.html(username + "'s visualizations of category <span style='font-style:italic'>" + category + "</span>:");
 			else
-				$(".visualizations-info p").html("Showing visualizations of category <span style='font-style:italic'>" + category + "</span>:");
+				$visualizationInfoP.html("Showing visualizations of category <span style='font-style:italic'>" + category + "</span>:");
 		}
 	});
 });

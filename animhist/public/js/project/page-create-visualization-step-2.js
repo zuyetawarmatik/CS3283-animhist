@@ -1,4 +1,4 @@
-var CSRFToken, userID, visualizationID, postURLPrefix;
+var CSRFToken, postURLPrefix;
 
 $(function() {
 	CSRFToken = $("[name='hidden-form'] [name='_token']").val();
@@ -21,8 +21,8 @@ $(function() {
 	$playBtn = $("#play-btn");
 	$rightArea = $("#right-area");
 	
-	userID = $editArea.data("user-id");
-	visualizationID = $editArea.data("vi-id");
+	var userID = $editArea.data("user-id");
+	var visualizationID = $editArea.data("vi-id");
 	postURLPrefix = "/" + userID + "/visualization/" + visualizationID;
 });
 

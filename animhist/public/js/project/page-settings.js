@@ -68,7 +68,6 @@ $(function() {
 						url: "/" + $("[name='settings-form']").data("user-id") + "/updatepassword",
 						type: "POST",
 						headers: {'X-CSRF-Token': $("[name='_token']").val()},
-						global: false,
 						data: formData,
 						error: function(response) {
 							var alertSt = "";

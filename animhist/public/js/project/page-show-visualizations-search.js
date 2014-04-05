@@ -1,12 +1,16 @@
+$(function() {
+	$searchForm = $("[name='search-form']");
+	$searchBox = $("[name='search-box']");
+});
+
 function search(query) {
 	$.ajax({
-		url: $("[name='search-form']")[0].action,
+		url: $searchForm[0].action,
 		type: "POST",
 		data: {q: query},
-		global: false,
 		beforeSend: function() {
-			$("#visualization-list").empty();
-			$(".visualizations-info p").html("Searched results for <span style='font-style:italic'>'" + query + "':</span>");
+			$visualizationList.empty();
+			$visualizationInfoP.html("Searched results for <span style='font-style:italic'>'" + query + "':</span>");
 		},
 		success: function(response) {
 			$.each(response.visualizations, function(i, vi) {
@@ -27,13 +31,13 @@ function search(query) {
 										<p class='visualization-author'><a href='" + vi.userURL + "' class='username'>" + vi.userDisplayName + "</a></p>\
 									</div>\
 								</li>");
-				$thisViLi.appendTo("#visualization-list");
+				$thisViLi.appendTo($visualizationList);
 			});
 			
-			$("#category-list li:not(:first-child)").remove();
-			$("#category-list li:first-child").addClass("selected");
+			$categoryList.find("li:not(:first-child)").remove();
+			$categoryList.find("li:first-child").addClass("selected");
 			$.each(response.categories, function(i, cat) {
-				$("<li class='category-item'><span class='category-bck'></span><span class='category-caption'>" + cat + "</span></li>").appendTo("#category-list");
+				$("<li class='category-item'><span class='category-bck'></span><span class='category-caption'>" + cat + "</span></li>").appendTo($categoryList);
 			});
 		}
 	});
@@ -46,8 +50,8 @@ function initialSearch() {
 
 $(function() {
 	initialSearch();
-	$("[name='search-form']").submit(function(event) {
+	$searchForm.submit(function(event) {
 		event.preventDefault();
-		search($("[name='search-box']").val());
+		search($searchBox.val());
 	});
 });

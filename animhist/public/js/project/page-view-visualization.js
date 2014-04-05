@@ -3,10 +3,29 @@ var map, gfusionLayer;
 var playingTimer;
 var playingTimeline;
 var currentTimelineMilestoneId;
+var CSRFToken, postURLPrefix;
+
+$(function() {
+	CSRFToken = $("[name='_token']").val();
+	
+	$visualizationArea = $("#visualization-area");
+	$commentArea = $("#comment-area");
+	$descriptionArea = $("#description-area");
+	$timelineList = $("#timeline-list");
+	$commentList = $("#comment-list");
+	$playBtn = $("#play-btn");
+	$commentAreaTitle = $("#comment-area-title");
+	$commentForm = $("[name='comment-form']");
+	$followBtn = $('#follow-btn');
+	
+	var userID = $visualizationArea.data("user-id");
+	var visualizationID = $visualizationArea.data("vi-id");
+	postURLPrefix = "/" + userID + "/visualization/" + visualizationID;
+});
 
 function retrieveVisualizationProperty() {
 	$.ajax({
-		url: getPOSTURLPrefix() + "/info?request=property",
+		url: postURLPrefix + "/info?request=property",
 		type: "GET",
 		global: false,
 		success: function(response) {
@@ -18,19 +37,19 @@ function retrieveVisualizationProperty() {
 
 function retrieveTimeline() {
 	$.ajax({
-		url: getPOSTURLPrefix() + "/info?request=timeline",
+		url: postURLPrefix + "/info?request=timeline",
 		type: "GET",
 		global: false,
 		success: function(response) {
-			$("#timeline-list").empty();
+			$timelineList.empty();
 			
 			playingTimeline = response;
 			
 			for (var i = 0; i < playingTimeline.length; i++) {
-				$("<li class='timeline-item'>" + playingTimeline[i] + "</li>").appendTo("#timeline-list");
+				$("<li class='timeline-item'>" + playingTimeline[i] + "</li>").appendTo($timelineList);
 			}
 			
-			$("#timeline-list").attr("data-milestone", playingTimeline[currentTimelineMilestoneId = 0]);
+			$timelineList.attr("data-milestone", playingTimeline[currentTimelineMilestoneId = 0]);
 		}
 	});	
 }
@@ -46,7 +65,7 @@ $(window).on('vi_property_loaded', function() {
 });
 
 $(function() {
-	$("#description-area .editable .repos-a").on("click", function() {
+	$descriptionArea.find(".repos-a").on("click", function() {
 		if (map !== undefined) {
 			var field = $(this).parent().attr("id");
 			if (field == "zoom")
@@ -102,23 +121,23 @@ function updateLayerQuery(milestone) {
 }
 
 function togglePlayVisualization() {
-	$("#play-btn").attr("data-is-playing", $("#play-btn").attr("data-is-playing") == "false" ? "true" : "false");
+	$playBtn.attr("data-is-playing", $playBtn.attr("data-is-playing") == "false" ? "true" : "false");
 }
 
 $(function() {
-	$("#timeline-list").attrchange({
+	$timelineList.attrchange({
 		trackValues: true, 
 		callback: function (event) {
 			if (event.attributeName == "data-milestone") {
-				$(".timeline-item.focused").removeClass("focused");
+				$("li.timeline-item.focused").removeClass("focused");
 				currentTimelineMilestoneId = $.inArray(event.newValue, playingTimeline);
-				$(".timeline-item:nth-child(" + currentTimelineMilestoneId + ")").addClass("focused");
+				$("li.timeline-item:nth-child(" + currentTimelineMilestoneId + ")").addClass("focused");
 				updateLayerQuery(event.newValue);
 			}
 		}
 	});
 	
-	$("#play-btn").attrchange({
+	$playBtn.attrchange({
 		trackValues: true,
 		callback: function (event) {
 			if (event.attributeName == "data-is-playing") {
@@ -126,7 +145,7 @@ $(function() {
 					$(this).html("<i>&#57611;</i>");
 					playingTimer = window.setInterval(function() {
 						var nextTimelineMilestoneId = (currentTimelineMilestoneId + 1) % playingTimeline.length;
-						$("#timeline-list").attr("data-milestone", playingTimeline[nextTimelineMilestoneId]);
+						$timelineList.attr("data-milestone", playingTimeline[nextTimelineMilestoneId]);
 					}, 1000);
 				} else if (event.newValue == "false") {
 					$(this).html("<i>&#57610;</i>");
@@ -138,22 +157,22 @@ $(function() {
 });
 
 $(function() {
-	$("#comment-list").on("click", "a",
+	$commentList.on("click", "a",
 		function(e) {
 			e.preventDefault();
 			parent.changeIFrameSrc($(this).attr("href"), true);
 		}
 	);
 	
-	$("#play-btn").click(function() {
+	$playBtn.click(function() {
 		if (playingTimeline.length > 0) {
 			togglePlayVisualization();
 		}
 	});
 	
-	$("#timeline-list").on("click", ".timeline-item", function() {
+	$timelineList.on("click", "li.timeline-item", function() {
 		if (!$(this).hasClass("focused")) {
-			$("#timeline-list").attr("data-milestone", $(this).html());
+			$timelineList.attr("data-milestone", $(this).html());
 		}
 	});
 	
@@ -161,13 +180,13 @@ $(function() {
 		parent.changeIFrameSrc($(this).data('url'), true);
 	});
 	
-	$('#follow-btn').click(function() {
+	$followBtn.click(function() {
 		var link = $(this).data('url');
 		$.ajax({
 			url: link,
 			type: "POST",
 			global: false,
-			headers: {'X-CSRF-Token': $("[name='_token']").val()},
+			headers: {'X-CSRF-Token': CSRFToken},
 			error: function(response) {
 				var alertSt = "";
 				$.each(response["responseJSON"]["error"], function(key, val) {
@@ -186,17 +205,17 @@ $(function() {
 				}
 				
 				if (link.substr(link.length - 7, link.length) === "/follow") {
-					$('#follow-btn').html('<i>&#57551;</i>Unfollow The Author');
-					$('#follow-btn').data('url', link.replace("/follow", "/unfollow"));
+					$followBtn.html('<i>&#57551;</i>Unfollow The Author')
+								.data('url', link.replace("/follow", "/unfollow"));
 				} else {
-					$('#follow-btn').html('<i>&#57552;</i>Follow The Author');
-					$('#follow-btn').data('url', link.replace("/unfollow", "/follow"));
+					$followBtn.html('<i>&#57552;</i>Follow The Author')
+								.data('url', link.replace("/unfollow", "/follow"));
 				}
 			}
 		});
 	});
 	
-	$("[name='comment-form']").submit(function(e) {
+	$commentForm.submit(function(e) {
 		e.preventDefault();
 		$.ajax({
 			url: this.action,
@@ -216,12 +235,10 @@ $(function() {
 });
 
 $(function() {
-	var commentArea = $("#comment-area");
 	var commentAreaTitle;
-	
-	$("#comment-area-title").hover(function() {
+	$commentAreaTitle.hover(function() {
 		commentAreaTitle = $(this).html();
-		if (commentArea.hasClass("expanded"))
+		if ($commentArea.hasClass("expanded"))
 			$(this).html("&#57636;");
 		else
 			$(this).html("&#57632;");
@@ -229,27 +246,14 @@ $(function() {
 		$(this).html(commentAreaTitle);
 	});
 	
-	$("#comment-area-title").click(function() {
-		var visualArea = $("#visualization-area");
-		if (commentArea.hasClass("expanded")) {
-			visualArea.stop(true).animate({bottom: "6rem"}, 400, mapResizeTrigger);
-			commentArea.stop(true).animate({height: "6rem"}, 400);
+	$commentAreaTitle.click(function() {
+		if ($commentArea.hasClass("expanded")) {
+			$visualizationArea.stop(true).animate({bottom: "6rem"}, 400, mapResizeTrigger);
+			$commentArea.stop(true).animate({height: "6rem"}, 400);
 		} else {
-			visualArea.stop(true).animate({bottom: "30rem"}, 400, mapResizeTrigger);
-			commentArea.stop(true).animate({height: "30rem"}, 400);
+			$visualizationArea.stop(true).animate({bottom: "30rem"}, 400, mapResizeTrigger);
+			$commentArea.stop(true).animate({height: "30rem"}, 400);
 		}
-		commentArea.toggleClass("expanded");
+		$commentArea.toggleClass("expanded");
 	});
 });
-
-function getUserID() {
-	return $("#visualization-area").data("user-id");
-}
-
-function getVisualizationID() {
-	return $("#visualization-area").data("vi-id");
-}
-
-function getPOSTURLPrefix() {
-	return "/" + getUserID() + "/visualization/" + getVisualizationID();
-}
