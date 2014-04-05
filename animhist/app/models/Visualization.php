@@ -3,9 +3,9 @@
 class Visualization extends Eloquent {
 	use Codesleeve\Stapler\Stapler;
 	
-	protected $guarded = array();
+	protected $guarded = [];
 	
-	public function __construct(array $attributes = array()) {
+	public function __construct(array $attributes = []) {
 		$this->hasAttachedFile('thumb', [
 					'styles' => [
 						'thumb' => '340x200#'
@@ -59,5 +59,10 @@ class Visualization extends Eloquent {
 	
 	public function user() {
 		return $this->belongsTo('User');
+	}
+	
+	public function comments()
+	{
+		return $this->hasMany('Comment');
 	}
 }

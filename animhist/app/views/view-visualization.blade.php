@@ -34,24 +34,6 @@
 						<p class="comment-content">I must say this is the most awesome I’ve ever seen! I must say this is the most awesome I’ve ever seen!</p>
 					</div>
 				</li>
-				<li class="comment-item">
-					<div class="avatar-wrapper">
-						<a href="#"><img class="avatar" src="images/cavatar2.jpg" width="80" height="80" /></a>
-					</div>
-					<div class="comment-main">
-						<p class="comment-info"><a href="#" class="username">Mr Dhane</a> - <span class="time">3:30, 12 Dec 2013</span></p>
-						<p class="comment-content">Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet.</p>
-					</div>
-				</li>
-				<li class="comment-item">
-					<div class="avatar-wrapper">
-						<a href="#"><img class="avatar" src="images/cavatar3.jpg" width="80" height="80" /></a>
-					</div>
-					<div class="comment-main">
-						<p class="comment-info"><a href="#" class="username">Walla Jones</a> - <span class="time">3:30, 12 Dec 2013</span></p>
-						<p class="comment-content">Obviously better than textbook :)</p>
-					</div>
-				</li>
 			</ul>
 		</div>
 	@endif
@@ -67,12 +49,10 @@
 @stop
 
 @section('right-area-main')
-	@if (true)
-		{{ Form::open(array('name'=>'comment-form', 'url'=>'')) }}
-			{{ Form::textarea('comment-box', 'What are you having in mind?') }}
-			{{ Form::submit('Post', array('name'=>'submit-btn')) }}
-		{{ Form::close() }}
-	@endif
+	{{ Form::open(['name'=>'comment-form', 'url'=>URL::route('visualization.comment', [$visualization->user->username, $visualization->id])]) }}
+		{{ Form::textarea('comment', '', ['placeholder'=>'What are you having in mind?']) }}
+		{{ Form::submit('Post', ['name'=>'submit-btn']) }}
+	{{ Form::close() }}
 	<article id="description-area">
 		<h1>{{ $visualization->display_name }}</h1>
 		<p><br><span class="h2">Author: </span>{{ $visualization->user->display_name }}</p>
@@ -92,7 +72,7 @@
 		</p>
 	</article>
 	<div id="button-area">
-	{{ Form::open(array('name'=>'hidden-form', 'url'=>'#')) }}
+	{{ Form::open(['name'=>'hidden-form', 'url'=>'#']) }}
 	{{ Form::close() }}
 	@if (!$visualization->user->isAuthUser())
 		@if (Auth::check() && Follow::where('user_id', Auth::user()->id)->where('following_id', $visualization->user->id)->first())

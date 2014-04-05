@@ -90,7 +90,6 @@ Route::group(['before' => 'auth', 'prefix' => '{username}'], function(){
 	
 	// /{username}/visualization/{id}/comment
 	Route::post('visualization/{id}/comment', ['before' => 'csrf', 'as'=> 'visualization.comment', 'uses' => 'VisualizationController@comment']);
-	
 });
 
 Route::group(['prefix' => '{username}'], function(){

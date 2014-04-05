@@ -6,9 +6,9 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 class User extends Eloquent implements UserInterface, RemindableInterface {
 	use Codesleeve\Stapler\Stapler;
 	
-	protected $guarded = array();
+	protected $guarded = [];
 	
-	public function __construct(array $attributes = array()) {
+	public function __construct(array $attributes = []) {
 		$this->hasAttachedFile('avatar', [
 					'styles' => [
 						'medium' => '400x400#',
@@ -32,7 +32,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 *
 	 * @var array
 	 */
-	protected $hidden = array('password');
+	protected $hidden = ['password'];
 
 	/**
 	 * Get the unique identifier for the user.

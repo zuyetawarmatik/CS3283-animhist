@@ -2,7 +2,7 @@
 
 class Follow extends Eloquent {
 	
-	protected $guarded = array();
+	protected $guarded = [];
 	
 	/**
 	 * The database table used by the model.

@@ -72,11 +72,11 @@ class VisualizationController extends \BaseController {
 	public function store($username)
 	{
 		if (Auth::user()->username == $username) {
-			$rules = array(
+			$rules = [
 					'display-name'		=> 'required|unique:visualizations,display_name,NULL,id,user_id,'.Auth::user()->id,
 					'type'      		=> 'required',
 					'upload'			=> 'required_if:option,upload'
-			);
+					];
 			$validator = Validator::make(Input::all(), $rules);
 			if ($validator->fails())
 				return JSONResponseUtility::ValidationError($validator->getMessageBag()->toArray());
@@ -435,6 +435,18 @@ class VisualizationController extends \BaseController {
 	public function comment($username, $id) {
 		$visualization = Visualization::find($id);
 		if (!$visualization || $visualization->user->username != $username) goto fail;
+		
+		if (Input::has('content')) {
+			$comment = new Comment();
+			$comment->user_id = Auth::user()->id;
+			$comment->visualization_id = $id;
+			$comment->content = Input::get('content');
+			$comment->save();
+			return ResponseUtility::success();
+		} else {
+			return ResponseUtility::success();
+		}
+		
 		fail: return ResponseUtility::badRequest();
 	}
 	

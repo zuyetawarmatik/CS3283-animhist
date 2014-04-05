@@ -44,8 +44,6 @@
 		</p>
 	</article>
 	<div id="button-area">
-	{{ Form::open(array('name'=>'hidden-form', 'url'=>'#')) }}
-	{{ Form::close() }}
 	@if (!$user->isAuthUser())
 		@if (Auth::check() && Follow::where('user_id', Auth::user()->id)->where('following_id', $user->id)->first())
 		<button id="follow-btn" data-url="{{ URL::route('user.unfollow', $user->username) }}"><i>&#57551;</i>Unfollow The Author</button>
@@ -63,7 +61,7 @@
 @stop
 
 @section('visualizations')
-	{{ Form::open(array('name'=>'hidden-form', 'url'=>'#')) }}
+	{{ Form::open(['name'=>'hidden-form', 'url'=>'#']) }}
 	{{ Form::close() }}
 	@foreach ($user->visualizations as $visualization)
 		@if ($user->isAuthUser() || (!$user->isAuthUser() && $visualization->published))

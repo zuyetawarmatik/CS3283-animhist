@@ -13,7 +13,7 @@
 @stop
 
 @section('left-area')
-	{{ Form::open(array('name'=>'settings-form', 'url'=>URL::route('user.update', Auth::user()->username), 'method'=>'put', 'data-user-id'=>Auth::user()->username)) }}
+	{{ Form::open(['name'=>'settings-form', 'url'=>URL::route('user.update', Auth::user()->username), 'method'=>'put', 'data-user-id'=>Auth::user()->username]) }}
 		<table>
 			<tr>
 				<td>{{ Form::label('display-name', 'Display Name:') }}</td>
@@ -25,7 +25,7 @@
 			</tr>
 			<tr>
 				<td>{{ Form::label('password', 'Password:') }}</td>
-				<td>{{ Form::button('Change Password...', array('name'=>'changepwd-btn', 'type'=>'button')) }}</td>
+				<td>{{ Form::button('Change Password...', ['name'=>'changepwd-btn', 'type'=>'button']) }}</td>
 			</tr>
 			<tr>
 				<td colspan="2">

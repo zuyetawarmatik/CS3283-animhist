@@ -188,6 +188,24 @@ $(function() {
 			}
 		});
 	});
+	
+	$("[name='comment-form']").submit(function(e) {
+		e.preventDefault();
+		$.ajax({
+			url: this.action,
+			data: $(this).serialize(),
+			type: "POST",
+			global: false,
+			error: function() {
+				notyError({
+					text: "Comment failed"
+				});
+			},
+			success: function(response) {
+				
+			}
+		});
+	});
 });
 
 $(function() {

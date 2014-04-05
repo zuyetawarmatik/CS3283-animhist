@@ -38,7 +38,7 @@
 
 @section('left-area')
 <div id="edit-area" data-user-id="{{ Auth::user()->username }}" data-vi-id="{{ $visualization->id }}">
-	{{ Form::open(array('name'=>'hidden-form', 'url'=>'#')) }}
+	{{ Form::open(['name'=>'hidden-form', 'url'=>'#']) }}
 	{{ Form::close() }}
 	<ul id="tab">
 		<li><a href="#">Visualization</a></li>

@@ -30,13 +30,13 @@ class UserController extends \BaseController {
 	 */
 	public function store()
 	{
-		$rules = array(
+		$rules = [
 				'username'			=> 'required|unique:users|alpha_dash|not_in:user,featured,search,visualization',
 				'display-name'		=> 'required',
 				'email'      		=> 'required|unique:users|email',
 				'password'     		=> 'required|min:5',
 				'password-retype' 	=> 'required|same:password'
-		);
+				];
 		$validator = Validator::make(Input::all(), $rules);
 		if ($validator->fails())
 			return JSONResponseUtility::ValidationError($validator->getMessageBag()->toArray());
@@ -160,7 +160,7 @@ class UserController extends \BaseController {
 	public function login()
 	{
 		$input = Input::all();
-		$rules = array('username' => 'required', 'password' => 'required');
+		$rules = ['username' => 'required', 'password' => 'required'];
 		$validator = Validator::make($input, $rules);
 		if ($validator->fails())
 			return JSONResponseUtility::ValidationError($validator->getMessageBag()->toArray());
@@ -169,7 +169,7 @@ class UserController extends \BaseController {
 		if (!$user) {
 			$attempt = false;
 		} else {
-			$attempt = Auth::attempt(array('username' => $user->username, 'password' => $input['password']), true);
+			$attempt = Auth::attempt(['username' => $user->username, 'password' => $input['password']], true);
 		}
 		
 		/* All redirects in login, logout and register are whole-page, no ajax */

@@ -41,7 +41,7 @@
 			</tr>
 			<tr>
 				<td colspan="2">
-					{{ Form::submit('Register', array('name'=>'register-btn')) }}
+					{{ Form::submit('Register', ['name'=>'register-btn']) }}
 				</td>
 			</tr>
 		</table>

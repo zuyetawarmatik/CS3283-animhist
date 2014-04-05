@@ -14,7 +14,7 @@
 @stop
 
 @section('left-area')
-	{{ Form::open(array('name'=>'create-visualization-form', 'url'=>URL::route('visualization.store', Auth::user()->username))) }}
+	{{ Form::open(['name'=>'create-visualization-form', 'url'=>URL::route('visualization.store', Auth::user()->username)]) }}
 		<table>
 			<tr>
 				<td>{{ Form::label('display-name', 'Name:') }}</td>
@@ -38,7 +38,7 @@
 			</tr>
 			<tr>
 				<td>{{ Form::label('category', 'Category:') }}</td>
-				<td><div class="styled-select">{{ Form::select('category', array('Social Science' => 'Social Science', 'Science' => 'Science', 'Miscellaneous' => 'Miscellaneous')) }}</div></td>
+				<td><div class="styled-select">{{ Form::select('category', ['Social Science' => 'Social Science', 'Science' => 'Science', 'Miscellaneous' => 'Miscellaneous']) }}</div></td>
 			</tr>
 			<tr>
 				<td colspan="2">

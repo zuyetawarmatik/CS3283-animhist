@@ -9,7 +9,7 @@
 @stop
 
 @section('left-area')
-	{{ Form::open(array('name'=>'login-form', 'url'=>URL::route('user.login'))) }}
+	{{ Form::open(['name'=>'login-form', 'url'=>URL::route('user.login')]) }}
 		<table>
 			<tr>
 				<td>{{ Form::label('username', 'Username or Email:') }}</td>
@@ -21,8 +21,8 @@
 			</tr>
 			<tr>
 				<td colspan="2">
-					{{ Form::submit('Login', array('name'=>'login-btn')) }}
-					{{ Form::button('Forgot Your Password?', array('name'=>'forget-btn', 'class'=>'grey-btn')) }}
+					{{ Form::submit('Login', ['name'=>'login-btn']) }}
+					{{ Form::button('Forgot Your Password?', ['name'=>'forget-btn', 'class'=>'grey-btn']) }}
 				</td>
 			</tr>
 		</table>
