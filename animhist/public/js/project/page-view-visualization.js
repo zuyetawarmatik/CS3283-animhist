@@ -138,6 +138,13 @@ $(function() {
 });
 
 $(function() {
+	$("#comment-list").on("click", "a",
+		function(e) {
+			e.preventDefault();
+			parent.changeIFrameSrc($(this).attr("href"), true);
+		}
+	);
+	
 	$("#play-btn").click(function() {
 		if (playingTimeline.length > 0) {
 			togglePlayVisualization();

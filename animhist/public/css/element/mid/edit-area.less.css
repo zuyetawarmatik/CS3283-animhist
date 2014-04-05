@@ -38,6 +38,19 @@
 		&>div:not(.current) {
 			display: none;	
 		}
+		
+		#seekbar button, #toolbar button {
+			float: left;
+			width: 5rem;
+			height: 100%;
+			border: none;
+			i {
+				margin: 0;
+			}
+			&:not(:first-child) {
+				margin-left: 0.1rem;
+			}
+		}
 	}
 	
 	#edit-area-visualization {
@@ -54,16 +67,6 @@
 			bottom: 0;
 			height: 5rem;
 			background: @color-back-top-bar; 
-			
-			button {
-				float: left;
-				width: 5rem;
-				height: 100%;
-				border: none;
-				i {
-					margin: 0;
-				}
-			}
 			
 			#timeline-list {
 				height: 100%;
@@ -99,19 +102,6 @@
 			height: 5rem;
 			background: @color-back-top-bar; 
 			
-			button {
-				float: left;
-				width: 5rem;
-				height: 100%;
-				border: none;
-				i {
-					margin: 0;
-				}
-				&:not(:first-child) {
-					margin-left: 0.1rem;
-				}
-			}
-			
 			#filter-list {
 				height: 100%;
 				margin-left: 5rem;
@@ -143,20 +133,7 @@
 	#edit-area-style {
 		#toolbar {
 			height: 5rem;
-			background: @color-back-top-bar; 
-			
-			button {
-				float: left;
-				width: 5rem;
-				height: 100%;
-				border: none;
-				i {
-					margin: 0;
-				}
-				&:not(:first-child) {
-					margin-left: 0.1rem;
-				}
-			}
+			background: @color-back-top-bar;
 			
 			.styled-select {
 				box-sizing: border-box;

@@ -5,7 +5,7 @@
 		padding-bottom: 2rem;
 		border-bottom: 1px dashed #afafaf;
 		
-		textarea[name='comment'] {
+		textarea[name='content'] {
 			box-sizing: border-box;
 			-moz-box-sizing: border-box;
 			width: 100%;

@@ -22,18 +22,20 @@
 	@if (true)
 		<div id="comment-area">
 			<div id="comment-area-title">
-				12 comments
+				{{ count($visualization->comments) }} comments
 			</div>
 			<ul id="comment-list">
+			@foreach ($visualization->comments as $comment)
 				<li class="comment-item">
 					<div class="avatar-wrapper">
-						<a href="#"><img class="avatar" src="images/cavatar1.jpg" width="80" height="80" /></a>
+						<a href="{{ URL::route('user.show', $comment->user->username) }}"><img class="avatar" src="{{ $comment->user->avatar->url('thumb') }}" /></a>
 					</div>
 					<div class="comment-main">
-						<p class="comment-info"><a href="#" class="username">Richard Tan</a> - <span class="time">3:30, 12 Dec 2013</span></p>
-						<p class="comment-content">I must say this is the most awesome I’ve ever seen! I must say this is the most awesome I’ve ever seen!</p>
+						<p class="comment-info"><a href="{{ URL::route('user.show', $comment->user->username) }}" class="username">Richard Tan</a> - <span class="time">$comment->getFormattedCreatedDate()</span></p>
+						<p class="comment-content">{{ $comment->content }}</p>
 					</div>
 				</li>
+			@endforeach
 			</ul>
 		</div>
 	@endif
@@ -50,7 +52,7 @@
 
 @section('right-area-main')
 	{{ Form::open(['name'=>'comment-form', 'url'=>URL::route('visualization.comment', [$visualization->user->username, $visualization->id])]) }}
-		{{ Form::textarea('comment', '', ['placeholder'=>'What are you having in mind?']) }}
+		{{ Form::textarea('content', '', ['placeholder'=>'What are you having in mind?']) }}
 		{{ Form::submit('Post', ['name'=>'submit-btn']) }}
 	{{ Form::close() }}
 	<article id="description-area">
