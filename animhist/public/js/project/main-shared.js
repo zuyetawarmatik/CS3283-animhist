@@ -28,33 +28,34 @@ function handleJSONRedirectResponse(response, backable) {
 
 $(function() {
 	/* Right sidebar show-hide */
-	var rightSidebar = $("#right-area");
-	var mainArea = $("#left-area");
+	$rightSidebar = $("#right-area");
+	$mainArea = $("#left-area");
+	$rightAreaTab = $("#right-area-tab")
 	
 	$("#right-area-showhide-btn").click(function() {
-		var rightAreaWidth = rightSidebar.width();
-		var rightAreaTabWidth = $("#right-area-tab").length ? $("#right-area-tab").width() : 0;
+		var rightAreaWidth = $rightSidebar.width();
+		var rightAreaTabWidth = $rightAreaTab.length ? $rightAreaTab.width() : 0;
 		var callback = typeof mapResizeTrigger != "undefined" ? mapResizeTrigger : null;
-		if (rightSidebar.hasClass("hidden")) {
-			rightSidebar.stop(true).animate({right: "0"}, 400, "easeOutQuad");
-			mainArea.stop(true).animate({right: rightAreaWidth + "px"}, 400, "easeOutQuad", callback);
+		if ($rightSidebar.hasClass("hidden")) {
+			$rightSidebar.stop(true).animate({right: "0"}, 400, "easeOutQuad");
+			$mainArea.stop(true).animate({right: rightAreaWidth + "px"}, 400, "easeOutQuad", callback);
 			$(this).html("&#57477;");
 		} else {
-			rightSidebar.stop(true).animate({right: (-rightAreaWidth - rightAreaTabWidth) + "px"}, 400, "easeOutQuad");
-			mainArea.stop(true).animate({right: -rightAreaTabWidth + "px"}, 400, "easeOutQuad", callback);
+			$rightSidebar.stop(true).animate({right: (-rightAreaWidth - rightAreaTabWidth) + "px"}, 400, "easeOutQuad");
+			$mainArea.stop(true).animate({right: -rightAreaTabWidth + "px"}, 400, "easeOutQuad", callback);
 			$(this).html("&#57528;");
 		}
-		rightSidebar.toggleClass("hidden");
+		$rightSidebar.toggleClass("hidden");
 	});
 	
 	$(window).resize(function() {
-		var rightAreaWidth = rightSidebar.width();
-		var rightAreaTabWidth = $("#right-area-tab").length ? $("#right-area-tab").width() : 0;
-		if (rightSidebar.hasClass("hidden")) {
-			rightSidebar.css({right: (-rightAreaWidth - rightAreaTabWidth) + "px"});
-			mainArea.css({right: -rightAreaTabWidth + "px"});
+		var rightAreaWidth = $rightSidebar.width();
+		var rightAreaTabWidth = $rightAreaTab.length ? $rightAreaTab.width() : 0;
+		if ($rightSidebar.hasClass("hidden")) {
+			$rightSidebar.css({right: (-rightAreaWidth - rightAreaTabWidth) + "px"});
+			$mainArea.css({right: -rightAreaTabWidth + "px"});
 		} else {
-			mainArea.css({right: rightAreaWidth + "px"});
+			$mainArea.css({right: rightAreaWidth + "px"});
 		}
 	});
 	
