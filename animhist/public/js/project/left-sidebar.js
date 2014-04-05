@@ -1,6 +1,6 @@
 /* Src with inputs */
 function changeIFrameSrcOrdinary(src) {
-	$('#main-panel iframe').attr("src", src);
+	$iframe.attr("src", src);
 	history.pushState(null, null, src.substr(0, src.indexOf("?")));
 	
 	// TODO: Check type of source to highlight respective sidebar item (change data-highlight-id)
@@ -12,9 +12,9 @@ function changeIFrameSrc(src, backable) {
 	if (backable) {
 		/* Only used when clicking a link inside IFRAME */
 		var oldURL = $('#main-panel iframe').attr("src");
-		$('#main-panel iframe').attr("src", src + cs + "ajax=1&back=1&referer=" + oldURL);
+		$iframe.attr("src", src + cs + "ajax=1&back=1&referer=" + oldURL);
 	} else {
-		$('#main-panel iframe').attr("src", src + cs + "ajax=1");
+		$iframe.attr("src", src + cs + "ajax=1");
 	}
 	history.pushState(null, null, src);
 	
@@ -22,19 +22,25 @@ function changeIFrameSrc(src, backable) {
 }
 
 $(function() {
+	$iframe = $('#main-panel').find('iframe');
+	$navList = $("#nav-list");
+	$navListLi = $("#nav-list > li");
+	
 	/* Binding highlight-id attribute to highlight the sidebar item */
-	$("#nav-list").attrchange({
+	$navList.attrchange({
 		trackValues: true, 
 		callback: function (event) {
 			if (event.attributeName == "data-highlight-id") {
-				$("#nav-list > li.selected").prev().removeClass("before-selected");
-				$("#nav-list > li.selected").next().removeClass("after-selected");
-				$("#nav-list > li.selected .nav-bck").attr("style", "");
-				$("#nav-list > li.selected").removeClass("selected");
+				$navListLiSelected = $("#nav-list > li.selected");
+				$navListLiSelected.prev().removeClass("before-selected");
+				$navListLiSelected.next().removeClass("after-selected");
+				$navListLiSelected.find(".nav-bck").attr("style", "");
+				$navListLiSelected.removeClass("selected");
 				
 				$("#nav-list > li:nth-child(" + event.newValue + ")").addClass("selected");
-				$("#nav-list > li.selected").prev().addClass("before-selected");
-				$("#nav-list > li.selected").next().addClass("after-selected");
+				$navListLiSelected = $("#nav-list > li.selected");
+				$navListLiSelected.prev().addClass("before-selected");
+				$navListLiSelected.next().addClass("after-selected");
 			}
 		}
 	});
@@ -42,12 +48,13 @@ $(function() {
 
 $(function() {
 	/* Left sidebar at page loaded */
-	$("#nav-list > li:nth-child(" + $("#nav-list").data("highlight-id") + ")").addClass("selected");
-	$("#nav-list > li.selected").prev().addClass("before-selected");
-	$("#nav-list > li.selected").next().addClass("after-selected");
+	$navListLiSelected = $("#nav-list > li.selected");
+	$("#nav-list > li:nth-child(" + $navList.data("highlight-id") + ")").addClass("selected");
+	$navListLiSelected.prev().addClass("before-selected");
+	$navListLiSelected.next().addClass("after-selected");
 	
 	/* Left sidebar animation */
-	$("#nav-list > li").prepend('<span class="nav-bck"></span>');
+	$navListLi.prepend('<span class="nav-bck"></span>');
 	$(document).on({
 		mouseenter: function() {
 			$(".nav-bck", this).stop(true).animate({left: "0", opacity: "1"}, 400, "easeOutQuad");
@@ -58,9 +65,9 @@ $(function() {
 	}, "#nav-list > li:not(.selected)");
 	
 	/* Left sidebar navigation */
-	$("#nav-list > li").on("click", function() {
+	$navListLi.on("click", function() {
 		changeIFrameSrc($(this).data("url"), false);
-		$("#nav-list").attr("data-highlight-id", $(this).index() + 1);
+		$navList.attr("data-highlight-id", $(this).index() + 1);
 	});
 	
 	/* Log out */
