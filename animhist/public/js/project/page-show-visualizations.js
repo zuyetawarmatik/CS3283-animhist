@@ -47,13 +47,16 @@ $(function() {
 								var category = $thisLi.data("vi-category");
 								$thisLi.remove();
 								var sameCatCount = $(".visualization-item[data-vi-category='" + category + "']").length;
-								if (sameCatCount == 0)
+								if (sameCatCount == 0) {
 									$(".category-item").each(function() {
 										if ($(".category-caption", $(this)).html() == category) {
 											$(this).remove();
 											return false;
 										}
 									});
+								}
+								var currentNumVis = $("#description-area #num-visualizations .content").html();
+								$("#description-area #num-visualizations .content").html(currentNumVis - 1);
 							}
 						}
 					});

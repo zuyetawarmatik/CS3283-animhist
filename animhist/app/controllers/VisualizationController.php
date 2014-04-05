@@ -129,7 +129,7 @@ class VisualizationController extends \BaseController {
 			if ($fusion_table_id) {
 				$visualization->fusion_table_id = $fusion_table_id;
 				$ref_column_list = Input::get('option') == 'manual' ? $gf_column_list : $table_info['columns'];
-				 
+				
 				foreach ($ref_column_list as $gf_column) {
 					if ($gf_column['type'] == 'NUMBER') {
 						$visualization->default_column = $gf_column['name'];

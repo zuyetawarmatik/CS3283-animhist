@@ -28,7 +28,7 @@
 		@if (!$user->isAuthUser())	<img style="float:left; margin-top:25px; margin-right:10px; background:#666" width="60" height="60" src="{{ $user->avatar->url('thumb') }}" /> @endif
 		<p><br><span class="h2">Username: </span>{{ '@'.$user->username }}</p>
 		<p><span class="h2">Joined from: </span>{{ $user->getFormattedCreatedDate() }}</p>
-		<p><span class="h2">Visualizations: </span><span>{{ count($user->visualizations) }}</span></p>
+		<p id="num-visualizations"><span class="h2">Visualizations: </span><span class="content">{{ count($user->visualizations) }}</span></p>
 		<p><br><span class="h2">Brief Description:</span></p>
 		<p>
 			@if ($user->description)

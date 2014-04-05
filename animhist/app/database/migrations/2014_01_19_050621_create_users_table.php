@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsers extends Migration {
+class CreateUsersTable extends Migration {
 
 	/**
 	 * Run the migrations.

@@ -14,7 +14,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 						'medium' => '400x400#',
 						'thumb' => '60x60#'
 					],
-					'default_url' => '/system/:class/:attachment/:style/missing.png'
+					'default_url' => '/system/:class/:attachment/:style/missing.jpg'
 				]);
 	
 		parent::__construct($attributes);
