@@ -463,7 +463,7 @@ class GoogleFusionTable {
 			->send();
 		}
 
-		if ($response->code >= 200 && $response->code < 300)
+		if ($response->code >= Constant::STATUS_SUCCESS && $response->code < 300)
 			return $response->body;
 	
 		return false;
