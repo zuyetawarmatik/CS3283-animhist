@@ -39,16 +39,47 @@
 			display: none;	
 		}
 		
-		#seekbar button, #toolbar button {
-			float: left;
-			width: 5rem;
-			height: 100%;
-			border: none;
-			i {
-				margin: 0;
+		#seekbar, #toolbar {
+			height: 5rem;
+			background: @color-back-top-bar;
+			
+			button {
+				float: left;
+				width: 5rem;
+				height: 100%;
+				border: none;
+				i {
+					margin: 0;
+				}
+				&:not(:first-child) {
+					margin-left: 0.1rem;
+				}
 			}
-			&:not(:first-child) {
-				margin-left: 0.1rem;
+		}
+		
+		#timeline-list, #filter-list {
+			height: 100%;
+			margin-left: 5rem;
+			padding-left: 1rem;
+			overflow-x: auto;
+			overflow-y: hidden;
+			white-space: nowrap;
+		}
+		
+		#timeline-list .timeline-item, #filter-list .filter-item {
+			display: inline-block;
+			text-align: center;
+			padding: 1.5rem 1rem;
+			height: 2rem;
+			cursor: pointer;
+			
+			&.focused {
+				font-weight: 700;
+				color: @color-type-link;	
+			}
+			
+			&:hover {
+				background: darken(@color-back-right-area, 20%);
 			}
 		}
 	}
@@ -65,76 +96,11 @@
 			position: absolute;
 			width: 100%;
 			bottom: 0;
-			height: 5rem;
-			background: @color-back-top-bar; 
-			
-			#timeline-list {
-				height: 100%;
-				margin-left: 5rem;
-				padding-left: 1rem;
-				overflow-x: auto;
-				overflow-y: hidden;
-				white-space: nowrap;
-				
-				.timeline-item {
-					display: inline-block;
-					text-align: center;
-					padding: 1.5rem 1rem;
-					height: 2rem;
-					cursor: pointer;
-					
-					&.focused {
-						font-weight: 700;
-						color: @color-type-link;	
-					}
-					
-					&:hover {
-						background: darken(@color-back-right-area, 20%);
-					}
-				}
-			}
-		}
-		
-	}
-	
-	#edit-area-table {
-		#toolbar {
-			height: 5rem;
-			background: @color-back-top-bar; 
-			
-			#filter-list {
-				height: 100%;
-				margin-left: 5rem;
-				padding-left: 1rem;
-				overflow-x: auto;
-				overflow-y: hidden;
-				white-space: nowrap;
-				
-				.filter-item {
-					display: inline-block;
-					text-align: center;
-					padding: 1.5rem 1rem;
-					height: 2rem;
-					cursor: pointer;
-					
-					&.focused {
-						font-weight: 700;
-						color: @color-type-link;	
-					}
-					
-					&:hover {
-						background: darken(@color-back-right-area, 20%);
-					}
-				}
-			}
 		}
 	}
 	
 	#edit-area-style {
 		#toolbar {
-			height: 5rem;
-			background: @color-back-top-bar;
-			
 			.styled-select {
 				box-sizing: border-box;
 			    -moz-box-sizing: border-box;
