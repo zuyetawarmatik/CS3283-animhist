@@ -1,4 +1,11 @@
 $(function() {
+	$defaultColumnSelect = $("#default-column-select");
+	$columnList = $("#column-list");
+	$descriptionArea = $("#description-area");
+	$buttonArea = $("#button-area");
+});
+
+$(function() {
 	$("#tab li a").click(function() {
 		if (!$(this).hasClass("current")) {
 			var newCurrent = $(this).parent().index();

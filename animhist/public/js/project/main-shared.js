@@ -1,3 +1,9 @@
+$(function() {
+	$rightSidebar = $("#right-area");
+	$mainArea = $("#left-area");
+	$rightAreaTab = $("#right-area-tab");
+});
+
 function getUrlParameters(parameter, staticURL, decode) {
 	var currLocation = (staticURL.length) ? staticURL : window.location.search;
 	var parArr;
@@ -28,10 +34,6 @@ function handleJSONRedirectResponse(response, backable) {
 
 $(function() {
 	/* Right sidebar show-hide */
-	$rightSidebar = $("#right-area");
-	$mainArea = $("#left-area");
-	$rightAreaTab = $("#right-area-tab")
-	
 	$("#right-area-showhide-btn").click(function() {
 		var rightAreaWidth = $rightSidebar.width();
 		var rightAreaTabWidth = $rightAreaTab.length ? $rightAreaTab.width() : 0;

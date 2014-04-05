@@ -5,8 +5,12 @@ var columnList = [
                   {"caption":"New Variable", "type-caption":"Number", "editable":true, "deletable":true}
                  ];
 
+$(function() {
+	$columnList = $("#column-list");
+});
+
 function addColumnListButtons() {
-	$("#column-list").empty();
+	$columnList.empty();
 	
 	$.each(columnList, function(i, obj) {
 		var caption = obj["caption"] + " (" + obj["type-caption"] + ")";
@@ -28,25 +32,25 @@ function addColumnListButtons() {
 				$("<button class='column-disable-btn' type='button'>&#57656;</button>").appendTo(element);
 		}
 		
-		element.appendTo("#column-list");
+		element.appendTo($columnList);
 	});
 	
-	$(".red-btn-group button").each(function() {
+	$("li.red-btn-group").find("button").each(function() {
 		$(this).addClass("red-btn");
 	});
 	
-	$(".grey-btn-group button").each(function() {
+	$("li.grey-btn-group").find("button").each(function() {
 		$(this).addClass("grey-btn");
 	});
 	
-	$("<li class='btn-group' id='column-add-btn-group'><button class='column-add-btn grey-btn' type='button'>&#57602;</button></li>").appendTo("#column-list");
+	$("<li class='btn-group' id='column-add-btn-group'><button class='column-add-btn grey-btn' type='button'>&#57602;</button></li>").appendTo($columnList);
 }
 
 $(function() {
 	addColumnListButtons();
 	
 	/* Delete a column item */
-	$("#column-list").on("click", ".column-delete-btn", function() {
+	$columnList.on("click", ".column-delete-btn", function() {
 		var $parent = $(this).parent(); 
 		var id = $parent.index();
 		$parent.remove();
@@ -54,7 +58,7 @@ $(function() {
 	});
 	
 	/* Disable HTMLData column item */
-	$("#column-list").on("click", ".column-disable-btn", function() {
+	$columnList.on("click", ".column-disable-btn", function() {
 		var $parent = $(this).parent(); 
 		var id = $parent.index();
 		
@@ -76,7 +80,7 @@ $(function() {
 	});
 	
 	/* Add a new column item */
-	$("#column-list").on("click", ".column-add-btn", function() {
+	$columnList.on("click", ".column-add-btn", function() {
 		vex.dialog.open({
 			message: "Add a New Column",
 			input: "<table>" +
@@ -112,7 +116,7 @@ $(function() {
 	});
 	
 	/* Edit a column item */
-	$("#column-list").on("click", ".column-edit-btn", function() {
+	$columnList.on("click", ".column-edit-btn", function() {
 		var index = $(this).parent().index();
 		var columnName = columnList[index]["caption"], columnType = columnList[index]["type-caption"];
 		var nameEditRow = columnName != "Milestone" ? "<tr><td><label for='columnname'>Column name:</label></td><td><input name='columnname' type='text'/></td></tr>" : "";

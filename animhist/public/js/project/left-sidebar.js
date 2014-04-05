@@ -1,3 +1,9 @@
+$(function() {
+	$iframe = $('#main-panel').find('iframe');
+	$navList = $("#nav-list");
+	$navListLi = $("#nav-list > li");
+});
+
 /* Src with inputs */
 function changeIFrameSrcOrdinary(src) {
 	$iframe.attr("src", src);
@@ -22,10 +28,6 @@ function changeIFrameSrc(src, backable) {
 }
 
 $(function() {
-	$iframe = $('#main-panel').find('iframe');
-	$navList = $("#nav-list");
-	$navListLi = $("#nav-list > li");
-	
 	/* Binding highlight-id attribute to highlight the sidebar item */
 	$navList.attrchange({
 		trackValues: true, 

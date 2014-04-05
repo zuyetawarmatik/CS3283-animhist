@@ -107,7 +107,7 @@ var editFieldRef =
 	};
 
 $(function() {
-	$("#description-area .editable .edit-a").on("click", function() {
+	$descriptionArea.find(".edit-a").on("click", function() {
 		var field = $(this).parent().attr("id");
 		var message = "Edit '" + editFieldRef[field].title + "' Field";
 		
@@ -205,11 +205,11 @@ $(function() {
 	$(window).on("vi_property_changed", function(e) {
 		var fields = e.fields;
 		if ($.inArray("zoom", fields) >= 0)
-			$("p#zoom span.content").html(viProps["zoom"]);
+			$("p#zoom").find("span.content").html(viProps["zoom"]);
 		if ($.inArray("centerLatitude", fields) >= 0 || $.inArray("centerLongitude", fields) >= 0)
-			$("p#center span.content").html(viProps["centerLatitude"] + ", " + viProps["centerLongitude"]);
+			$("p#center").find("span.content").html(viProps["centerLatitude"] + ", " + viProps["centerLongitude"]);
 		if ($.inArray("category", fields) >= 0)
-			$("p#category span.content").html(viProps["category"]);
+			$("p#category").find("span.content").html(viProps["category"]);
 		if ($.inArray("description", fields) >= 0) {
 			if (viProps["description"] == null)
 				$("p#description + p").html("(The visualization does not have any description yet.)");
@@ -217,10 +217,10 @@ $(function() {
 				$("p#description + p").html(viProps["description"]);
 		}
 		if ($.inArray("displayName", fields) >= 0)
-			$("h1#displayname span.content").html(viProps["displayName"]);
+			$("h1#displayname").find("span.content").html(viProps["displayName"]);
 	});
 	
-	$("#button-area #delete-btn").on("click", function() {
+	$buttonArea.find("#delete-btn").on("click", function() {
 		$.ajax({
 			url: getPOSTURLPrefix(),
 			type: "DELETE",
@@ -242,7 +242,7 @@ $(function() {
 		});
 	});
 	
-	$("#button-area #publish-btn").on("click", function() {
+	$buttonArea.find("#publish-btn").on("click", function() {
 		$.ajax({
 		    url: getPOSTURLPrefix() + "/updateproperty",
 			type: "POST",
