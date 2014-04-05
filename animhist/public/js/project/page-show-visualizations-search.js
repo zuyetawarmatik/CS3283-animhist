@@ -13,6 +13,7 @@ function search(query) {
 			$visualizationInfoP.html("Searched results for <span style='font-style:italic'>'" + query + "':</span>");
 		},
 		success: function(response) {
+			$.noty.closeAll();
 			$.each(response.visualizations, function(i, vi) {
 				$thisViLi = $("<li class='visualization-item' data-vi-category='" + vi.category + "'>\
 									<div class='overlay' style='display:none' data-url='" + vi.viewURL + "'>\
