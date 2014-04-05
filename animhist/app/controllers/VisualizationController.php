@@ -421,9 +421,7 @@ class VisualizationController extends \BaseController {
 			if (empty($col_name)) goto fail;
 			
 			$retrieved_style = Input::json('style');
-			
 			$ret = $gft->updateColumnStyle($col_name, self::prepareStyleSentToGFusion($col_name, $retrieved_style, $visualization->type));
-			
 			if ($ret) return Response::JSON($gft->getColumnStyle($col_name));
 		} else {
 			return ResponseUtility::unauthorized();
@@ -451,6 +449,7 @@ class VisualizationController extends \BaseController {
 			$ret['userAvatarURL'] = $user->avatar->url('thumb');
 			$ret['userURL'] = URL::route('user.show', $user->username);
 			$ret['numComments'] = count($visualization->comments);
+			$ret['content'] = $comment->content;
 			
 			return Response::json($ret);
 		} else {

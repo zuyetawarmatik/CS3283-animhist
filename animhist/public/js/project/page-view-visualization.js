@@ -16,6 +16,7 @@ $(function() {
 	$playBtn = $("#play-btn");
 	$commentAreaTitle = $("#comment-area-title");
 	$commentForm = $("[name='comment-form']");
+	$commentText = $("[name='comment-form']").find("textarea");
 	$followBtn = $('#follow-btn');
 	
 	var userID = $visualizationArea.data("user-id");
@@ -131,7 +132,7 @@ $(function() {
 			if (event.attributeName == "data-milestone") {
 				$("li.timeline-item.focused").removeClass("focused");
 				currentTimelineMilestoneId = $.inArray(event.newValue, playingTimeline);
-				$("li.timeline-item:nth-child(" + currentTimelineMilestoneId + ")").addClass("focused");
+				$("li.timeline-item:nth-child(" + (currentTimelineMilestoneId + 1) + ")").addClass("focused");
 				updateLayerQuery(event.newValue);
 			}
 		}
@@ -217,6 +218,7 @@ $(function() {
 	
 	$commentForm.submit(function(e) {
 		e.preventDefault();
+		if ($commentText.val().trim() == "") return;
 		$.ajax({
 			url: this.action,
 			data: $(this).serialize(),
@@ -228,7 +230,18 @@ $(function() {
 				});
 			},
 			success: function(response) {
-				
+				$newComment = "<li class='comment-item'>\
+									<div class='avatar-wrapper'>\
+										<a href='" + response.userURL + "'><img class='avatar' src='" + response.userAvatarURL + "' /></a>\
+									</div>\
+									<div class='comment-main'>\
+										<p class='comment-info'><a href='" + response.userURL + "' class='username'>" + response.userDisplayName + "</a> - <span class='time'>" + response.createdAt + "</span></p>\
+										<p class='comment-content'>" + response.content + "</p>\
+									</div>\
+								</li>";
+				$commentText.val("");
+				$commentList.prepend($newComment);
+				$commentAreaTitle.html(response.numComments + " comment(s)");
 			}
 		});
 	});
