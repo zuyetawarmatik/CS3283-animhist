@@ -21,7 +21,7 @@ $(window).on('vi_property_changed', function(e) {
 });
 
 $(function() {
-	$("#description-area .editable .repos-a").on("click", function() {
+	$descriptionArea.find(".repos-a").on("click", function() {
 		if (map !== undefined) {
 			var field = $(this).parent().attr("id");
 			if (field == "zoom")
@@ -113,27 +113,27 @@ function updateLayerQuery(milestone) {
 }
 
 function togglePlayVisualization() {
-	$("#play-btn").attr("data-is-playing", $("#play-btn").attr("data-is-playing") == "false" ? "true" : "false");
+	$playBtn.attr("data-is-playing", $playBtn.attr("data-is-playing") == "false" ? "true" : "false");
 }
 
 function pauseVisualization() {
-	$("#play-btn").attr("data-is-playing", "false");
+	$playBtn.attr("data-is-playing", "false");
 }
 
 $(function() {
-	$("#timeline-list").attrchange({
+	$timelineList.attrchange({
 		trackValues: true, 
 		callback: function (event) {
 			if (event.attributeName == "data-milestone") {
-				$(".timeline-item.focused").removeClass("focused");
+				$("li.timeline-item.focused").removeClass("focused");
 				currentTimelineMilestoneId = $.inArray(event.newValue, gridTimeline);
-				$(".timeline-item:nth-child(" + currentTimelineMilestoneId + ")").addClass("focused");
+				$("li.timeline-item:nth-child(" + currentTimelineMilestoneId + ")").addClass("focused");
 				updateLayerQuery(event.newValue);
 			}
 		}
 	});
 	
-	$("#play-btn").attrchange({
+	$playBtn.attrchange({
 		trackValues: true,
 		callback: function (event) {
 			if (event.attributeName == "data-is-playing") {
@@ -142,7 +142,7 @@ $(function() {
 					playingTimer = window.setInterval(function() {
 						var nextTimelineMilestoneId = (currentTimelineMilestoneId + 1) % gridTimeline.length;
 						if (nextTimelineMilestoneId == 0) nextTimelineMilestoneId = 1; // Omit "All" entry
-						$("#timeline-list").attr("data-milestone", gridTimeline[nextTimelineMilestoneId]);
+						$timelineList.attr("data-milestone", gridTimeline[nextTimelineMilestoneId]);
 					}, 1000);
 				} else if (event.newValue == "false") {
 					$(this).html("<i>&#57610;</i>");
@@ -154,15 +154,15 @@ $(function() {
 });
 
 $(function() {
-	$("#play-btn").click(function() {
+	$playBtn.click(function() {
 		if (gridTimeline.length > 1) {
 			togglePlayVisualization();
 		}
 	});
 	
-	$("#timeline-list").on("click", ".timeline-item", function() {
+	$timelineList.on("click", "li.timeline-item", function() {
 		if (!$(this).hasClass("focused")) {
-			$("#timeline-list").attr("data-milestone", $(this).html());
+			$timelineList.attr("data-milestone", $(this).html());
 		}
 	});
 });

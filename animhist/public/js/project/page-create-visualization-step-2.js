@@ -1,16 +1,37 @@
+var CSRFToken, userID, visualizationID, postURLPrefix;
+
 $(function() {
+	CSRFToken = $("[name='hidden-form'] [name='_token']").val();
+	
+	$tabA = $("#tab").find("a");
 	$defaultColumnSelect = $("#default-column-select");
 	$columnList = $("#column-list");
 	$descriptionArea = $("#description-area");
 	$buttonArea = $("#button-area");
+	$editArea = $("#edit-area");
+	$editAreaStyle = $("#edit-area-style");
+	$editAreaStyleSaveBtn = $editAreaStyle.find("#save-btn");
+	$editAreaStyleDelBtn = $editAreaStyle.find("#row-delete-btn");
+	$styleColumnSelect = $("#style-column-select");
+	$filterList = $("#filter-list");
+	$timelineList = $("#timeline-list");
+	$editAreaTable = $("#edit-area-table");
+	$editAreaTableAddBtn = $editAreaTable.find("#row-add-btn");
+	$editAreaTableDelBtn = $editAreaTable.find("#row-delete-btn");
+	$playBtn = $("#play-btn");
+	$rightArea = $("#right-area");
+	
+	userID = $editArea.data("user-id");
+	visualizationID = $editArea.data("vi-id");
+	postURLPrefix = "/" + userID + "/visualization/" + visualizationID;
 });
 
 $(function() {
-	$("#tab li a").click(function() {
+	$tabA.click(function() {
 		if (!$(this).hasClass("current")) {
 			var newCurrent = $(this).parent().index();
-			$("#edit-area .current").removeClass("current");
-			$("#right-area .current").removeClass("current");
+			$editArea.find(".current").removeClass("current");
+			$rightArea.find(".current").removeClass("current");
 			
 			$("a", "#tab li:nth-child(" + (newCurrent + 1) + ")").addClass("current");
 			$("#edit-area>div:nth-child(" + (newCurrent + 3) + ")").addClass("current");
@@ -21,43 +42,27 @@ $(function() {
 					var curCenter = map.getCenter();
 					google.maps.event.trigger(map, 'resize');
 					map.setCenter(curCenter);
-					updateLayerQuery($("#timeline-list").attr("data-milestone"));
+					updateLayerQuery($timelineList.attr("data-milestone"));
 				}
 				
-				$("#button-area").addClass("current");
+				$buttonArea.addClass("current");
 			} else if (newCurrent == 1) {
 				pauseVisualization();
 				slickGrid.resizeCanvas();
-				$("#button-area").removeClass("current");
+				$buttonArea.removeClass("current");
 			} else if (newCurrent == 2) {
 				pauseVisualization();
 				styleSlickGrid.resizeCanvas();
-				$("#button-area").removeClass("current");
+				$buttonArea.removeClass("current");
 			}
 		}
 	});
 });
 
 $(function() {
-	$("#description-area p.editable").append("<a class='edit-a'>&#57350;</a>");
-	$("#description-area h1.editable").prepend("<a class='edit-a'>&#57350;</a>");
+	$descriptionArea.find("p.editable").append("<a class='edit-a'>&#57350;</a>");
+	$descriptionArea.find("h1.editable").prepend("<a class='edit-a'>&#57350;</a>");
 	
-	$("#description-area #zoom").append("<a class='repos-a'>&#57475;</a>");
-	$("#description-area #center").append("<a class='repos-a'>&#57475;</a>");
+	$descriptionArea.find("#zoom").append("<a class='repos-a'>&#57475;</a>");
+	$descriptionArea.find("#center").append("<a class='repos-a'>&#57475;</a>");
 });
-
-function getCSRFToken() {
-	return $("[name='hidden-form'] [name='_token']").val();
-}
-
-function getUserID() {
-	return $("#edit-area").data("user-id");
-}
-
-function getVisualizationID() {
-	return $("#edit-area").data("vi-id");
-}
-
-function getPOSTURLPrefix() {
-	return "/" + getUserID() + "/visualization/" + getVisualizationID();
-}

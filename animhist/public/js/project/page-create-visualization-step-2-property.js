@@ -3,7 +3,7 @@ var columnList;
 
 function retrieveVisualizationProperty() {
 	$.ajax({
-		url: getPOSTURLPrefix() + "/info?request=property",
+		url: postURLPrefix + "/info?request=property",
 		type: "GET",
 		global: false,
 		success: function(response) {
@@ -164,9 +164,9 @@ $(function() {
 					}
 					
 					$.ajax({
-					    url: getPOSTURLPrefix() + "/updateproperty",
+					    url: postURLPrefix + "/updateproperty",
 						type: "POST",
-						headers: {'X-CSRF-Token': getCSRFToken()},
+						headers: {'X-CSRF-Token': CSRFToken},
 						global: false,
 						data: formData,
 						error: function(response) {
@@ -222,9 +222,9 @@ $(function() {
 	
 	$buttonArea.find("#delete-btn").on("click", function() {
 		$.ajax({
-			url: getPOSTURLPrefix(),
+			url: postURLPrefix,
 			type: "DELETE",
-			headers: {'X-CSRF-Token': getCSRFToken()},
+			headers: {'X-CSRF-Token': CSRFToken},
 			global: false,
 			error: function() {
 				notyError({
@@ -244,9 +244,9 @@ $(function() {
 	
 	$buttonArea.find("#publish-btn").on("click", function() {
 		$.ajax({
-		    url: getPOSTURLPrefix() + "/updateproperty",
+		    url: postURLPrefix + "/updateproperty",
 			type: "POST",
-			headers: {'X-CSRF-Token': getCSRFToken()},
+			headers: {'X-CSRF-Token': CSRFToken},
 			global: false,
 			data: {"published": true},
 			error: function() {

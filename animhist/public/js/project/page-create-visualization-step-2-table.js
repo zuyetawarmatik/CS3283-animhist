@@ -45,7 +45,7 @@ function numberValidator(value) {
 }
 
 function milestoneFilter(item) {
-	var filter = $("#filter-list").attr("data-filter");
+	var filter = $filterList.attr("data-filter");
 	if (filter != "All" && item["MilestoneRep"] != filter)
 		return false;
 	return true;
@@ -105,7 +105,7 @@ function parseRetrievedData() {
 
 function retrieveFusionData() {
 	$.ajax({
-		url: getPOSTURLPrefix() + "/info?request=data",
+		url: postURLPrefix + "/info?request=data",
 		type: "GET",
 		error: function() {
 			notyError({
@@ -150,29 +150,29 @@ function retrieveFusionData() {
 
 function retrieveTimeline(focused) {
 	$.ajax({
-		url: getPOSTURLPrefix() + "/info?request=timeline",
+		url: postURLPrefix + "/info?request=timeline",
 		type: "GET",
 		global: false,
 		success: function(response) {
-			$("#filter-list").empty();
-			$("#timeline-list").empty();
+			$filterList.empty();
+			$timelineList.empty();
 			
 			gridTimeline = response;
 			gridTimeline.unshift("All");
 			
 			for (var i = 0; i < gridTimeline.length; i++) {
-				$("<li class='filter-item'>" + gridTimeline[i] + "</li>").appendTo("#filter-list");
+				$("<li class='filter-item'>" + gridTimeline[i] + "</li>").appendTo($filterList);
 				
 				if (i > 0)
-					$("<li class='timeline-item'>" + gridTimeline[i] + "</li>").appendTo("#timeline-list");
+					$("<li class='timeline-item'>" + gridTimeline[i] + "</li>").appendTo($timelineList);
 			}
 			
-			if (!$("#filter-list").attr("data-filter") || focused === undefined) focused = "All";
-			$("#filter-list").attr("data-filter", focused);
+			if (!$filterList.attr("data-filter") || focused === undefined) focused = "All";
+			$filterList.attr("data-filter", focused);
 			
 			// Have one or more milestones (rather than 'All')
 			if (gridTimeline.length > 1)
-				$("#timeline-list").attr("data-milestone", gridTimeline[currentTimelineMilestoneId = 1]);
+				$timelineList.attr("data-milestone", gridTimeline[currentTimelineMilestoneId = 1]);
 			else currentTimelineMilestoneId = 0;
 		}
 	});	
@@ -182,9 +182,9 @@ $(function() {
 	ajaxTemplate = {
 		processData: false,
 		contentType: "application/json; charset=utf-8",
-		url: getPOSTURLPrefix() + "/updatetable",
+		url: postURLPrefix + "/updatetable",
 		type: "POST",
-		headers: {'X-CSRF-Token': getCSRFToken()},
+		headers: {'X-CSRF-Token': CSRFToken},
 		global: false,
 		beforeSend: function() {
 			noty({
@@ -212,13 +212,13 @@ $(window).resize(function() {
 
 $(function() {
 	/* Filtering attribute change */
-	$("#filter-list").attrchange({
+	$filterList.attrchange({
 		trackValues: true, 
 		callback: function (event) {
 			if (event.attributeName == "data-filter") {
-				$(".filter-item.focused").removeClass("focused");
+				$("li.filter-item.focused").removeClass("focused");
 				var filterIndex = $.inArray(event.newValue, gridTimeline);
-				$(".filter-item:nth-child(" + (filterIndex + 1) + ")").addClass("focused");
+				$("li.filter-item:nth-child(" + (filterIndex + 1) + ")").addClass("focused");
 				if (slickGrid) slickGrid.setSelectedRows([]);
 				if (dataView) dataView.refresh();
 			}
@@ -227,9 +227,9 @@ $(function() {
 });
 
 $(function() {
-	$("#filter-list").on("click", ".filter-item", function() {
+	$filterList.on("click", "li.filter-item", function() {
 		if (!$(this).hasClass("focused")) {
-			$("#filter-list").attr("data-filter", $(this).html());
+			$filterList.attr("data-filter", $(this).html());
 		}
 	});
 });
@@ -292,7 +292,7 @@ function slickGrid_cellChange(e, args) {
 						var mr = activeRowItem["MilestoneRep"];
 						var indexOfMilestone = $.inArray(mr, gridTimeline);
 						if (indexOfMilestone < 0) {
-							var toFocus = $("#filter-list").attr("data-filter");
+							var toFocus = $filterList.attr("data-filter");
 							if (toFocus != "All") toFocus = mr; 
 							retrieveTimeline(toFocus);
 						} else {
@@ -336,7 +336,7 @@ function addNewRow(sentData) {
 						var mr = newRow["MilestoneRep"];
 						var indexOfMilestone = $.inArray(mr, gridTimeline);
 						if (indexOfMilestone < 0) {
-							var toFocus = $("#filter-list").attr("data-filter");
+							var toFocus = $filterList.attr("data-filter");
 							if (toFocus != "All") toFocus = mr; 
 							retrieveTimeline(toFocus);
 						} else {
@@ -354,9 +354,9 @@ function addNewRow(sentData) {
 							if (newRow["Geocode"] != "") {
 								var latlng = newRow["Geocode"].split(" ");
 								$.ajax({
-								    url: getPOSTURLPrefix() + "/updateproperty",
+								    url: postURLPrefix + "/updateproperty",
 									type: "POST",
-									headers: {'X-CSRF-Token': getCSRFToken()},
+									headers: {'X-CSRF-Token': CSRFToken},
 									global: false,
 									data: {"center-latitude": latlng[0], "center-longitude": latlng[1]},
 									success: function(response) {
@@ -396,8 +396,8 @@ function slickGrid_addNewRow(e, args) {
 
 function slickGrid_selectedRowsChanged(e, args) {
 	var selectedRows = args["rows"];
-	if (!selectedRows.length) $("#edit-area-table #row-delete-btn").attr("disabled", true);
-	else $("#edit-area-table #row-delete-btn").attr("disabled", false);
+	if (!selectedRows.length) $editAreaTableDelBtn.attr("disabled", true);
+	else $editAreaTableDelBtn.attr("disabled", false);
 }
 
 function openAddRowVex(presetData) {
@@ -453,11 +453,11 @@ function openAddRowVex(presetData) {
 }
 
 $(function() {
-	$("#edit-area-table #row-add-btn").click(function() {
+	$editAreaTableAddBtn.click(function() {
 		openAddRowVex();
 	});
 	
-	$("#edit-area-table #row-delete-btn").click(function() {
+	$editAreaTableDelBtn.click(function() {
 		var rowsID = dataView.mapRowsToIds(slickGrid.getSelectedRows());
 		var ajaxVar = $.extend({}, ajaxTemplate, {
 			data: JSON.stringify({

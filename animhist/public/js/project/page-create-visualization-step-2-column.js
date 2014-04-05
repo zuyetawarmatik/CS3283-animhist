@@ -4,9 +4,9 @@ $(function(){
 	ajaxTemplate2 = {
 		processData: false,
 		contentType: "application/json; charset=utf-8",
-		url: getPOSTURLPrefix() + "/updatetable",
+		url: postURLPrefix + "/updatetable",
 		type: "POST",
-		headers: {'X-CSRF-Token': getCSRFToken()},
+		headers: {'X-CSRF-Token': CSRFToken},
 		global: false,
 		beforeSend: function() {
 			noty({
@@ -278,9 +278,9 @@ $(function() {
 		var val = $(this).val();
 		if (val != "") {
 			$.ajax({
-				url: getPOSTURLPrefix() + "/updateproperty",
+				url: postURLPrefix + "/updateproperty",
 				type: "POST",
-				headers: {'X-CSRF-Token': getCSRFToken()},
+				headers: {'X-CSRF-Token': CSRFToken},
 				global: false,
 				data: {"default-column": val},
 				success: function(response) {

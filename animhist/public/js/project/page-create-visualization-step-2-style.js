@@ -239,7 +239,7 @@ function retrieveStyle(column, type) {
 	currentStyleColumn = column;
 	
 	$.ajax({
-		url: getPOSTURLPrefix() + "/info?request=style&column=" + column,
+		url: postURLPrefix + "/info?request=style&column=" + column,
 		type: "GET",
 		global: false,
 		success: function(response) {
@@ -291,8 +291,8 @@ function styleSlickGrid_undo() {
 
 function styleSlickGrid_selectedRowsChanged(e, args) {
 	var selectedRows = args["rows"];
-	if (!selectedRows.length) $("#edit-area-style #row-delete-btn").attr("disabled", true);
-	else $("#edit-area-style #row-delete-btn").attr("disabled", false);
+	if (!selectedRows.length) $editAreaStyleDelBtn.attr("disabled", true);
+	else $editAreaStyleDelBtn.attr("disabled", false);
 }
 
 function styleSlickGrid_addNewRow(e, args) {
@@ -319,7 +319,7 @@ function findStyleMaxLevel() {
 }
 
 $(function() {
-	$("#edit-area-style #row-delete-btn").click(function() {
+	$editAreaStyleDelBtn.click(function() {
 		var rowsID = styleDataView.mapRowsToIds(styleSlickGrid.getSelectedRows());
 		$.each(rowsID, function(i, val) {
 			styleDataView.deleteItem(val);
@@ -327,7 +327,7 @@ $(function() {
 		styleSlickGrid.setSelectedRows([]);
 	});
 	
-	$("#edit-area-style #save-btn").click(function() {
+	$editAreaStyleSaveBtn.click(function() {
 		var sentStyle = $.extend(true, [], styleGridData);
 		$.each(sentStyle, function(i, val) {
 			delete val.id;
@@ -346,9 +346,9 @@ $(function() {
 		$.ajax({
 			processData: false,
 			contentType: "application/json; charset=utf-8",
-			url: getPOSTURLPrefix() + "/updatestyle",
+			url: postURLPrefix + "/updatestyle",
 			type: "POST",
-			headers: {'X-CSRF-Token': getCSRFToken()},
+			headers: {'X-CSRF-Token': CSRFToken},
 			global: false,
 			data: JSON.stringify({
 				colName: currentStyleColumn,
@@ -384,7 +384,7 @@ $(function() {
 		});
 	});
 	
-	$("#style-column-select").change(function() {
+	$styleColumnSelect.change(function() {
 		var val = $(this).val();
 		if (val != "") {
 			retrieveStyle(val, "select");
@@ -393,15 +393,15 @@ $(function() {
 });
 
 function addStyleColumnOptions() {
-	$("#style-column-select").empty();
+	$styleColumnSelect.empty();
 	
 	$.each(columnList, function(i, obj) {
 		if (obj["type-caption"] == 'Number') {
-			$("#style-column-select").append("<option value='" +  obj["caption"] + "'>" + obj["caption"] + "</option>");
+			$styleColumnSelect.append("<option value='" +  obj["caption"] + "'>" + obj["caption"] + "</option>");
 		}
 	});
 	
-	$("#style-column-select option[value='" + viProps["defaultColumn"] + "']").attr("selected", "selected");
+	$styleColumnSelect.find("option[value='" + viProps["defaultColumn"] + "']").attr("selected", "selected");
 }
 
 $(window).on('vi_property_loaded', function() {
