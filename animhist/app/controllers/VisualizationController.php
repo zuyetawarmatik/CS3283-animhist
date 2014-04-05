@@ -19,7 +19,7 @@ class VisualizationController extends \BaseController {
 		if (!Input::has('q')) return;
 		$q = Input::get('q');
 		$query = Visualization::select('id', 'category')
-							->where('display_name', 'LIKE', '%'.$q.'%')->where('published', 1);
+							->where('display_name', 'LIKE', '%'.$q.'%')->where('published', 1)->orderBy('created_at', 'desc');
 		$vis = $query->get();
 		$categories = $query->groupBy('category')->lists('category');
 		

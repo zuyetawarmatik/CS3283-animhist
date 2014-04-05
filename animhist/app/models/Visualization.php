@@ -63,6 +63,6 @@ class Visualization extends Eloquent {
 	
 	public function comments()
 	{
-		return $this->hasMany('Comment');
+		return $this->hasMany('Comment')->orderBy('created_at', 'desc');
 	}
 }
