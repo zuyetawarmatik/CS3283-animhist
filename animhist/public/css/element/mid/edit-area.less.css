@@ -179,7 +179,7 @@
 		}
 		
 		.sp-dd {
-			line-height: 6px;
+			line-height: 0.6rem;
 			width: 5%;
 			box-sizing: border-box;
 			-moz-box-sizing: border-box;
@@ -213,8 +213,8 @@
 .ui-datepicker-trigger {
 	background: url(../../../js/slickgrid/images/calendar.gif) no-repeat;
 	position: relative;
-	left: -20px;
+	left: -2rem;
 	color: rgba(0, 0, 0, 0);
 	display: inline-block;
-	width: 20px;
+	width: 2rem;
 }

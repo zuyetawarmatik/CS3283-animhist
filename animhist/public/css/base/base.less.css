@@ -155,7 +155,7 @@ button:disabled {
 			border-radius: 1.4rem;
 			background: #f0f0f0;
 			border: 1px solid #bbb;
-			box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 			display: inline-block;
 			vertical-align: middle;
 		}
@@ -164,7 +164,7 @@ button:disabled {
 			background: linear-gradient(lighten(@color-back-button, 50%), lighten(@color-back-button, 30%));
 			background: -webkit-linear-gradient(lighten(@color-back-button, 50%), lighten(@color-back-button, 30%));
 			border-color: darken(@color-back-button, 10%);
-			box-shadow: 0px 1px 2px lighten(@color-back-button, 30%) inset;
+			box-shadow: 0 1px 2px lighten(@color-back-button, 30%) inset;
 			
 			span {
 				display: block;
@@ -176,12 +176,12 @@ button:disabled {
 				border-radius: 0.5rem;
 				border: none;
 				background: darken(@color-back-button, 10%);
-				box-shadow: 0px 1px rgba(255, 255, 255, 0.3);
+				box-shadow: 0 1px rgba(255, 255, 255, 0.3);
 			}
 		}
 		
 		&:focus + label > span {
-			box-shadow: 0px 0px 6px darken(@color-back-button, 10%);
+			box-shadow: 0 0 6px darken(@color-back-button, 10%);
 		}
 	}
 }
