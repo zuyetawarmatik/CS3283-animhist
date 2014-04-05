@@ -132,7 +132,7 @@ class UserController extends \BaseController {
 			
 			$user->save();
 		} else {
-			return Response::make('', 401);
+			return ResponseUtility::unauthorized();
 		}
 	}
 
@@ -153,7 +153,7 @@ class UserController extends \BaseController {
 			$user->password = Hash::make(Input::get('password-new'));
 			$user->save();
 		} else {
-			return Response::make('', 401);
+			return ResponseUtility::unauthorized();
 		}
 	}
 	

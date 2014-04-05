@@ -141,9 +141,9 @@ class VisualizationController extends \BaseController {
 				
 				return JSONResponseUtility::Redirect(URL::route('visualization.showCreate', $username).'?step=2&vi_id='.$visualization->id, false);
 			} else
-				return Response::make('', 400);
+				return ResponseUtility::badRequest();
 		} else {
-			return Response::make('', 401);
+			return ResponseUtility::unauthorized();
 		}
 	}
 
@@ -252,10 +252,10 @@ class VisualizationController extends \BaseController {
 			
 			return Response::JSON($json);
 		} else {
-			return Response::make('', 401);
+			return ResponseUtility::unauthorized();
 		}
 		
-		fail: return Response::make('', 400);
+		fail: return ResponseUtility::badRequest();
 	}
 	
 	/* Require JSON request */
@@ -376,14 +376,14 @@ class VisualizationController extends \BaseController {
 						}
 					}
 					$visualization->save();
-					return Response::make('', 200);
+					return ResponseUtility::success();
 				case 'column-insert':
 					// If default column is null and this new column is NUMBER
 					if (empty($visualization->default_column) && $col_type == 'NUMBER') {
 						$visualization->default_column = $col_name;
 						$visualization->save();
 					}
-					return Response::make('', 200);
+					return ResponseUtility::success();
 				case 'column-delete':
 					// Change default_column if the current default column is deleted
 					if ($visualization->default_column == $cur_col->name) {
@@ -397,15 +397,15 @@ class VisualizationController extends \BaseController {
 						}
 						$visualization->save();
 					}
-					return Response::make('', 200);
+					return ResponseUtility::success();
 				default:
-					return Response::make('', 200);
+					return ResponseUtility::success();
 			}
 		} else {
-			return Response::make('', 401);
+			return ResponseUtility::unauthorized();
 		}
 		
-		fail: return Response::make('', 400);
+		fail: return ResponseUtility::badRequest();
 	}
 	
 	public function updateStyle($username, $id)
@@ -426,10 +426,16 @@ class VisualizationController extends \BaseController {
 			
 			if ($ret) return Response::JSON($gft->getColumnStyle($col_name));
 		} else {
-			return Response::make('', 401);
+			return ResponseUtility::unauthorized();
 		}
 		
-		fail: return Response::make('', 400);
+		fail: return ResponseUtility::badRequest();
+	}
+	
+	public function comment($username, $id) {
+		$visualization = Visualization::find($id);
+		if (!$visualization || $visualization->user->username != $username) goto fail;
+		fail: return ResponseUtility::badRequest();
 	}
 	
 	public function info($username, $id) {
@@ -475,7 +481,7 @@ class VisualizationController extends \BaseController {
 			return Response::json($ret);
 		}
 		
-		fail: return Response::make('', 400);
+		fail: return ResponseUtility::badRequest();
 	}
 	
 	public function destroy($username, $id) {
@@ -490,10 +496,10 @@ class VisualizationController extends \BaseController {
 				return JSONResponseUtility::Redirect(URL::route('user.show', $username), false);
 			}
 		} else {
-			return Response::make('', 401);
+			return ResponseUtility::unauthorized();
 		}
 		
-		fail: return Response::make('', 400);
+		fail: return ResponseUtility::badRequest();
 	}
 	
 	private static function prepareColumnListSentToGFusion($input_column_list, $input_visualization_type) {

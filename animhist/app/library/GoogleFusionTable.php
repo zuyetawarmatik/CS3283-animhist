@@ -43,7 +43,7 @@ class GoogleFusionTable {
 			->send();
 		}
 	
-		if ($response->code == 200)
+		if ($response->code == Constant::STATUS_SUCCESS)
 			return $response->body;
 	
 		return false;
@@ -178,7 +178,7 @@ class GoogleFusionTable {
 			->send();
 		}
 	
-		if ($response->code == 200) {
+		if ($response->code == Constant::STATUS_SUCCESS) {
 			if ($col_type == 'NUMBER')
 				$this->createColumnDefaultStyle($col_name);
 			return true;
@@ -210,7 +210,7 @@ class GoogleFusionTable {
 			->send();
 		}
 	
-		if ($response->code == 200) {
+		if ($response->code == Constant::STATUS_SUCCESS) {
 			if ($col_type == 'STRING') {				
 				$this->deleteColumnStyle($col_name);
 			} else { // STRING changed to NUMBER type
@@ -260,7 +260,7 @@ class GoogleFusionTable {
 			->send();
 		}
 		
-		if ($response->code == 200)
+		if ($response->code == Constant::STATUS_SUCCESS)
 			return $response->body;
 	
 		return false;
@@ -340,7 +340,7 @@ class GoogleFusionTable {
 			->send();
 		}
 		
-		if ($response->code == 200)
+		if ($response->code == Constant::STATUS_SUCCESS)
 			return $response->body;
 
 		return false;
@@ -369,7 +369,7 @@ class GoogleFusionTable {
 				->send();
 			}
 			
-			if ($response->code == 200)
+			if ($response->code == Constant::STATUS_SUCCESS)
 				return $response->body;
 		}
 		
@@ -438,7 +438,7 @@ class GoogleFusionTable {
 					->send();
 		}
 		
-		if ($response->code == 200) 
+		if ($response->code == Constant::STATUS_SUCCESS) 
 			return true;
 		
 		return false;
@@ -531,7 +531,7 @@ class GoogleFusionTable {
 						->send();
 		}
 		
-		if ($response->code == 200) {
+		if ($response->code == Constant::STATUS_SUCCESS) {
 			GoogleDrive::setPublicPermissionForFusionTable(GoogleDrive::getFileIDForFusionTable($name));
 			
 			// Create default style for every NUMBER column

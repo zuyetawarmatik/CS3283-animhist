@@ -61,7 +61,7 @@ class GoogleDrive {
 						->send();
 		}
 		
-		if ($response->code == 200) {		
+		if ($response->code == Constant::STATUS_SUCCESS) {		
 			if (count($response->body->items) == 0) return false;
 			return $response->body->items[0]->id;
 		}
@@ -88,7 +88,7 @@ class GoogleDrive {
 						->send();
 		}
 		
-		if ($response->code == 200)
+		if ($response->code == Constant::STATUS_SUCCESS)
 			return true;
 		
 		return false;
