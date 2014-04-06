@@ -225,7 +225,6 @@ $(function() {
 			url: postURLPrefix,
 			type: "DELETE",
 			headers: {'X-CSRF-Token': CSRFToken},
-			global: false,
 			error: function() {
 				notyError({
 					text: "Visualization deletion failed"
@@ -247,7 +246,6 @@ $(function() {
 		    url: postURLPrefix + "/updateproperty",
 			type: "POST",
 			headers: {'X-CSRF-Token': CSRFToken},
-			global: false,
 			data: {"published": true},
 			error: function() {
 				notyError({

@@ -12,5 +12,16 @@
 	#description-area {
 		top: 18rem;
 		bottom: 10rem;
+		
+		.repos-a {
+			font-family: Conv_icomoon;
+			margin: 0 0.5rem;
+			color: #fff;
+			
+			&:hover {
+				cursor: pointer;
+				color: @color-type-link;
+			}
+		}
 	}
 }

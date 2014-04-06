@@ -55,10 +55,6 @@ function retrieveTimeline() {
 	});	
 }
 
-$(function() {
-	retrieveVisualizationProperty();
-});
-
 $(window).on('vi_property_loaded', function() {
 	mapInitialize();
 	retrieveTimeline();
@@ -66,6 +62,11 @@ $(window).on('vi_property_loaded', function() {
 });
 
 $(function() {
+	retrieveVisualizationProperty();
+	
+	$descriptionArea.find("#zoom").append("<a class='repos-a'>&#57475;</a>");
+	$descriptionArea.find("#center").append("<a class='repos-a'>&#57475;</a>");
+	
 	$descriptionArea.find(".repos-a").on("click", function() {
 		if (map !== undefined) {
 			var field = $(this).parent().attr("id");
