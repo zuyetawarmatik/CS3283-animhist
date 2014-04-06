@@ -46,9 +46,9 @@
 	<div id="button-area">
 	@if (!$user->isAuthUser())
 		@if (Auth::check() && Follow::where('user_id', Auth::user()->id)->where('following_id', $user->id)->first())
-		<button id="follow-btn" data-url="{{ URL::route('user.unfollow', $user->username) }}"><i>&#57551;</i>Unfollow The Author</button>
+		<button id="follow-btn" data-url="{{ URL::route('user.unfollow', $user->username) }}"><i>&#57555;</i>Unfollow The Author</button>
 		@else
-		<button id="follow-btn" data-url="{{ URL::route('user.follow', $user->username) }}"><i>&#57552;</i>Follow The Author</button>
+		<button id="follow-btn" data-url="{{ URL::route('user.follow', $user->username) }}"><i>&#57553;</i>Follow The Author</button>
 		@endif
 	@else
 		<button id="edit-profile-btn" data-url="{{ URL::route('user.showEdit', $user->username) }}"><i>&#57350;</i>Edit My Profile</button>

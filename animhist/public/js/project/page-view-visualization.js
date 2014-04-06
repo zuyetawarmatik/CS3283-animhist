@@ -207,10 +207,10 @@ $(function() {
 				}
 				
 				if (link.substr(link.length - 7, link.length) === "/follow") {
-					$followBtn.html('<i>&#57551;</i>Unfollow The Author')
+					$followBtn.html('<i>&#57555;</i>Unfollow The Author')
 								.data('url', link.replace("/follow", "/unfollow"));
 				} else {
-					$followBtn.html('<i>&#57552;</i>Follow The Author')
+					$followBtn.html('<i>&#57553;</i>Follow The Author')
 								.data('url', link.replace("/unfollow", "/follow"));
 				}
 			}

@@ -549,6 +549,16 @@ class VisualizationController extends \BaseController {
 		fail: return ResponseUtility::badRequest();
 	}
 	
+	public function like($username, $id)
+	{
+		
+	}
+	
+	public function unlike($username, $id)
+	{
+		
+	}
+	
 	private static function prepareColumnListSentToGFusion($input_column_list, $input_visualization_type) {
 		$column_list = [['name'=>'CreatedAt', 'type'=>'DATETIME'], ['name'=>'MilestoneRep', 'type'=>'DATETIME'], ['name'=>'Geocode', 'type'=>'LOCATION'], ['name'=>'Milestone', 'type'=>'DATETIME'], ['name'=>'Position', 'type'=>'LOCATION']];
 		

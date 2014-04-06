@@ -19,32 +19,28 @@
 			<ul id="timeline-list"></ul>
 		</div>
 	</div>
-	@if (true)
-		<div id="comment-area">
-			<div id="comment-area-title">
-				{{ count($visualization->comments) }} comment(s)
-			</div>
-			<ul id="comment-list">
-			@foreach ($visualization->comments as $comment)
-				<li class="comment-item">
-					<div class="avatar-wrapper">
-						<a href="{{ URL::route('user.show', $comment->user->username) }}"><img class="avatar" src="{{ $comment->user->avatar->url('thumb') }}" /></a>
-					</div>
-					<div class="comment-main">
-						<p class="comment-info"><a href="{{ URL::route('user.show', $comment->user->username) }}" class="username">{{$comment->user->display_name}}</a> - <span class="time">{{$comment->getFormattedCreatedDate()}}</span></p>
-						<p class="comment-content">{{ $comment->content }}</p>
-					</div>
-				</li>
-			@endforeach
-			</ul>
+	<div id="comment-area">
+		<div id="comment-area-title">
+			{{ count($visualization->comments) }} comment(s)
 		</div>
-	@endif
+		<ul id="comment-list">
+		@foreach ($visualization->comments as $comment)
+			<li class="comment-item">
+				<div class="avatar-wrapper">
+					<a href="{{ URL::route('user.show', $comment->user->username) }}"><img class="avatar" src="{{ $comment->user->avatar->url('thumb') }}" /></a>
+				</div>
+				<div class="comment-main">
+					<p class="comment-info"><a href="{{ URL::route('user.show', $comment->user->username) }}" class="username">{{$comment->user->display_name}}</a> - <span class="time">{{$comment->getFormattedCreatedDate()}}</span></p>
+					<p class="comment-content">{{ $comment->content }}</p>
+				</div>
+			</li>
+		@endforeach
+		</ul>
+	</div>
 @stop
 
 @section('action-bar')
-	@if (true)
-		<div id="like-btn">&#57556;</div>
-	@endif
+	<div id="like-btn">&#57556;</div>
 	<div id="like-info">
 		
 	</div>
@@ -78,9 +74,9 @@
 	{{ Form::close() }}
 	@if (!$visualization->user->isAuthUser())
 		@if (Auth::check() && Follow::where('user_id', Auth::user()->id)->where('following_id', $visualization->user->id)->first())
-		<button id="follow-btn" data-url="{{ URL::route('user.unfollow', $visualization->user->username) }}"><i>&#57551;</i>Unfollow The Author</button>
+		<button id="follow-btn" data-url="{{ URL::route('user.unfollow', $visualization->user->username) }}"><i>&#57555;</i>Unfollow The Author</button>
 		@else
-		<button id="follow-btn" data-url="{{ URL::route('user.follow', $visualization->user->username) }}"><i>&#57552;</i>Follow The Author</button>
+		<button id="follow-btn" data-url="{{ URL::route('user.follow', $visualization->user->username) }}"><i>&#57553;</i>Follow The Author</button>
 		@endif
 	@else
 		<button id="edit-visualization-btn" data-url="{{ URL::route('visualization.showEdit', [$visualization->user->username, $visualization->id]) }}"><i>&#57350;</i>Edit This Visualization</button>

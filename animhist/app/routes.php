@@ -93,6 +93,12 @@ Route::group(['before' => 'auth', 'prefix' => '{username}'], function(){
 	
 	// /{username}/visualization/{id}/comment
 	Route::post('visualization/{id}/comment', ['before' => 'csrf', 'as'=> 'visualization.comment', 'uses' => 'VisualizationController@comment']);
+	
+	// /{username}/visualization/{id}/like
+	Route::post('visualization/{id}/like', ['before' => 'csrf', 'as'=> 'visualization.like', 'uses' => 'VisualizationController@like']);
+	
+	// /{username}/visualization/{id}/unlike
+	Route::post('visualization/{id}/unlike', ['before' => 'csrf', 'as'=> 'visualization.unlike', 'uses' => 'VisualizationController@unlike']);
 });
 
 Route::group(['prefix' => '{username}'], function(){
