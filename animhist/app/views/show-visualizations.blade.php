@@ -1,5 +1,9 @@
 @extends('layouts.main3sections')
 
+@section('css')
+	<link rel="stylesheet/less" type="text/css" href="/css/show-visualizations.less.css" />
+@stop
+
 @section('js')
 	{{ HTML::script('js/project/page-show-visualizations.js'); }}
 @stop

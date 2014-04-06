@@ -2,6 +2,32 @@
 
 class VisualizationController extends \BaseController {
 	
+	public function showFollowing()
+	{
+		if (Input::get('ajax')) {
+			$following_ids = Auth::user()->followings->lists('id');
+			
+			$vis = []; $categories = [];
+			if (!empty($following_ids)) {
+				$query = Visualization::select('id', 'user_id', 'category')
+								->whereIn('user_id', $following_ids)->where('published', 1)->orderBy('created_at', 'desc');
+				$vis = $query->get();
+				$categories = $query->groupBy('category')->lists('category');
+			}
+			
+			$ret_vis = [];
+			foreach ($vis as $vi)
+				$ret_vis[] = Visualization::find($vi->id);
+			
+			return ViewResponseUtility::makeSubView('show-visualizations-following', 'Following', ['visualizations'=>$ret_vis, 'categories'=>$categories]);
+		} else {
+			if (Auth::check())
+				return ViewResponseUtility::makeBaseView(URL::route('visualization.showFollowing'), Constant::SIDEBAR_FOLLOWING);
+			else
+				return ViewResponseUtility::makeBaseView(URL::route('visualization.showFollowing'), Constant::SIDEBAR_GUEST_FOLLOWING);
+		}
+	}
+	
 	public function showSearch()
 	{
 		if (Input::get('ajax'))

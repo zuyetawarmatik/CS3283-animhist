@@ -31,7 +31,7 @@ class UserController extends \BaseController {
 	public function store()
 	{
 		$rules = [
-				'username'			=> 'required|unique:users|alpha_dash|not_in:user,featured,search,visualization',
+				'username'			=> 'required|unique:users|alpha_dash|not_in:user,featured,search,visualization,login,following',
 				'display-name'		=> 'required',
 				'email'      		=> 'required|unique:users|email',
 				'password'     		=> 'required|min:5',
