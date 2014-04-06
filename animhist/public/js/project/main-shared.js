@@ -1,6 +1,6 @@
 $(function() {
-	$rightSidebar = $("#right-area");
 	$mainArea = $("#left-area");
+	$rightSidebar = $("#right-area");
 	$rightAreaTab = $("#right-area-tab");
 });
 
@@ -65,6 +65,15 @@ $(function() {
 	$("#back-btn").click(function() {
 		parent.changeIFrameSrcOrdinary($(this).data("url"));
 	});
+	
+	/* Topbar link click */
+	$("#top-bar").on("click", "a",
+		function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			parent.changeIFrameSrc($(this).attr("href"), true);
+		}
+	);
 });
 
 $(document).ajaxStart(function() {

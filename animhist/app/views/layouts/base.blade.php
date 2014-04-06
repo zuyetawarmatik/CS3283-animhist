@@ -29,7 +29,7 @@
 				<div id="user-bar">	
 					<img id="avatar" style="background:#666" src="{{ Auth::user()->avatar->url('thumb') }}" />
 					<div id="username">
-						<a href="#">{{ Auth::user()->username }}</a>
+						<a href="{{ URL::route('user.show', [Auth::user()->username]) }}">{{ '@'.Auth::user()->username }}</a>
 						<div id="logout-btn">&#57603;</div>
 					</div>
 				</div> 

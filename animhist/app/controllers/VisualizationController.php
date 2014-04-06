@@ -182,7 +182,8 @@ class VisualizationController extends \BaseController {
 			return Redirect::route('user.show', $username);
 		
 		if (Input::get('ajax')) {
-			return ViewResponseUtility::makeSubView('view-visualization', $visualization->display_name, ['visualization'=>$visualization]);
+			$title = $visualization->display_name.' by <a href="'.URL::route('user.show', $username).'">'.$user->display_name.'</a>';
+			return ViewResponseUtility::makeSubView('view-visualization', $title, ['visualization'=>$visualization]);
 		} else {
 			if ($user->isAuthUser())
 				return ViewResponseUtility::makeBaseView(URL::route('visualization.show', [$username, $id]), Constant::SIDEBAR_MYVISUALIZATION);
