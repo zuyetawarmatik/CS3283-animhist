@@ -6,7 +6,6 @@
 		padding: 3rem 0;
 		background: @color-back-like-button;
 		font-family: Conv_icomoon;
-		//font-weight: normal;
 		
 		&:hover {
 			background: darken(@color-back-like-button, 10%);
@@ -15,7 +14,6 @@
 	
 	#like-info {
 		margin-left: 8rem;
-		max-width: 24rem;
 		height: 2rem;
 		padding: 3rem 2rem;
 		font-weight: 600;

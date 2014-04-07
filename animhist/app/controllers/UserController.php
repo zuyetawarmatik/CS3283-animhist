@@ -189,39 +189,40 @@ class UserController extends \BaseController {
 	public function followUser($username)
 	{
 		$following_user = User::where('username', $username)->first();
-		if (!$following_user) return JSONResponseUtility::ValidationError(['user'=>['User to follow does not exist.']]);
+		if (!$following_user) goto fail;
 		
 		$follower_id = Auth::user()->id;
 		$following_id = $following_user->id;
-		if ($follower_id == $following_id) return JSONResponseUtility::ValidationError(['user'=>['User and followed user are the same.']]);
+		if ($follower_id == $following_id) goto fail;
 		
 		$existing_follow = Follow::where('user_id', $follower_id)->where('following_id', $following_id)->first();
-		if ($existing_follow) return JSONResponseUtility::ValidationError(['follow'=>['Already following this person.']]);
+		if ($existing_follow) goto fail;
 		
 		$follow = new Follow();
 		$follow->user_id = $follower_id;
 		$follow->following_id = $following_id;
 		$follow->save();
-		
 		return Response::json(['numFollowers'=>count(User::find($following_id)->followers)]);
+		
+		fail: return ResponseUtility::badRequest();
 	}
 	
 	public function unfollowUser($username)
 	{
 		$following_user = User::where('username', $username)->first();
-		if (!$following_user) return JSONResponseUtility::ValidationError(['user'=>['User to unfollow does not exist.']]);
+		if (!$following_user) goto fail;
 		
 		$follower_id = Auth::user()->id;
 		$following_id = $following_user->id;
-		if ($follower_id == $following_id) return JSONResponseUtility::ValidationError(['user'=>['User and followed user are the same.']]);
+		if ($follower_id == $following_id) goto fail;
 		
 		$existing_follow = Follow::where('user_id', $follower_id)->where('following_id', $following_id)->first();
-		if (!$existing_follow)
-			return JSONResponseUtility::ValidationError(['unfollow'=>['You haven\'t followed this user yet to unfollow.']]);
+		if (!$existing_follow) goto fail;
 		
-		Follow::destroy($existing_follow->id);
-		
+		$existing_follow->delete();
 		return Response::json(['numFollowers'=>count(User::find($following_id)->followers)]);
+		
+		fail: return ResponseUtility::badRequest();
 	}
 	
 	public function logout()

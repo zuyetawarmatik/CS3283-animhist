@@ -18,6 +18,8 @@ $(function() {
 	$commentForm = $("[name='comment-form']");
 	$commentText = $("[name='comment-form']").find("textarea");
 	$followBtn = $('#follow-btn');
+	$likeBtn = $('#like-btn');
+	$numLikes = $("#like-info");
 	
 	var userID = $visualizationArea.data("user-id");
 	var visualizationID = $visualizationArea.data("vi-id");
@@ -190,14 +192,8 @@ $(function() {
 			global: false,
 			headers: {'X-CSRF-Token': CSRFToken},
 			error: function(response) {
-				var alertSt = "";
-				$.each(response["responseJSON"]["error"], function(key, val) {
-					$.each(val, function(index, tx) {
-						alertSt += tx + "<br/>";
-					});
-				});
 				notyError({
-					text: alertSt
+					text: "Error"
 				});
 			},
 			success: function(response) {
@@ -213,6 +209,37 @@ $(function() {
 					$followBtn.html('<i>&#57553;</i>Follow The Author')
 								.data('url', link.replace("/unfollow", "/follow"));
 				}
+			}
+		});
+	});
+	
+	$likeBtn.click(function() {
+		var link = $(this).data('url');
+		$.ajax({
+			url: link,
+			type: "POST",
+			global: false,
+			headers: {'X-CSRF-Token': CSRFToken},
+			error: function(response) {
+				notyError({
+					text: "Error"
+				});
+			},
+			success: function(response) {
+				if (response["redirect"]) {
+					handleJSONRedirectResponse(response, true);
+					return;
+				}
+				
+				if (link.substr(link.length - 5, link.length) === "/like") {
+					$likeBtn.html('&#57557;')
+								.data('url', link.replace("/like", "/unlike"));
+				} else {
+					$likeBtn.html('&#57556;')
+								.data('url', link.replace("/unlike", "/like"));
+				}
+				
+				$numLikes.html(response["numLikes"] + " like(s)");
 			}
 		});
 	});

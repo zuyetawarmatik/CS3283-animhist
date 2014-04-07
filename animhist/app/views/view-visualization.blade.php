@@ -40,9 +40,13 @@
 @stop
 
 @section('action-bar')
-	<div id="like-btn">&#57556;</div>
+	@if (Auth::check() && Like::where('visualization_id', $visualization->id)->where('user_id', Auth::user()->id)->first())
+	<div id="like-btn" data-url="{{ URL::route('visualization.unlike', [$visualization->user->username, $visualization->id]) }}">&#57557;</div>
+	@else
+	<div id="like-btn" data-url="{{ URL::route('visualization.like', [$visualization->user->username, $visualization->id]) }}">&#57556;</div>
+	@endif
 	<div id="like-info">
-		
+		{{ count($visualization->likes) }} like(s)
 	</div>
 @stop
 

@@ -25,14 +25,8 @@ $(function() {
 			global: false,
 			headers: {'X-CSRF-Token': CSRFToken},
 			error: function(response) {
-				var alertSt = "";
-				$.each(response["responseJSON"]["error"], function(key, val) {
-					$.each(val, function(index, tx) {
-						alertSt += tx + "<br/>";
-					});
-				});
 				notyError({
-					text: alertSt
+					text: "Error"
 				});
 			},
 			success: function(response) {

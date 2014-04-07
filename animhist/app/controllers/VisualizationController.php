@@ -552,12 +552,35 @@ class VisualizationController extends \BaseController {
 	
 	public function like($username, $id)
 	{
+		$visualization = Visualization::find($id);
+		if (!$visualization || $visualization->user->username != $username) goto fail;
 		
+		$user_id = Auth::user()->id;
+		$existing_like = Like::where('visualization_id', $id)->where('user_id', $user_id)->first();
+		if ($existing_like) goto fail;
+		
+		$like = new Like();
+		$like->visualization_id = $id;
+		$like->user_id = $user_id;
+		$like->save();
+		return Response::json(['numLikes'=>count($visualization->likes)]);
+		
+		fail: return ResponseUtility::badRequest();
 	}
 	
 	public function unlike($username, $id)
 	{
+		$visualization = Visualization::find($id);
+		if (!$visualization || $visualization->user->username != $username) goto fail;
 		
+		$user_id = Auth::user()->id;
+		$existing_like = Like::where('visualization_id', $id)->where('user_id', $user_id)->first();
+		if (!$existing_like) goto fail;
+		
+		$existing_like->delete();
+		return Response::json(['numLikes'=>count($visualization->likes)]);
+		
+		fail: return ResponseUtility::badRequest();
 	}
 	
 	private static function prepareColumnListSentToGFusion($input_column_list, $input_visualization_type) {
