@@ -31,7 +31,7 @@ class VisualizationController extends \BaseController {
 	public function showSearch()
 	{
 		if (Input::get('ajax'))
-			return ViewResponseUtility::makeSubView('show-visualizations-search', 'Search');
+			return ViewResponseUtility::makeSubView('show-visualizations-search', 'Search', ['visualizations'=>[], 'categories'=>[]]);
 		else {
 			if (Auth::check())
 				return ViewResponseUtility::makeBaseView(URL::route('visualization.showSearch'), Constant::SIDEBAR_SEARCH);

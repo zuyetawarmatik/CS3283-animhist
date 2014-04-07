@@ -63,7 +63,7 @@
 @section('visualizations')
 	{{ Form::open(['name'=>'hidden-form', 'url'=>'#']) }}
 	{{ Form::close() }}
-	@foreach ($user->visualizations as $visualization)
+	@foreach ($visualizations as $visualization)
 		@if ($user->isAuthUser() || (!$user->isAuthUser() && $visualization->published))
 			<li class="visualization-item" data-vi-category="{{$visualization->category}}">
 				@if ($visualization->published)
@@ -97,11 +97,5 @@
 				</div>
 			</li>
 		@endif
-	@endforeach
-@stop
-
-@section('categories')
-	@foreach ($categories as $category)
-		<li class="category-item"><span class="category-caption">{{$category}}</span></li>
 	@endforeach
 @stop

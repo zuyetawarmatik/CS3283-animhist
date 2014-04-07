@@ -79,7 +79,7 @@ class UserController extends \BaseController {
 					$categories = Visualization::where('user_id', $user->id)->where('published', true)->groupBy('category')->lists('category');
 				}
 
-				return ViewResponseUtility::makeSubView('show-visualizations-personal', $title, ['user'=>$user, 'categories'=>$categories], true);
+				return ViewResponseUtility::makeSubView('show-visualizations-personal', $title, ['user'=>$user, 'visualizations'=>$user->visualizations, 'categories'=>$categories], true);
 			} else {
 				if ($user->isAuthUser())
 					return ViewResponseUtility::makeBaseView(URL::route('user.show', $username), Constant::SIDEBAR_MYVISUALIZATION);
