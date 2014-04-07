@@ -33,12 +33,16 @@
 					text-shadow: 0 0 2px @color-back-top-bar;
 					
 					&:first-child {
-						margin-top: 5rem;
+						margin-top: 4rem;
+					}
+					
+					&:nth-child(3) {
+						margin-top: 1.9rem;
 					}
 				}
 				
 				.visualization-buttons {
-					margin-top: 2rem;
+					margin-top: 2.1rem;
 					text-align: center;
 					
 					a {

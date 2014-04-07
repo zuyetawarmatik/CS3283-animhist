@@ -73,6 +73,7 @@
 				@endif
 					<p><span class="h2">Created at: </span>{{ $visualization->getFormattedCreatedDate() }}</p>
 					<p><span class="h2">Last Updated at: </span>{{ $visualization->getFormattedUpdatedDate() }}</p>
+					<p style="font-weight:700">{{ count($visualization->likes) }} like(s)</p>
 					<div class="visualization-buttons">
 						@if ($visualization->published)
 							<a href="{{ URL::route('visualization.show', [$visualization->user->username, $visualization->id]) }}">&#57542;</a>
