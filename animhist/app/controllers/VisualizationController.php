@@ -2,6 +2,37 @@
 
 class VisualizationController extends \BaseController {
 	
+	public function showFeatured()
+	{
+		if (Input::get('ajax')) {
+			$vis_sort_by_likes = DB::table('likes')->select(DB::raw('visualization_id, count(*) as cnt'))
+								->groupBy('visualization_id')->orderBy('cnt', 'desc')->take(10)->get();
+			
+			$vis_ids = [];
+			foreach ($vis_sort_by_likes as $item)
+				$vis_ids[] = $item->visualization_id;
+			
+			$vis = []; $categories = [];
+			if (!empty($vis_ids)) {
+				$query = Visualization::select('id', 'category')
+						->whereIn('id', $vis_ids)->where('published', 1);
+				$vis = $query->get();
+				$categories = $query->groupBy('category')->lists('category');
+			}
+			
+			$ret_vis = [];
+			foreach ($vis as $vi)
+				$ret_vis[] = Visualization::find($vi->id);
+			
+			return ViewResponseUtility::makeSubView('show-visualizations-featured', 'Featured', ['visualizations'=>$ret_vis, 'categories'=>$categories]);
+		} else {
+			if (Auth::check())
+				return ViewResponseUtility::makeBaseView(URL::route('visualization.showFeatured'), Constant::SIDEBAR_FEATURED);
+			else
+				return ViewResponseUtility::makeBaseView(URL::route('visualization.showFeatured'), Constant::SIDEBAR_GUEST_FEATURED);
+		}
+	}
+	
 	public function showFollowing()
 	{
 		if (Input::get('ajax')) {

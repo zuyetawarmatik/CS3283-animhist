@@ -38,7 +38,7 @@
 						<span class="nav-icon">&#57513;</span>
 						<span class="nav-caption">My Visualizations</span>
 					</li>
-					<li class="nav-item" data-url="{{ URL::to('featured') }}">
+					<li class="nav-item" data-url="{{ URL::route('visualization.showFeatured') }}">
 						<span class="nav-icon">&#57552;</span>
 						<span class="nav-caption">Featured</span>
 					</li>
@@ -67,7 +67,7 @@
 						<span class="nav-icon">&#57604;</span>
 						<span class="nav-caption">Login</span>
 					</li>
-					<li class="nav-item" data-url="{{ URL::to('featured') }}">
+					<li class="nav-item" data-url="{{ URL::route('visualization.showFeatured') }}">
 						<span class="nav-icon">&#57552;</span>
 						<span class="nav-caption">Featured</span>
 					</li>

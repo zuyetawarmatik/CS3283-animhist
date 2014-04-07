@@ -22,6 +22,9 @@ Route::get('/', function()
 
 // ==========================================================
 
+// /featured
+Route::get('featured', ['as' => 'visualization.showFeatured', 'uses' => 'VisualizationController@showFeatured']);
+
 // /search
 Route::get('search', ['as' => 'visualization.showSearch', 'uses' => 'VisualizationController@showSearch']);
 Route::post('search', ['as' => 'visualization.search', 'uses' => 'VisualizationController@search']);
