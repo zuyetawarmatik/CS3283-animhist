@@ -204,20 +204,23 @@ $(function() {
 	
 	$(window).on("vi_property_changed", function(e) {
 		var fields = e.fields;
-		if ($.inArray("zoom", fields) >= 0)
+		if (inArray("zoom", fields))
 			$("p#zoom").find("span.content").html(viProps["zoom"]);
-		if ($.inArray("centerLatitude", fields) >= 0 || $.inArray("centerLongitude", fields) >= 0)
+		if (inArray("centerLatitude", fields) || inArray("centerLongitude", fields))
 			$("p#center").find("span.content").html(viProps["centerLatitude"] + ", " + viProps["centerLongitude"]);
-		if ($.inArray("category", fields) >= 0)
+		if (inArray("category", fields))
 			$("p#category").find("span.content").html(viProps["category"]);
-		if ($.inArray("description", fields) >= 0) {
+		if (inArray("description", fields)) {
 			if (viProps["description"] == null)
 				$("p#description + p").html("(The visualization does not have any description yet.)");
 			else
 				$("p#description + p").html(viProps["description"]);
 		}
-		if ($.inArray("displayName", fields) >= 0)
+		if (inArray("displayName", fields)) {
 			$("h1#displayname").find("span.content").html(viProps["displayName"]);
+			if ($descriptionArea.hasClass("edit-page"))
+				$title.html("Edit Visualization: <span style='font-weight:300'>" + viProps["displayName"] + "</span>");
+		}
 	});
 	
 	$buttonArea.find("#delete-btn").on("click", function() {

@@ -11,11 +11,11 @@ $(window).on('vi_style_loaded', function() {
 $(window).on('vi_property_changed', function(e) {
 	if (map !== undefined) {
 		var fields = e.fields;
-		if ($.inArray("zoom", fields) >= 0)
+		if (inArray("zoom", fields))
 			map.setZoom(parseInt(viProps['zoom']));
-		if ($.inArray("centerLatitude", fields) >= 0 || $.inArray("centerLongitude", fields) >= 0)
+		if (inArray("centerLatitude", fields) || inArray("centerLongitude", fields))
 			map.setCenter(new google.maps.LatLng(viProps['centerLatitude'], viProps['centerLongitude']));
-		if ($.inArray("defaultColumn", fields) >= 0)
+		if (inArray("defaultColumn", fields))
 			updateLayerStyle();
 	}
 });

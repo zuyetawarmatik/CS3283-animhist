@@ -4,6 +4,10 @@ $(function() {
 	$rightAreaTab = $("#right-area-tab");
 });
 
+function inArray(val, array) {
+	return $.inArray(val, array) >= 0;
+}
+
 function getUrlParameters(parameter, staticURL, decode) {
 	var currLocation = (staticURL.length) ? staticURL : window.location.search;
 	var parArr;

@@ -290,13 +290,13 @@ function slickGrid_cellChange(e, args) {
 						
 						// Update timeline
 						var mr = activeRowItem["MilestoneRep"];
-						var indexOfMilestone = $.inArray(mr, gridTimeline);
-						if (indexOfMilestone < 0) {
+						if (!inArray(mr, gridTimeline)) {
 							var toFocus = $filterList.attr("data-filter");
 							if (toFocus != "All") toFocus = mr; 
 							retrieveTimeline(toFocus);
 						} else {
 							dataView.refresh();
+							retrieveTimeline();
 						}
 					}
 				}
@@ -334,8 +334,7 @@ function addNewRow(sentData) {
 						
 						// Update timeline
 						var mr = newRow["MilestoneRep"];
-						var indexOfMilestone = $.inArray(mr, gridTimeline);
-						if (indexOfMilestone < 0) {
+						if (!inArray(mr, gridTimeline)) {
 							var toFocus = $filterList.attr("data-filter");
 							if (toFocus != "All") toFocus = mr; 
 							retrieveTimeline(toFocus);

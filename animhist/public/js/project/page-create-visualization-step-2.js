@@ -20,6 +20,7 @@ $(function() {
 	$editAreaTableDelBtn = $editAreaTable.find("#row-delete-btn");
 	$playBtn = $("#play-btn");
 	$rightArea = $("#right-area");
+	$title = $("#title");
 	
 	var userID = $editArea.data("user-id");
 	var visualizationID = $editArea.data("vi-id");
