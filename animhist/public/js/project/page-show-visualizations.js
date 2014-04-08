@@ -49,12 +49,11 @@ $(function() {
 				success: function(response) {
 					notySuccess({
 						text: "Visualization deleted",
-						layout: 'bottomCenter',
 						callback: {
 							afterShow: function() {
 								$thisLi = $this.closest("li.visualization-item");
 								var category = $thisLi.data("vi-category");
-								$thisLi.remove();
+								$thisLi.fadeOut(500, function(){$thisLi.remove();});
 								var sameCatCount = $("li.visualization-item[data-vi-category='" + category + "']").length;
 								if (sameCatCount == 0) {
 									$("li.category-item").each(function() {
