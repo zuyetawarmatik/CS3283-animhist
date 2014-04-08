@@ -92,7 +92,7 @@
 				<div class="avatar-wrapper">
 					<a href="{{ URL::route('user.show', $user->username) }}"><img class="avatar" src="{{ $user->avatar->url('thumb') }}" /></a>
 				</div>
-				<div class="visualization-main">
+				<div class="visualization-main @if (!$visualization->published) unpublished @endif">
 					<p class="visualization-title">{{$visualization->display_name}}</p>
 					<p class="visualization-author"><a href="{{ URL::route('user.show', $user->username) }}" class="username">{{$user->display_name}}</a></p>
 				</div>

@@ -86,6 +86,10 @@
 				padding: 0.7rem 0 0.6rem; 
 				background: @color-back-comment;
 				
+				&.unpublished {
+					background: url(../images/stripe.png);
+				}
+				
 				p {
 					margin: 0 2rem;
 					color: @color-type-on-white;
