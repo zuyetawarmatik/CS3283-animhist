@@ -258,6 +258,11 @@ $(function() {
 				});
 			},
 			success: function(response) {
+				if (response["redirect"]) {
+					handleJSONRedirectResponse(response, true);
+					return;
+				}
+				
 				$newComment = "<li class='comment-item'>\
 									<div class='avatar-wrapper'>\
 										<a href='" + response.userURL + "'><img class='avatar' src='" + response.userAvatarURL + "' /></a>\

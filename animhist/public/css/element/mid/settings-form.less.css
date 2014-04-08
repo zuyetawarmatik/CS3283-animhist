@@ -46,6 +46,12 @@
 						}
 					}
 					
+					&:nth-last-child(2) {
+						td:first-child {
+							vertical-align: top;
+						}
+					}
+					
 					&:last-child {
 						width: 100%;
 						

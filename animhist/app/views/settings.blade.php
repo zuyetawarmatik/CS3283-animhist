@@ -28,6 +28,24 @@
 				<td>{{ Form::button('Change Password...', ['name'=>'changepwd-btn', 'type'=>'button']) }}</td>
 			</tr>
 			<tr>
+				<td>{{ Form::label('following', 'Who I Am Following:') }}</td>
+				<td>
+					<ul id="following-list">
+						@foreach (Auth::user()->followings as $following)
+						<li class="following-item">
+							<div class="avatar-wrapper">
+								<a href="{{ URL::route('user.show', $following->username) }}"><img class="avatar" src="{{ $following->avatar->url('thumb') }}" /></a>
+							</div>
+							<div class="following-main">
+								<p class="following-username"><a href="{{ URL::route('user.show', $following->username) }}" class="username">{{$following->display_name}}</a></p>
+								<div class="unfollow-btn">&#57597;</div>
+							</div>
+						</li>
+						@endforeach
+					</ul>
+				</td>
+			</tr>
+			<tr>
 				<td colspan="2">
 					<button name="submit-btn"><i>&#57598;</i>Save Changes</button>
 				</td>

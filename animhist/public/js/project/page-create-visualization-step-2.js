@@ -1,7 +1,7 @@
 var CSRFToken, postURLPrefix;
 
 $(function() {
-	CSRFToken = $("[name='hidden-form'] [name='_token']").val();
+	CSRFToken = $("[name='_token']").val();
 	
 	$tabA = $("#tab").find("a");
 	$defaultColumnSelect = $("#default-column-select");

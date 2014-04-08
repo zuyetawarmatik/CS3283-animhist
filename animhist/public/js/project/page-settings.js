@@ -18,7 +18,6 @@ $(function() {
 					timeout: 2000
 				});
 			},
-		
 			success: function() {
 				notySuccess({
 					text: "Update information successfully!"
