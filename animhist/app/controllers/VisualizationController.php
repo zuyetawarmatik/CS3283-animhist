@@ -353,9 +353,13 @@ class VisualizationController extends \BaseController {
 							else {
 								$geocode = GoogleGeocoding::getLatLongForString($col_val_pairs['Position']);
 								if ($geocode) $col_val_pairs['Geocode'] = $geocode;
+								else $col_val_pairs['Geocode'] = $col_val_pairs['Position'];
 							}
-						} else
-							$col_val_pairs['Geocode'] = $col_val_pairs['Position'];
+						} else {
+							$found_boundary = self::findBoundaryKMLFromReference($col_val_pairs['Position']);
+							if ($found_boundary) $col_val_pairs['Geocode'] = $found_boundary[1];
+							else $col_val_pairs['Geocode'] = $col_val_pairs['Position'];
+						}
 					}
 					
 					$result = $gft->updateRow($row_id, $col_val_pairs);
@@ -377,8 +381,11 @@ class VisualizationController extends \BaseController {
 								$geocode = GoogleGeocoding::getLatLongForString($col_val_pairs['Position']);
 								if ($geocode) $col_val_pairs['Geocode'] = $geocode;
 							}
-						} else
-							$col_val_pairs['Geocode'] = $col_val_pairs['Position'];
+						} else {
+							$found_boundary = self::findBoundaryKMLFromReference($col_val_pairs['Position']);
+							if ($found_boundary) $col_val_pairs['Geocode'] = $found_boundary[1];
+							else $col_val_pairs['Geocode'] = $col_val_pairs['Position'];
+						}
 					}
 						
 					$result = $gft->insertRow($col_val_pairs);
@@ -714,6 +721,18 @@ class VisualizationController extends \BaseController {
 	
 	private static function readReferencedBoundariesKML() {
 		return self::readCSV(public_path().'/data/boundaries.csv');
+	}
+	
+	private static function findBoundaryKMLFromReference($pos) {
+		$arr_boundaries = self::readReferencedBoundariesKML();
+		
+		foreach ($arr_boundaries as $boundary) {
+			if (strtolower($boundary[0]) == strtolower($pos)) {
+				return $boundary;
+			}
+		}
+		
+		return false;
 	}
 	
 	private static function prepareCSVSentToGFusion($file_vars, $visualization_type) {
