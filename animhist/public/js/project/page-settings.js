@@ -1,5 +1,37 @@
+var CSRFToken;
+
 $(function() {
-	$("[name='settings-form']").submit(function(event) {
+	CSRFToken = $("[name='_token']").val();
+	$followingList = $("#following-list");
+	$settingsForm = $("[name='settings-form']");
+	
+	$followingList.on("click", "a", function(e) {
+		e.preventDefault();
+		parent.changeIFrameSrc($(this).attr("href"), true);
+	});
+	
+	$followingList.on("click", "div.unfollow-btn", function(e) {
+		$thisLi = $(this).closest("li.following-item");
+		$.ajax({
+			url: $(this).data('url'),
+			type: "POST",
+			global: false,
+			headers: {'X-CSRF-Token': CSRFToken},
+			error: function() {
+				notyError({
+					text: "Error"
+				});
+			},
+			success: function() {
+				$thisLi.slideUp(500, function(){
+					$thisLi.remove();
+					if ($followingList.empty()) $followingList.html("<label>(None)</label>");
+				});
+			}
+		});
+	});
+	
+	$settingsForm.submit(function(event) {
 		event.preventDefault();
 		$.ajax({
 			processData: false,
@@ -64,9 +96,9 @@ $(function() {
 						"password-retype": data.retypepassword
 					};
 					$.ajax({
-						url: "/" + $("[name='settings-form']").data("user-id") + "/updatepassword",
+						url: "/" + $settingsForm.data("user-id") + "/updatepassword",
 						type: "POST",
-						headers: {'X-CSRF-Token': $("[name='_token']").val()},
+						headers: {'X-CSRF-Token': CSRFToken},
 						data: formData,
 						error: function(response) {
 							var alertSt = "";

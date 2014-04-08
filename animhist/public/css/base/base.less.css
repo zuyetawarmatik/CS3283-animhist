@@ -12,6 +12,7 @@ body {
 a {
 	color: @color-type-link;
 	text-decoration: none;
+	outline: 0;
 }
 
 textarea, input[type='text'], input[type='password'], input[type="number"] {

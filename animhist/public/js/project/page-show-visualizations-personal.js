@@ -24,7 +24,7 @@ $(function() {
 			type: "POST",
 			global: false,
 			headers: {'X-CSRF-Token': CSRFToken},
-			error: function(response) {
+			error: function() {
 				notyError({
 					text: "Error"
 				});

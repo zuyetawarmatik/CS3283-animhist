@@ -72,6 +72,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		}
 	}
 	
+	public function publishedVisualizations()
+	{
+		return $this->hasMany('Visualization')->where('published', true)->orderBy('created_at', 'desc');
+	}
+	
 	public function visualizations()
 	{
 		return $this->hasMany('Visualization')->orderBy('created_at', 'desc');

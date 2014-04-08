@@ -1,5 +1,7 @@
 #left-area {
 	#following-list {
+		max-height: 50rem;
+		
 		.following-item {
 			position: relative;
 			transition: background 0.4s ease-out;

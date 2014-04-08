@@ -31,6 +31,9 @@
 				<td>{{ Form::label('following', 'Who I Am Following:') }}</td>
 				<td>
 					<ul id="following-list">
+						@if (!count(Auth::user()->followings))
+							{{ Form::label('(None)') }}
+						@endif
 						@foreach (Auth::user()->followings as $following)
 						<li class="following-item">
 							<div class="avatar-wrapper">
@@ -38,7 +41,7 @@
 							</div>
 							<div class="following-main">
 								<p class="following-username"><a href="{{ URL::route('user.show', $following->username) }}" class="username">{{$following->display_name}}</a></p>
-								<div class="unfollow-btn">&#57597;</div>
+								<div class="unfollow-btn" data-url="{{ URL::route('user.unfollow', $following->username) }}">&#57597;</div>
 							</div>
 						</li>
 						@endforeach
