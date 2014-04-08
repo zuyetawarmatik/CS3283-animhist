@@ -26,14 +26,15 @@
 			</tr>
 			<tr>
 				<td>{{ Form::label('type', 'Type:') }}</td>
-				<td><div class="styled-radio">
-						{{ Form::radio('type', 'point', true) }}
-						<label><span><span></span></span>Point</label>
-					</div>
+				<td>
 					<div class="styled-radio">
-    					{{ Form::radio('type', 'polygon') }}
+    					{{ Form::radio('type', 'polygon', true) }}
     					<label><span><span></span></span>Polygon</label>
     				</div>
+					<div class="styled-radio">
+						{{ Form::radio('type', 'point') }}
+						<label><span><span></span></span>Point</label>
+					</div>
     			</td>
 			</tr>
 			<tr>
@@ -43,19 +44,19 @@
 			<tr>
 				<td colspan="2">
 					<div class="styled-radio">
-						{{ Form::radio('option', 'manual', true) }}
-						<label><span><span></span></span>I would like to use Web Interface to input data items manually, provided that my table will have these columns as followed:</label>
+						{{ Form::radio('option', 'upload', true) }}
+						<label><span><span></span></span>I would like to upload my data (Make sure your data has Milestone and Position columns, <a href="/data/template.csv">download our template CSV file here</a>)</label>
 					</div>
-					<ul id="column-list"></ul>
+					{{ Form::file('upload') }}
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2">
 					<div class="styled-radio">
-						{{ Form::radio('option', 'upload') }}
-						<label><span><span></span></span>I would like to upload my data (Make sure your data has Milestone and Position columns, <a>download our template CSV file here</a>)</label>
+						{{ Form::radio('option', 'manual') }}
+						<label><span><span></span></span>I would like to use Web Interface to input data items manually, provided that my table will have these columns as followed:</label>
 					</div>
-					{{ Form::file('upload') }}
+					<ul id="column-list"></ul>
 				</td>
 			</tr>
 			<tr>

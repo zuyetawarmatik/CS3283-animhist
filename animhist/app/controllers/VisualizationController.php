@@ -181,6 +181,7 @@ class VisualizationController extends \BaseController {
 				$fusion_table_id = GoogleFusionTable::createWithFile($visualization_name, Input::get('type'), $table_info);
 				
 				File::deleteDirectory($path);
+				//return ResponseUtility::success();
 			}
 			
 			if ($fusion_table_id) {
@@ -716,6 +717,10 @@ class VisualizationController extends \BaseController {
 		$path = $file_vars[0];
 		$filename = $file_vars[1];
 		
+		/* Read reference border file */
+		$arr_boundaries = self::readCSV(public_path().'/data/boundaries.csv');
+		
+		/* Read data file that user uploads */
 		$arr = self::readCSV($path.'/'.$filename);
 		
 		$headers; $specs;
@@ -763,7 +768,17 @@ class VisualizationController extends \BaseController {
  				$geocode = GoogleGeocoding::getLatLongForString($row[$position_col]);
  				if ($geocode) $exported_row[Constant::COL_ID_GEOCODE] = $geocode;
  			} else {
- 				$exported_row[Constant::COL_ID_GEOCODE] = $exported_row[Constant::COL_ID_POSITION];
+ 				$found_boundary;
+ 				foreach ($arr_boundaries as $boundary) {
+ 					if (strtolower($boundary[0]) == strtolower($exported_row[Constant::COL_ID_POSITION])) {
+ 						$found_boundary = $boundary;
+ 						break;
+ 					}
+ 				}
+ 				if (isset($found_boundary))
+ 					$exported_row[Constant::COL_ID_GEOCODE] = $found_boundary[1];
+ 				else
+ 					$exported_row[Constant::COL_ID_GEOCODE] = $exported_row[Constant::COL_ID_POSITION];
  			}
  			
  			for ($j = 5; $j < count($exported_headers); $j++) {
