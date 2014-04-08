@@ -181,7 +181,6 @@ class VisualizationController extends \BaseController {
 				$fusion_table_id = GoogleFusionTable::createWithFile($visualization_name, Input::get('type'), $table_info);
 				
 				File::deleteDirectory($path);
-				//return ResponseUtility::success();
 			}
 			
 			if ($fusion_table_id) {
@@ -713,12 +712,17 @@ class VisualizationController extends \BaseController {
 		return $arr;
 	}
 	
+	private static function readReferencedBoundariesKML() {
+		return self::readCSV(public_path().'/data/boundaries.csv');
+	}
+	
 	private static function prepareCSVSentToGFusion($file_vars, $visualization_type) {
 		$path = $file_vars[0];
 		$filename = $file_vars[1];
 		
-		/* Read reference border file */
-		$arr_boundaries = self::readCSV(public_path().'/data/boundaries.csv');
+		/* Read referenced boundaries file */
+		$arr_boundaries = self::readReferencedBoundariesKML();
+		$cached_arr_boundaries = [];
 		
 		/* Read data file that user uploads */
 		$arr = self::readCSV($path.'/'.$filename);
@@ -763,24 +767,38 @@ class VisualizationController extends \BaseController {
 				$exported_row[Constant::COL_ID_MILESTONEREP] = $c_milestone; // Default is Year milestone type
 				
 			$exported_row[Constant::COL_ID_POSITION] = $row[$position_col];
- 			
- 			if (strtolower($visualization_type) == 'point') {
- 				$geocode = GoogleGeocoding::getLatLongForString($row[$position_col]);
- 				if ($geocode) $exported_row[Constant::COL_ID_GEOCODE] = $geocode;
- 			} else {
- 				$found_boundary;
- 				foreach ($arr_boundaries as $boundary) {
- 					if (strtolower($boundary[0]) == strtolower($exported_row[Constant::COL_ID_POSITION])) {
- 						$found_boundary = $boundary;
- 						break;
- 					}
- 				}
- 				if (isset($found_boundary))
- 					$exported_row[Constant::COL_ID_GEOCODE] = $found_boundary[1];
- 				else
- 					$exported_row[Constant::COL_ID_GEOCODE] = $exported_row[Constant::COL_ID_POSITION];
- 			}
- 			
+			$position_col_type = $specs[$position_col];
+			if (strtolower($position_col_type) != 'geocode') {
+				if (strtolower($visualization_type) == 'point') {
+					$geocode = GoogleGeocoding::getLatLongForString($row[$position_col]);
+					if ($geocode) $exported_row[Constant::COL_ID_GEOCODE] = $geocode;
+				} else {
+					$found_boundary;
+					
+					/* Find in cached boundaries first */
+					foreach ($cached_arr_boundaries as $boundary) {
+						if (strtolower($boundary[0]) == strtolower($exported_row[Constant::COL_ID_POSITION])) {
+							$found_boundary = $boundary;
+							break;
+						}
+					}
+					/* If not found, find in the big array */
+					if (!isset($found_boundary)) {
+						foreach ($arr_boundaries as $boundary) {
+							if (strtolower($boundary[0]) == strtolower($exported_row[Constant::COL_ID_POSITION])) {
+								$found_boundary = $boundary;
+								$cached_arr_boundaries[] = $boundary;
+								break;
+							}
+						}
+					}
+					
+					if (isset($found_boundary)) $exported_row[Constant::COL_ID_GEOCODE] = $found_boundary[1];
+				}
+			} else {
+				$exported_row[Constant::COL_ID_GEOCODE] = $exported_row[Constant::COL_ID_POSITION];
+			}
+			
  			for ($j = 5; $j < count($exported_headers); $j++) {
  				$header = $exported_headers[$j];
  				$exported_row[$j] = $row[array_search($header, $headers)];
