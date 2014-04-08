@@ -773,7 +773,7 @@ class VisualizationController extends \BaseController {
 					$geocode = GoogleGeocoding::getLatLongForString($row[$position_col]);
 					if ($geocode) $exported_row[Constant::COL_ID_GEOCODE] = $geocode;
 				} else {
-					$found_boundary;
+					$found_boundary = null;
 					
 					/* Find in cached boundaries first */
 					foreach ($cached_arr_boundaries as $boundary) {
