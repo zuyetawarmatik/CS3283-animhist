@@ -5,6 +5,7 @@ $(function() {
 	$visualizationList = $("#visualization-list");
 	$visualizationInfoP = $(".visualizations-info p");
 	$numVisualizations = $("#num-visualizations .content");
+	$numPubVisualizations = $("#num-pub-visualizations .content");
 	$categoryList = $("#category-list");
 });
 
@@ -52,6 +53,10 @@ $(function() {
 						callback: {
 							afterShow: function() {
 								$thisLi = $this.closest("li.visualization-item");
+								
+								$numVisualizations.html($numVisualizations.html() - 1);
+								if (!$thisLi.hasClass("unpublished")) $numPubVisualizations.html($numPubVisualizations.html() - 1);
+								
 								var category = $thisLi.data("vi-category");
 								$thisLi.fadeOut(500, function(){$thisLi.remove();});
 								var sameCatCount = $("li.visualization-item[data-vi-category='" + category + "']").length;
@@ -63,8 +68,6 @@ $(function() {
 										}
 									});
 								}
-								var currentNumVis = $numVisualizations.html();
-								$numVisualizations.html(currentNumVis - 1);
 							}
 						}
 					});

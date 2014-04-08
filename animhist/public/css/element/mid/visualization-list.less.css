@@ -80,15 +80,15 @@
 				}
 			}
 			
+			&.unpublished .visualization-main {
+				background: url(../images/stripe.png);
+			}
+			
 			.visualization-main {
 				margin-left: 6rem;
 				height: 4.7rem;
 				padding: 0.7rem 0 0.6rem; 
 				background: @color-back-comment;
-				
-				&.unpublished {
-					background: url(../images/stripe.png);
-				}
 				
 				p {
 					margin: 0 2rem;

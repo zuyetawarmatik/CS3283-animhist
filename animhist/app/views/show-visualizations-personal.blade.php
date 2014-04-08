@@ -31,7 +31,7 @@
 		@if ($user->isAuthUser())
 		<p id="num-visualizations"><span class="h2">Visualizations: </span><span class="content">{{ count($user->visualizations) }}</span></p>
 		@endif
-		<p id="num-visualizations"><span class="h2">Published Visualizations: </span><span class="content">{{ count($user->publishedVisualizations) }}</span></p>
+		<p id="num-pub-visualizations"><span class="h2">Published Visualizations: </span><span class="content">{{ count($user->publishedVisualizations) }}</span></p>
 		<p><br><span class="h2">Brief Description:</span></p>
 		<p>
 			@if ($user->description)
@@ -68,7 +68,7 @@
 	{{ Form::close() }}
 	@foreach ($visualizations as $visualization)
 		@if ($user->isAuthUser() || (!$user->isAuthUser() && $visualization->published))
-			<li class="visualization-item" data-vi-category="{{$visualization->category}}">
+			<li class="visualization-item @if(!$visualization->published) unpublished @endif" data-vi-category="{{$visualization->category}}">
 				@if ($visualization->published)
 				<div class="overlay" style="display:none" data-url="{{URL::route('visualization.show', [$visualization->user->username, $visualization->id])}}">
 				@else
@@ -95,7 +95,7 @@
 				<div class="avatar-wrapper">
 					<a href="{{ URL::route('user.show', $user->username) }}"><img class="avatar" src="{{ $user->avatar->url('thumb') }}" /></a>
 				</div>
-				<div class="visualization-main @if(!$visualization->published) unpublished @endif">
+				<div class="visualization-main">
 					<p class="visualization-title">{{$visualization->display_name}}</p>
 					<p class="visualization-author"><a href="{{ URL::route('user.show', $user->username) }}" class="username">{{$user->display_name}}</a></p>
 				</div>

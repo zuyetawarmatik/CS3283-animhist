@@ -13,7 +13,7 @@ $(function() {
 	$followingList.on("click", "div.unfollow-btn", function(e) {
 		$thisLi = $(this).closest("li.following-item");
 		$.ajax({
-			url: $(this).data('url'),
+			url: $(this).data("url"),
 			type: "POST",
 			global: false,
 			headers: {'X-CSRF-Token': CSRFToken},
