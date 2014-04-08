@@ -7,12 +7,13 @@ How to set up the project
 -------------------------
 - Make sure that you have installed Apache, MySQL and PHP >= 5.5 (or XAMPP full package if lazy) in your PC.
 - Make sure that you have installed Composer, Git. Google it if you don't know the link, it should be at the top seach result.
-- Configure Apache/PHP in your PC to allow Laravel properly working (referring to http://www.youtube.com/watch?v=u_OZA27Batc, http://www.youtube.com/watch?v=JNn_tS2KpcY), including: Enable OpenSSL (php_openssl) and File Info (php_fileinfo) in php.ini, Enable Mcrypt PHP Module, Config Virtual Host. Also need to enable Apache mod_rewrite as well:
+- Configure Apache/PHP in your PC to allow Laravel properly working (referring to http://www.youtube.com/watch?v=u_OZA27Batc, http://www.youtube.com/watch?v=JNn_tS2KpcY), including: Enable OpenSSL (php_openssl) and File Info (php_fileinfo) in php.ini; Enable Mcrypt PHP Module; Config Virtual Host; Also need to enable Apache mod_rewrite as well:
 ```sh
 sudo a2enmod rewrite
 sudo service apache2 restart
 ```
 or refer to http://www.leonardaustin.com/blog/technical/enable-mod_rewrite-in-xampp/ if you are using XAMPP.
+- In php.ini, set upload_max_filesize and max_execution_time to a large number (upload_max_filesize = 20M, max_execution_time = 360).
 - Clone this repo to your local disk, using Terminal or Git Bash, or any other Git GUI program. If you are using Windows and XAMPP, clone to htdocs of your XAMPP folder; otherwise, just clone it to your preferred folder.
 ```sh
 git clone https://github.com/zuyetawarmatik/CS3283-animhist
