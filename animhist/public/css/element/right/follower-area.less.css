@@ -1,9 +1,22 @@
-#left-area {
-	#following-list {
-		max-height: 30rem;
+#follower-area {
+	position: absolute;
+	top: 2rem;
+	bottom: 1rem;
+	width: 100%;
+	
+	h1 {
+		margin: 0 3rem;
+	}
+	
+	#follower-list {
+		position: absolute;
+		left: 3rem;
+		right: 3rem;
+		top: 5rem;
+		bottom: 0;
 		overflow-y: auto;
 		
-		.following-item {
+		.follower-item {
 			position: relative;
 			transition: background 0.3s ease-out;
 			margin-bottom: 1rem;
@@ -11,12 +24,6 @@
 			&:hover {
 				background: @color-back-top-bar;
 				transition: background 0.3s ease-out;
-				
-				.following-main .unfollow-btn {
-					margin-top: -2.5rem;
-					display: inline-block;
-					padding: 0.5rem;
-				}
 			}
 			
 			.avatar-wrapper {
@@ -28,7 +35,7 @@
 				}
 			}
 			
-			.following-main {
+			.follower-main {
 				position: absolute;
 				top: 0;
 				right: 0;
@@ -37,16 +44,10 @@
 				padding: 2rem;
 				
 				p {
-					width: calc(100% - 5rem);
+					width: calc(100% - 1rem);
 					white-space: nowrap;
 					text-overflow: ellipsis;
 					overflow: hidden;
-				}
-				
-				.unfollow-btn {
-					font-family: Conv_icomoon;
-					display: none;
-					float: right;
 				}
 			}
 		}

@@ -56,3 +56,21 @@
 		</table>
 	{{ Form::close() }}
 @stop
+
+@section('right-area')
+<div id="follower-area">
+	<h1>Followers</h1>
+	<ul id="follower-list">
+		@foreach (Auth::user()->followers as $follower)
+		<li class="follower-item">
+			<div class="avatar-wrapper">
+				<a href="{{ URL::route('user.show', $follower->username) }}"><img class="avatar" src="{{ $follower->avatar->url('thumb') }}" /></a>
+			</div>
+			<div class="follower-main">
+				<p class="follower-username"><a href="{{ URL::route('user.show', $follower->username) }}" class="username">{{$follower->display_name}}</a></p>
+			</div>
+		</li>
+		@endforeach
+	</ul>
+</div>
+@stop

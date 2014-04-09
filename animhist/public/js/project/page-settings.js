@@ -2,8 +2,14 @@ var CSRFToken;
 
 $(function() {
 	CSRFToken = $("[name='_token']").val();
+	$followerList = $("#follower-list");
 	$followingList = $("#following-list");
 	$settingsForm = $("[name='settings-form']");
+	
+	$followerList.on("click", "a", function(e) {
+		e.preventDefault();
+		parent.changeIFrameSrc($(this).attr("href"), true);
+	});
 	
 	$followingList.on("click", "a", function(e) {
 		e.preventDefault();
