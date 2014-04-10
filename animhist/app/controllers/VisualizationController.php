@@ -527,6 +527,8 @@ class VisualizationController extends \BaseController {
 	public function info($username, $id) {
 		$visualization = Visualization::find($id);
 		if (!$visualization || $visualization->user->username != $username) goto fail;
+		if (!$visualization->published && (!Auth::check() || Auth::user()->username != $username)) goto fail;
+		
 		$gft = new GoogleFusionTable($visualization->fusion_table_id, $visualization->type);
 		
 		if (Input::get('request') == 'data') {
