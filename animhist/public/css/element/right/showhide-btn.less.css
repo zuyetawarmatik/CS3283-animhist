@@ -8,6 +8,7 @@
 	width: 8rem;
 	background: @color-back-right-area;
 	font-family: Conv_icomoon;
+	font-size: 2rem;
 
 	&:hover {
 		background: darken(@color-back-right-area, 20%);
