@@ -30,15 +30,17 @@
 		</script>
 	</head>
 	<body>
-		<section id="welcome">
-			<div id="welcome-text">
-				<h1>Welcome to Animhist!</h1>
-				<p>Explore the ever-changing world with us. Be a geek historian.</p>
-			</div>
-			<div id="buttons">
-				<button data-url="{{URL::Route('user.showLogin')}}" class="red-btn">Login</button>
-				<button data-url="{{URL::Route('visualization.showFeatured')}}">Our Featured Playlist</button>
-			</div>
-		</section>
+		<div class="wrapper">
+			<section id="welcome">
+				<div id="welcome-text">
+					<h1>Welcome to Animhist!</h1>
+					<p>Explore the ever-changing world with us. Be a geek historian.</p>
+				</div>
+				<div id="buttons">
+					<button data-url="{{URL::Route('user.showLogin')}}" class="red-btn">Login</button>
+					<button data-url="{{URL::Route('visualization.showFeatured')}}">Our Featured Playlist</button>
+				</div>
+			</section>
+		</div>
 	</body>
 </html>

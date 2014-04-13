@@ -1,9 +1,18 @@
 @import (less) "base/base.less.css";
 
 body {
-	background: @color-back-left-panel;
+	background: url("/images/home-background.jpg") no-repeat center center fixed;
+	background-size: cover;
 	color: #fff;
 	font-size: 1.8rem;
+	
+	.wrapper {
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		
+		background: radial-gradient(ellipse at center, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.7) 100%);
+	}
 	
 	#welcome {
 		text-align: center;
@@ -16,11 +25,12 @@ body {
  		
  		h1 {
  			font-size: 6rem;
+ 			text-shadow: 0 0 1rem #333;
  		}
  		
  		p {
- 			font-size: 2.37rem;
- 			font-weight: 300;
+ 			font-size: 2.27rem;
+ 			text-shadow: 0 0 0.5rem #111;
  		}
  		
  		#buttons {
