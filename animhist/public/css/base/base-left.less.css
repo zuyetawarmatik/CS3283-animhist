@@ -136,6 +136,23 @@
 			
 		}
 	}
+	
+	#copyright {
+		position: absolute;
+		width: 100%;
+		text-align: center;
+		font-size: 1.4rem;
+		bottom: 2rem;
+		color: #aaa;
+		
+		a {
+			color: #eee;
+			
+			&:hover {
+				text-shadow: 0 0 0.1rem #fff; 
+			}
+		}
+	}
 }
 
 #main-panel {

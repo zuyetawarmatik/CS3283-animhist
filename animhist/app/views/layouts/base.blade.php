@@ -32,7 +32,7 @@
 						<a href="{{ URL::route('user.show', [Auth::user()->username]) }}">{{ '@'.Auth::user()->username }}</a>
 						<div id="logout-btn">&#57603;</div>
 					</div>
-				</div> 
+				</div>
 				<ul id="nav-list" data-highlight-id = "{{ $highlight_id }}">
 					<li class="nav-item" data-url="{{ URL::route('user.show', [Auth::user()->username]) }}">
 						<span class="nav-icon">&#57513;</span>
@@ -83,6 +83,7 @@
 					@endif
 				</ul>
 			@endif
+			<div id="copyright"><a href="/">Animhist</a> &copy; 2014</div>
 		</section>
 		<section id="main-panel">
 			<iframe style="width:100%;height:100%" scrolling="no" src="{{ $main_panel_iframe_url }}"></iframe>

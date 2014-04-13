@@ -11,16 +11,13 @@
 |
 */
 
-// Testing Routes
-	
-Route::get('/', function()
-{
-	//$gft = new GoogleFusionTable('1yy9FoPRlCVk5ncS5rfbekDNnyUYpemOPcv5CF0Wj', 'polygon');
-	//return json_encode($gft->retrieveGFusionData());
+// /
+Route::get('/', function(){
+	if (Auth::check())
+		return Redirect::route('user.show', Auth::user()->username);
+	else
+		return App::make('HomeController')->showHome(); 
 });
-
-
-// ==========================================================
 
 // /featured
 Route::get('featured', ['as' => 'visualization.showFeatured', 'uses' => 'VisualizationController@showFeatured']);

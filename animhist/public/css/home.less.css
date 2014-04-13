@@ -1,0 +1,32 @@
+@import (less) "base/base.less.css";
+
+body {
+	background: @color-back-left-panel;
+	color: #fff;
+	font-size: 1.8rem;
+	
+	#welcome {
+		text-align: center;
+		width: 60rem;
+		height: 20rem;
+		
+		margin: auto;
+  		position: absolute;
+ 		top: 0; left: 0; bottom: 0; right: 0;
+ 		
+ 		h1 {
+ 			font-size: 6rem;
+ 		}
+ 		
+ 		#buttons {
+ 			margin-top: 2.5rem;
+ 			button {
+ 				padding: 0 1rem;
+ 				
+ 				&:not(:first-child) {
+ 					margin-left: 1rem;
+ 				}
+ 			}
+ 		}
+	}
+}

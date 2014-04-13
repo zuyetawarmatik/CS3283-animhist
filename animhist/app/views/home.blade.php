@@ -20,8 +20,25 @@
 		{{ HTML::script('js/jquery-2.1.0.min.js'); }}
 		{{ HTML::script('js/jquery-ui-1.10.3/ui/jquery-ui.js'); }}
 		<!---------------->
+		
+		<script>
+			$(function() {
+				$("button").click(function() {
+					window.location = $(this).data("url");
+				});
+			});
+		</script>
 	</head>
 	<body>
-		
+		<section id="welcome">
+			<div id="welcome-text">
+				<h1>Welcome to Animhist!</h1>
+				<p>Explore the ever-changing world with us. Be a geek historian.</p>
+			</div>
+			<div id="buttons">
+				<button data-url="{{URL::Route('user.showLogin')}}" class="red-btn">Login</button>
+				<button data-url="{{URL::Route('visualization.showFeatured')}}">Our Featured Playlist</button>
+			</div>
+		</section>
 	</body>
 </html>
