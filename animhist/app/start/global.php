@@ -72,7 +72,7 @@ App::down(function()
 
 App::missing(function()
 {
-	return Response::make("404", 404);
+	return Response::view('404', [], 404);
 });
 
 /*
