@@ -1,5 +1,5 @@
 Milestone,Position,GDP
-,(Set this cell to 'Geocode' if you input your own KML or Lat-Long value in this column; Leave this cell blank if you want the system to auto-search the KML or Lat-Long for you),(Set this cell to 'Number' if you would like this column to be visualizable)
+,,Number
 2001,Malaysia,10
 2002,Malaysia,20
 2003,Malaysia,30
