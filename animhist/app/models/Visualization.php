@@ -1,7 +1,10 @@
 <?php
 
-class Visualization extends Eloquent {
-	use Codesleeve\Stapler\Stapler;
+use Codesleeve\Stapler\ORM\StaplerableInterface;
+use Codesleeve\Stapler\ORM\EloquentTrait;
+
+class Visualization extends Eloquent implements StaplerableInterface {
+	use EloquentTrait;
 	
 	protected $guarded = [];
 	

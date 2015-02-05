@@ -66,6 +66,21 @@ class User extends Eloquent implements UserInterface, RemindableInterface, Stapl
 		return $this->email;
 	}
 	
+	public function getRememberToken()
+	{
+		return $this->remember_token;
+	}
+
+	public function setRememberToken($value)
+	{
+		$this->remember_token = $value;
+	}
+
+	public function getRememberTokenName()
+	{
+		return 'remember_token';
+	}
+	
 	public function getFormattedCreatedDate() {
 		if ($this->created_at->diffInDays() > 30) {
 			return $this->created_at->toFormattedDateString();
