@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",
-		"codesleeve/stapler": "dev-master",
+		"codesleeve/laravel-stapler": "1.0.*",
 		"nategood/httpful": "*"
 	},
 	"autoload": {

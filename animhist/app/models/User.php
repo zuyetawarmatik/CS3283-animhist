@@ -2,9 +2,11 @@
 
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
+use Codesleeve\Stapler\ORM\StaplerableInterface;
+use Codesleeve\Stapler\ORM\EloquentTrait;
 
-class User extends Eloquent implements UserInterface, RemindableInterface {
-	use Codesleeve\Stapler\Stapler;
+class User extends Eloquent implements UserInterface, RemindableInterface, StaplerableInterface {
+	use EloquentTrait;
 	
 	protected $guarded = [];
 	
